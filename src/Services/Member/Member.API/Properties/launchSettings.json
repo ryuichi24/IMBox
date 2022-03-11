@@ -9,7 +9,7 @@
     }
   },
   "profiles": {
-    "Member.API": {
+    "IMBox.Member.API": {
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": true,
