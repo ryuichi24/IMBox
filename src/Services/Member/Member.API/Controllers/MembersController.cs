@@ -6,7 +6,7 @@ using IMBox.Services.Member.API.DTOs;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace IMBox.Services.Member.API
+namespace IMBox.Services.Member.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
