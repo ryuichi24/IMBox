@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using IMBox.Services.Member.API.DTOs;
-using IMBox.Services.Member.API.IntegrationEvents;
+using IMBox.Services.IntegrationEvents;
 using IMBox.Services.Member.Domain.Entities;
 using IMBox.Services.Member.Domain.Repositories;
 using MassTransit;
