@@ -1,8 +1,9 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using IMBox.Services.Member.API.DTOs;
+using IMBox.Services.Member.Domain.Entities;
+using IMBox.Services.Member.Domain.Repositories;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,27 +13,27 @@ namespace IMBox.Services.Member.API.Controllers
     [ApiController]
     public class MembersController : ControllerBase
     {
-        private static readonly List<MemberDTO> _members = new()
+        private readonly IMemberRepository _memberRepository;
+
+        public MembersController(IMemberRepository memberRepository)
         {
-            new MemberDTO(Id: Guid.NewGuid(), Name: "Tom Holland", Description: "He is Spiderman.", BirthDate: DateTime.Now.Date, Role: "cast"),
-            new MemberDTO(Id: Guid.NewGuid(), Name: "Robert Downey Jr.", Description: "He is Ironman.", BirthDate: DateTime.Now.Date, Role: "cast"),
-            new MemberDTO(Id: Guid.NewGuid(), Name: "Chris Evans", Description: "He is Captain America.", BirthDate: DateTime.Now.Date, Role: "cast"),
-        };
+            _memberRepository = memberRepository;
+        }
 
         // GET /members
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<MemberDTO>))]
         public async Task<IActionResult> GetAsync()
         {
-            return Ok(_members);
+            return Ok(await _memberRepository.GetAllAsync());
         }
 
         // GET /members/{id}
         [HttpGet("{id}")]
         [ProducesResponseType((int)200, Type = typeof(MemberDTO))]
-        public IActionResult GetById(Guid id)
+        public async Task<IActionResult> GetById(Guid id)
         {
-            var member = _members.Where(member => member.Id == id).SingleOrDefault();
+            var member = await _memberRepository.GetByIdAsync(id);
             if (member == null) return NotFound();
             return Ok(member);
         }
@@ -40,18 +41,17 @@ namespace IMBox.Services.Member.API.Controllers
         // POST /members
         [HttpPost()]
         [ProducesResponseType((int)201, Type = typeof(MemberDTO))]
-        public IActionResult Create(CreateMemberDTO createMemberDTO)
+        public async Task<IActionResult> Create(CreateMemberDTO createMemberDTO)
         {
-            var member = new MemberDTO
-            (
-                Id: Guid.NewGuid(),
-                Name: createMemberDTO.Name,
-                Description: createMemberDTO.Description,
-                BirthDate: createMemberDTO.BirthDate,
-                Role: createMemberDTO.Role
-            );
+            var member = new MemberEntity
+            {
+                Name = createMemberDTO.Name,
+                Description = createMemberDTO.Description,
+                BirthDate = createMemberDTO.BirthDate,
+                Role = createMemberDTO.Role
+            };
 
-            _members.Add(member);
+            await _memberRepository.CreateAsync(member);
 
             // https://ochzhen.com/blog/created-createdataction-createdatroute-methods-explained-aspnet-core
             return CreatedAtAction(nameof(GetById), new { id = member.Id }, member);
@@ -60,22 +60,19 @@ namespace IMBox.Services.Member.API.Controllers
         // PUT /members/{id}
         [HttpPut("{id}")]
         [ProducesResponseType((int)204, Type = typeof(void))]
-        public IActionResult Update(Guid id, UpdateMemberDTO updateMemberDTO)
+        public async Task<IActionResult> Update(Guid id, UpdateMemberDTO updateMemberDTO)
         {
-            var existingMember = _members.Where(member => member.Id == id).SingleOrDefault();
+            var existingMember = await _memberRepository.GetByIdAsync(id);
 
             if (existingMember == null) return BadRequest("No member found");
 
-            var updatedMember = existingMember with
-            {
-                Name = updateMemberDTO.Name,
-                Description = updateMemberDTO.Description,
-                BirthDate = updateMemberDTO.BirthDate,
-                Role = updateMemberDTO.Role
-            };
+            existingMember
+                .UpdateName(updateMemberDTO.Name)
+                .UpdateDescription(updateMemberDTO.Description)
+                .UpdateBirthDate(updateMemberDTO.BirthDate)
+                .UpdateRole(updateMemberDTO.Role);
 
-            var index = _members.FindIndex(member => member.Id == id);
-            _members[index] = updatedMember;
+            await _memberRepository.UpdateAsync(existingMember);
 
             return NoContent();
         }
@@ -83,12 +80,9 @@ namespace IMBox.Services.Member.API.Controllers
         // DELETE /members/{id}
         [HttpDelete("{id}")]
         [ProducesResponseType((int)204, Type = typeof(void))]
-        public IActionResult Delete(Guid id)
+        public async Task<IActionResult> Delete(Guid id)
         {
-            var index = _members.FindIndex(member => member.Id == id);
-            if (index < 0) return BadRequest("No member found");
-
-            _members.RemoveAt(index);
+            await _memberRepository.RemoveAsync(id);
 
             return NoContent();
         }

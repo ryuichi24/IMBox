@@ -2,12 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-using IMBox.Shared.Core.Entity;
+using IMBox.Shared.Domain.Base;
 using MongoDB.Driver;
 
 namespace IMBox.Shared.Infrastructure.Database.MongoDB
 {
-    abstract class MongoRepository<TEntity> where TEntity : IEntity
+    public abstract class MongoRepository<TEntity> where TEntity : Entity
     {
         private readonly IMongoCollection<TEntity> _dbCollection;
         private readonly FilterDefinitionBuilder<TEntity> _filterBuilder = Builders<TEntity>.Filter;
@@ -17,28 +17,36 @@ namespace IMBox.Shared.Infrastructure.Database.MongoDB
             _dbCollection = database.GetCollection<TEntity>(collectionName);
         }
 
-        protected async Task<List<TEntity>> GetAllAsync()
+        protected async Task<List<TEntity>> FindAllAsync()
         {
-            return await _dbCollection.Find(_filterBuilder.Empty).ToListAsync();
+            try
+            {
+                return await _dbCollection.Find(_filterBuilder.Empty).ToListAsync();
+            }
+            catch (System.Exception err)
+            {
+                throw err;
+            }
+
         }
 
-        protected async Task<List<TEntity>> GetAllAsync(Expression<Func<TEntity, bool>> filter)
+        protected async Task<List<TEntity>> FindAllAsync(Expression<Func<TEntity, bool>> filter)
         {
             return await _dbCollection.Find(filter).ToListAsync();
         }
 
-        protected async Task<TEntity> GetAsync(Guid id)
+        protected async Task<TEntity> FindByIdAsync(Guid id)
         {
             FilterDefinition<TEntity> filter = _filterBuilder.Eq(entityFromDB => entityFromDB.Id, id);
             return await _dbCollection.Find(filter).FirstOrDefaultAsync();
         }
 
-        protected async Task<TEntity> GetAsync(Expression<Func<TEntity, bool>> filter)
+        protected async Task<TEntity> FindAsync(Expression<Func<TEntity, bool>> filter)
         {
             return await _dbCollection.Find(filter).SingleOrDefaultAsync();
         }
 
-        protected async Task CreateAsync(TEntity entity)
+        protected async Task InsertAsync(TEntity entity)
         {
             if (entity == null)
             {
@@ -48,7 +56,7 @@ namespace IMBox.Shared.Infrastructure.Database.MongoDB
             await _dbCollection.InsertOneAsync(entity);
         }
 
-        protected async Task UpdateAsync(TEntity entity)
+        protected async Task ReplaceAsync(TEntity entity)
         {
             if (entity == null)
             {
@@ -59,7 +67,7 @@ namespace IMBox.Shared.Infrastructure.Database.MongoDB
             await _dbCollection.ReplaceOneAsync(filter, entity);
         }
 
-        protected async Task RemoveAsync(Guid id)
+        protected async Task DeleteAsync(Guid id)
         {
             FilterDefinition<TEntity> filter = _filterBuilder.Eq(entityFromDB => entityFromDB.Id, id);
             await _dbCollection.DeleteOneAsync(filter);

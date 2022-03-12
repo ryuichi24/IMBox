@@ -1,11 +1,10 @@
 using System;
-using IMBox.Shared.Core.Entity;
+using IMBox.Shared.Domain.Base;
 
-namespace IMBox.Services.Member.API.Entities
+namespace IMBox.Services.Member.Domain.Entities
 {
-    public class Member : IEntity
+    public class MemberEntity : Entity
     {
-        public Guid Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public DateTime BirthDate { get; set; }
@@ -13,28 +12,28 @@ namespace IMBox.Services.Member.API.Entities
         public DateTimeOffset CreatedAt { get; init; } = DateTimeOffset.UtcNow;
         public DateTimeOffset UpdatedAt { get; set; } = DateTimeOffset.UtcNow;
 
-        public Member UpdateName(string newName)
+        public MemberEntity UpdateName(string newName)
         {
             Name = newName;
             UpdatedAt = DateTimeOffset.UtcNow;
             return this;
         }
 
-        public Member UpdateDescription(string description)
+        public MemberEntity UpdateDescription(string description)
         {
             Description = description;
             UpdatedAt = DateTimeOffset.UtcNow;
             return this;
         }
 
-        public Member UpdateRole(string role)
+        public MemberEntity UpdateRole(string role)
         {
             Role = role;
             UpdatedAt = DateTimeOffset.UtcNow;
             return this;
         }
 
-        public Member UpdateBirthDate(DateTime birthDate)
+        public MemberEntity UpdateBirthDate(DateTime birthDate)
         {
             BirthDate = birthDate;
             UpdatedAt = DateTimeOffset.UtcNow;

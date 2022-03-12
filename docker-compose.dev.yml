@@ -1,0 +1,27 @@
+version: '3.7'
+
+services:
+  mongodb:
+    image: mongo:5.0
+    restart: unless-stopped
+    container_name: IMBox-mongodb-dev-container
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: mongouser
+      MONGO_INITDB_ROOT_PASSWORD: mongopassword
+    ports:
+      - 27017:27017
+    volumes:
+      - ./mongodbdata:/data/db
+    networks: [ 'IMBox-dev' ]
+
+  rabbitMQ:
+    image: rabbitmq:3.9.13-management-alpine
+    container_name: IMBox-rabbitmq-dev-container
+    ports:
+      - 5672:5672
+      - 15672:15672
+    volumes:
+      - ./rabbitmqdata:/var/lib/rabbitmq
+    hostname: rabbitmq
+
+networks: { IMBox-dev: { driver: bridge } }
