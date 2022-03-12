@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using IMBox.Services.Member.API.DTOs;
 using IMBox.Services.Member.API.IntegrationEvents;
@@ -29,7 +30,8 @@ namespace IMBox.Services.Member.API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<MemberDTO>))]
         public async Task<IActionResult> GetAsync()
         {
-            return Ok(await _memberRepository.GetAllAsync());
+            var members = await _memberRepository.GetAllAsync();
+            return Ok(members.Select(member => member.ToDTO()));
         }
 
         // GET /members/{id}
@@ -39,7 +41,7 @@ namespace IMBox.Services.Member.API.Controllers
         {
             var member = await _memberRepository.GetByIdAsync(id);
             if (member == null) return NotFound();
-            return Ok(member);
+            return Ok(member.ToDTO());
         }
 
         // POST /members
@@ -64,7 +66,7 @@ namespace IMBox.Services.Member.API.Controllers
             });
 
             // https://ochzhen.com/blog/created-createdataction-createdatroute-methods-explained-aspnet-core
-            return CreatedAtAction(nameof(GetById), new { id = member.Id }, member);
+            return CreatedAtAction(nameof(GetById), new { id = member.Id }, member.ToDTO());
         }
 
         // PUT /members/{id}
