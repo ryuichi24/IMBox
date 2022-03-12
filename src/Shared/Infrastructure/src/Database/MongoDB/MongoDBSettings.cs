@@ -1,4 +1,4 @@
-namespace IMBox.Shared.Database.MongoDB
+namespace IMBox.Shared.Infrastructure.Database.MongoDB
 {
     public class MongoDBSettings
     {

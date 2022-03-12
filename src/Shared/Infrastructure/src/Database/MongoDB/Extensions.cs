@@ -6,7 +6,7 @@ using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Serializers;
 using MongoDB.Driver;
 
-namespace IMBox.Shared.Database.MongoDB
+namespace IMBox.Shared.Infrastructure.Database.MongoDB
 {
     public static class Extensions
     {

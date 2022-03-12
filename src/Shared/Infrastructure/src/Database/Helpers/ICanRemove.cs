@@ -1,7 +1,7 @@
 using System;
 using System.Threading.Tasks;
 
-namespace IMBox.Shared.Database.Helpers
+namespace IMBox.Shared.Infrastructure.Database.Helpers
 {
     public interface ICanRemove
     {

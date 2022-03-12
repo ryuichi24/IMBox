@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using IMBox.Shared.Core.Entity;
 using MongoDB.Driver;
 
-namespace IMBox.Shared.Database.MongoDB
+namespace IMBox.Shared.Infrastructure.Database.MongoDB
 {
     abstract class MongoRepository<TEntity> where TEntity : IEntity
     {
