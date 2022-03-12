@@ -9,6 +9,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Member.Domain\IMBox.Member.Domain.csproj" />
     <ProjectReference Include="..\Member.Infrastructure\IMBox.Member.Infrastructure.csproj" />
   </ItemGroup>
 

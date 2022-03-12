@@ -2,8 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using IMBox.Services.Member.API.DTOs;
+using IMBox.Services.Member.API.IntegrationEvents;
 using IMBox.Services.Member.Domain.Entities;
 using IMBox.Services.Member.Domain.Repositories;
+using MassTransit;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,10 +16,12 @@ namespace IMBox.Services.Member.API.Controllers
     public class MembersController : ControllerBase
     {
         private readonly IMemberRepository _memberRepository;
+        private readonly IPublishEndpoint _publishEndpoint;
 
-        public MembersController(IMemberRepository memberRepository)
+        public MembersController(IMemberRepository memberRepository, IPublishEndpoint publishEndpoint)
         {
             _memberRepository = memberRepository;
+            _publishEndpoint = publishEndpoint;
         }
 
         // GET /members
@@ -53,6 +57,12 @@ namespace IMBox.Services.Member.API.Controllers
 
             await _memberRepository.CreateAsync(member);
 
+            await _publishEndpoint.Publish(new MemberCreatedIntegrationEvent
+            {
+                MemberName = member.Name,
+                MemberId = member.Id,
+            });
+
             // https://ochzhen.com/blog/created-createdataction-createdatroute-methods-explained-aspnet-core
             return CreatedAtAction(nameof(GetById), new { id = member.Id }, member);
         }
@@ -74,6 +84,12 @@ namespace IMBox.Services.Member.API.Controllers
 
             await _memberRepository.UpdateAsync(existingMember);
 
+            await _publishEndpoint.Publish(new MemberUpdatedIntegrationEvent
+            {
+                MemberName = existingMember.Name,
+                MemberId = existingMember.Id,
+            });
+
             return NoContent();
         }
 
@@ -82,7 +98,16 @@ namespace IMBox.Services.Member.API.Controllers
         [ProducesResponseType((int)204, Type = typeof(void))]
         public async Task<IActionResult> Delete(Guid id)
         {
-            await _memberRepository.RemoveAsync(id);
+            var memberToDelete = await _memberRepository.GetByIdAsync(id);
+
+            if (memberToDelete == null) return BadRequest("No member found");
+
+            await _memberRepository.RemoveAsync(memberToDelete.Id);
+
+            await _publishEndpoint.Publish(new MemberDeletedIntegrationEvent
+            {
+                MemberId = memberToDelete.Id,
+            });
 
             return NoContent();
         }
