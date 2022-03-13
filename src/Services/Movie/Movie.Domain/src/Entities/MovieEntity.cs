@@ -5,7 +5,6 @@ namespace IMBox.Services.Movie.Domain.Entities
 {
     public class MovieEntity : Entity
     {
-        public Guid Id { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
 
