@@ -12,6 +12,7 @@ namespace IMBox.Services.Member.Domain.Entities
 
         public MemberEntity UpdateName(string newName)
         {
+            if (String.IsNullOrEmpty(newName)) return this;
             Name = newName;
             UpdatedAt = DateTimeOffset.UtcNow;
             return this;
@@ -19,6 +20,7 @@ namespace IMBox.Services.Member.Domain.Entities
 
         public MemberEntity UpdateDescription(string description)
         {
+            if (String.IsNullOrEmpty(description)) return this;
             Description = description;
             UpdatedAt = DateTimeOffset.UtcNow;
             return this;
@@ -26,6 +28,7 @@ namespace IMBox.Services.Member.Domain.Entities
 
         public MemberEntity UpdateRole(string role)
         {
+            if (String.IsNullOrEmpty(role)) return this;
             Role = role;
             UpdatedAt = DateTimeOffset.UtcNow;
             return this;
@@ -33,6 +36,7 @@ namespace IMBox.Services.Member.Domain.Entities
 
         public MemberEntity UpdateBirthDate(DateTime birthDate)
         {
+            if (birthDate == default(DateTime)) return this;
             BirthDate = birthDate;
             UpdatedAt = DateTimeOffset.UtcNow;
             return this;

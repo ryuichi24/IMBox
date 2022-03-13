@@ -25,7 +25,7 @@ namespace IMBox.Services.Movie.API.Consumers
 
             var existingMember = await _memberRepository.GetByIdAsync(message.MemberId);
 
-            if (existingMember != null) return;
+            if (existingMember == null) return;
 
             await _memberRepository.RemoveAsync(existingMember.Id);
         }

@@ -70,8 +70,8 @@ namespace IMBox.Services.Member.API.Controllers
             return CreatedAtAction(nameof(GetByIdAsync), new { id = member.Id }, member.ToDTO());
         }
 
-        // PUT /members/{id}
-        [HttpPut("{id}")]
+        // PATCH /members/{id}
+        [HttpPatch("{id}")]
         [ProducesResponseType((int)204, Type = typeof(void))]
         public async Task<IActionResult> UpdateAsync(Guid id, UpdateMemberDTO updateMemberDTO)
         {
