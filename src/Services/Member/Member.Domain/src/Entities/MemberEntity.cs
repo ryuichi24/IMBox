@@ -9,8 +9,6 @@ namespace IMBox.Services.Member.Domain.Entities
         public string Description { get; set; }
         public DateTime BirthDate { get; set; }
         public string Role { get; set; }
-        public DateTimeOffset CreatedAt { get; init; } = DateTimeOffset.UtcNow;
-        public DateTimeOffset UpdatedAt { get; set; } = DateTimeOffset.UtcNow;
 
         public MemberEntity UpdateName(string newName)
         {
