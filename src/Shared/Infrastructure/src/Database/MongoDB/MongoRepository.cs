@@ -19,15 +19,7 @@ namespace IMBox.Shared.Infrastructure.Database.MongoDB
 
         protected async Task<List<TEntity>> FindAllAsync()
         {
-            try
-            {
-                return await _dbCollection.Find(_filterBuilder.Empty).ToListAsync();
-            }
-            catch (System.Exception err)
-            {
-                throw err;
-            }
-
+            return await _dbCollection.Find(_filterBuilder.Empty).ToListAsync();
         }
 
         protected async Task<List<TEntity>> FindAllAsync(Expression<Func<TEntity, bool>> filter)

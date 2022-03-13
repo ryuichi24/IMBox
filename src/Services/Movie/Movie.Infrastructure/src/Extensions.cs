@@ -26,6 +26,12 @@ namespace IMBox.Services.Movie.Infrastructure
                 return new MongoMovieRepository(database, "movies");
             });
 
+            services.AddScoped<IMemberRepository>(serviceProvider =>
+            {
+                var database = serviceProvider.GetService<IMongoDatabase>();
+                return new MongoMemberRepository(database, "members");
+            });
+
             return services;
         }
     }

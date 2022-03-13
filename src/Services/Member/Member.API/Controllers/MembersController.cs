@@ -63,6 +63,7 @@ namespace IMBox.Services.Member.API.Controllers
             {
                 MemberName = member.Name,
                 MemberId = member.Id,
+                MemberRole = member.Role
             });
 
             // https://ochzhen.com/blog/created-createdataction-createdatroute-methods-explained-aspnet-core
@@ -90,6 +91,7 @@ namespace IMBox.Services.Member.API.Controllers
             {
                 MemberName = existingMember.Name,
                 MemberId = existingMember.Id,
+                MemberRole = existingMember.Role
             });
 
             return NoContent();

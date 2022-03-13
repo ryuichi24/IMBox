@@ -7,5 +7,6 @@ namespace IMBox.Services.IntegrationEvents
     {
         public Guid MemberId { get; init; }
         public string MemberName { get; init; }
+        public string MemberRole { get; set; }
     }
 }
