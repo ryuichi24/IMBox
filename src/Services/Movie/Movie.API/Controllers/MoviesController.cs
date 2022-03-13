@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using IMBox.Services.Movie.API.DTOs;
 using IMBox.Services.Movie.Domain.Entities;
@@ -18,10 +20,19 @@ namespace IMBox.Services.Movie.API.Controllers
             _movieRepository = movieRepository;
         }
 
+        // GET /movies
+        [HttpGet()]
+        [ProducesResponseType((int)200, Type = typeof(IEnumerable<MovieDTO>))]
+        public async Task<IActionResult> GetAsync()
+        {
+            var movies = await _movieRepository.GetAllAsync();
+            return Ok(movies.Select(movie => movie.ToDTO()));
+        }
+
         // GET /movies/{id}
         [HttpGet("{id}")]
         [ProducesResponseType((int)200, Type = typeof(MovieDTO))]
-        public async Task<IActionResult> GetById(Guid id)
+        public async Task<IActionResult> GetByIdAsync(Guid id)
         {
             var movie = await _movieRepository.GetByIdAsync(id);
             if (movie == null) return NotFound();
@@ -31,7 +42,7 @@ namespace IMBox.Services.Movie.API.Controllers
         // POST /movies
         [HttpPost()]
         [ProducesResponseType((int)201, Type = typeof(MovieDTO))]
-        public async Task<IActionResult> Create(CreateMovieDTO createMovieDTO)
+        public async Task<IActionResult> CreateAsync(CreateMovieDTO createMovieDTO)
         {
             var movie = new MovieEntity
             {
@@ -42,13 +53,13 @@ namespace IMBox.Services.Movie.API.Controllers
             await _movieRepository.CreateAsync(movie);
 
             // https://ochzhen.com/blog/created-createdataction-createdatroute-methods-explained-aspnet-core
-            return CreatedAtAction(nameof(GetById), new { id = movie.Id }, movie.ToDTO());
+            return CreatedAtAction(nameof(GetByIdAsync), new { id = movie.Id }, movie.ToDTO());
         }
 
         // PUT /movies/{id}
         [HttpPut("{id}")]
         [ProducesResponseType((int)204, Type = typeof(void))]
-        public async Task<IActionResult> Update(Guid id, UpdateMovieDTO updateMovieDTO)
+        public async Task<IActionResult> UpdateAsync(Guid id, UpdateMovieDTO updateMovieDTO)
         {
             var existingMovie = await _movieRepository.GetByIdAsync(id);
 
@@ -66,7 +77,7 @@ namespace IMBox.Services.Movie.API.Controllers
         // DELETE /movies/{id}
         [HttpDelete("{id}")]
         [ProducesResponseType((int)204, Type = typeof(void))]
-        public async Task<IActionResult> Delete(Guid id)
+        public async Task<IActionResult> DeleteAsync(Guid id)
         {
             var movieToDelete = await _movieRepository.GetByIdAsync(id);
 

@@ -37,7 +37,7 @@ namespace IMBox.Services.Member.API.Controllers
         // GET /members/{id}
         [HttpGet("{id}")]
         [ProducesResponseType((int)200, Type = typeof(MemberDTO))]
-        public async Task<IActionResult> GetById(Guid id)
+        public async Task<IActionResult> GetByIdAsync(Guid id)
         {
             var member = await _memberRepository.GetByIdAsync(id);
             if (member == null) return NotFound();
@@ -47,7 +47,7 @@ namespace IMBox.Services.Member.API.Controllers
         // POST /members
         [HttpPost()]
         [ProducesResponseType((int)201, Type = typeof(MemberDTO))]
-        public async Task<IActionResult> Create(CreateMemberDTO createMemberDTO)
+        public async Task<IActionResult> CreateAsync(CreateMemberDTO createMemberDTO)
         {
             var member = new MemberEntity
             {
@@ -67,13 +67,13 @@ namespace IMBox.Services.Member.API.Controllers
             });
 
             // https://ochzhen.com/blog/created-createdataction-createdatroute-methods-explained-aspnet-core
-            return CreatedAtAction(nameof(GetById), new { id = member.Id }, member.ToDTO());
+            return CreatedAtAction(nameof(GetByIdAsync), new { id = member.Id }, member.ToDTO());
         }
 
         // PUT /members/{id}
         [HttpPut("{id}")]
         [ProducesResponseType((int)204, Type = typeof(void))]
-        public async Task<IActionResult> Update(Guid id, UpdateMemberDTO updateMemberDTO)
+        public async Task<IActionResult> UpdateAsync(Guid id, UpdateMemberDTO updateMemberDTO)
         {
             var existingMember = await _memberRepository.GetByIdAsync(id);
 
@@ -100,7 +100,7 @@ namespace IMBox.Services.Member.API.Controllers
         // DELETE /members/{id}
         [HttpDelete("{id}")]
         [ProducesResponseType((int)204, Type = typeof(void))]
-        public async Task<IActionResult> Delete(Guid id)
+        public async Task<IActionResult> DeleteAsync(Guid id)
         {
             var memberToDelete = await _memberRepository.GetByIdAsync(id);
 
