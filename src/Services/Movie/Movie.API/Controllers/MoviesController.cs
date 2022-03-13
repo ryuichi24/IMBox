@@ -14,10 +14,12 @@ namespace IMBox.Services.Movie.API.Controllers
     public class MoviesController : ControllerBase
     {
         private readonly IMovieRepository _movieRepository;
+        private readonly IMemberRepository _memberRepository;
 
-        public MoviesController(IMovieRepository movieRepository)
+        public MoviesController(IMovieRepository movieRepository, IMemberRepository memberRepository)
         {
             _movieRepository = movieRepository;
+            _memberRepository = memberRepository;
         }
 
         // GET /movies
@@ -26,7 +28,14 @@ namespace IMBox.Services.Movie.API.Controllers
         public async Task<IActionResult> GetAsync()
         {
             var movies = await _movieRepository.GetAllAsync();
-            return Ok(movies.Select(movie => movie.ToDTO()));
+
+            var movieDTOs = await Task.WhenAll(movies.Select(async (movie) =>
+            {
+                var members = await _memberRepository.GetByMemberIdsAsync(movie.MemberIds);
+                return movie.ToDTO(members);
+            }));
+
+            return Ok(movieDTOs);
         }
 
         // GET /movies/{id}
@@ -36,7 +45,9 @@ namespace IMBox.Services.Movie.API.Controllers
         {
             var movie = await _movieRepository.GetByIdAsync(id);
             if (movie == null) return NotFound();
-            return Ok(movie.ToDTO());
+
+            var members = await _memberRepository.GetByMemberIdsAsync(movie.MemberIds);
+            return Ok(movie.ToDTO(members));
         }
 
         // POST /movies
@@ -48,16 +59,19 @@ namespace IMBox.Services.Movie.API.Controllers
             {
                 Title = createMovieDTO.Title,
                 Description = createMovieDTO.Description,
+                MemberIds = createMovieDTO.MemberIds
             };
 
             await _movieRepository.CreateAsync(movie);
 
+            var members = await _memberRepository.GetByMemberIdsAsync(movie.MemberIds);
+
             // https://ochzhen.com/blog/created-createdataction-createdatroute-methods-explained-aspnet-core
-            return CreatedAtAction(nameof(GetByIdAsync), new { id = movie.Id }, movie.ToDTO());
+            return CreatedAtAction(nameof(GetByIdAsync), new { id = movie.Id }, movie.ToDTO(members));
         }
 
-        // PUT /movies/{id}
-        [HttpPut("{id}")]
+        // PATCH /movies/{id}
+        [HttpPatch("{id}")]
         [ProducesResponseType((int)204, Type = typeof(void))]
         public async Task<IActionResult> UpdateAsync(Guid id, UpdateMovieDTO updateMovieDTO)
         {
@@ -67,7 +81,8 @@ namespace IMBox.Services.Movie.API.Controllers
 
             existingMovie
                 .UpdateTitle(updateMovieDTO.Title)
-                .UpdateDescription(updateMovieDTO.Description);
+                .UpdateDescription(updateMovieDTO.Description)
+                .UpdateMemberIds(updateMovieDTO.MemberIds);
 
             await _movieRepository.UpdateAsync(existingMovie);
 

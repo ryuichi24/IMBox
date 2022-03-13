@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace IMBox.Services.Movie.API.DTOs
@@ -8,6 +10,7 @@ namespace IMBox.Services.Movie.API.DTOs
         public string Title { get; init; }
         [Required]
         public string Description { get; init; }
+        public List<Guid> MemberIds { get; set; }
     }
 
 }

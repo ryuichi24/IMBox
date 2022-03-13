@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using IMBox.Services.Movie.Domain.Entities;
 using IMBox.Services.Movie.Domain.Repositories;
@@ -27,6 +28,13 @@ namespace IMBox.Services.Movie.Infrastructure.Repositories
         public async Task<MemberEntity> GetByIdAsync(Guid id)
         {
             return await base.FindByIdAsync(id);
+        }
+
+        public async Task<IEnumerable<MemberEntity>> GetByMemberIdsAsync(IEnumerable<Guid> memberIds)
+        {
+            var completedTasks = await Task.WhenAll(memberIds.Select(async (memberId) => await base.FindByIdAsync(memberId)));
+            var members = completedTasks.Where(completedTask => completedTask != null);
+            return members;
         }
 
         public async Task RemoveAsync(Guid id)

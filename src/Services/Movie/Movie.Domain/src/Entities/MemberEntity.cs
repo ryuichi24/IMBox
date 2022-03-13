@@ -10,14 +10,16 @@ namespace IMBox.Services.Movie.Domain.Entities
 
         public MemberEntity UpdateName(string newName)
         {
+            if (String.IsNullOrEmpty(newName)) return this;
             Name = newName;
             UpdatedAt = DateTimeOffset.UtcNow;
             return this;
         }
 
-        public MemberEntity UpdateRole(string role)
+        public MemberEntity UpdateRole(string newRole)
         {
-            Role = role;
+            if (String.IsNullOrEmpty(newRole)) return this;
+            Role = newRole;
             UpdatedAt = DateTimeOffset.UtcNow;
             return this;
         }
