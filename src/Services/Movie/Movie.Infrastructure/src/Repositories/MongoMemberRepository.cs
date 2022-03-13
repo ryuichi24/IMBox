@@ -32,8 +32,7 @@ namespace IMBox.Services.Movie.Infrastructure.Repositories
 
         public async Task<IEnumerable<MemberEntity>> GetByMemberIdsAsync(IEnumerable<Guid> memberIds)
         {
-            var completedTasks = await Task.WhenAll(memberIds.Select(async (memberId) => await base.FindByIdAsync(memberId)));
-            var members = completedTasks.Where(completedTask => completedTask != null);
+            var members = await base.FindAllAsync(member => memberIds.Contains(member.Id));
             return members;
         }
 
