@@ -27,7 +27,6 @@ namespace IMBox.Services.Member.API.Controllers
             _publishEndpoint = publishEndpoint;
         }
 
-        // GET /members
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<MemberDTO>))]
         public async Task<IActionResult> GetAsync()
@@ -42,9 +41,8 @@ namespace IMBox.Services.Member.API.Controllers
             return Ok(memberDTOs);
         }
 
-        // GET /members/{id}
         [HttpGet("{id}")]
-        [ProducesResponseType((int)200, Type = typeof(MemberDTO))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(MemberDTO))]
         public async Task<IActionResult> GetByIdAsync(Guid id)
         {
             var member = await _memberRepository.GetByIdAsync(id);
@@ -54,9 +52,8 @@ namespace IMBox.Services.Member.API.Controllers
             return Ok(member.ToDTO(movies));
         }
 
-        // POST /members
         [HttpPost()]
-        [ProducesResponseType((int)201, Type = typeof(MemberDTO))]
+        [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(MemberDTO))]
         public async Task<IActionResult> CreateAsync(CreateMemberDTO createMemberDTO)
         {
             var member = new MemberEntity
@@ -80,9 +77,8 @@ namespace IMBox.Services.Member.API.Controllers
             return CreatedAtAction(nameof(GetByIdAsync), new { id = member.Id }, member.ToDTO());
         }
 
-        // PATCH /members/{id}
         [HttpPatch("{id}")]
-        [ProducesResponseType((int)204, Type = typeof(void))]
+        [ProducesResponseType(StatusCodes.Status204NoContent, Type = typeof(void))]
         public async Task<IActionResult> UpdateAsync(Guid id, UpdateMemberDTO updateMemberDTO)
         {
             var existingMember = await _memberRepository.GetByIdAsync(id);
@@ -107,9 +103,8 @@ namespace IMBox.Services.Member.API.Controllers
             return NoContent();
         }
 
-        // DELETE /members/{id}
         [HttpDelete("{id}")]
-        [ProducesResponseType((int)204, Type = typeof(void))]
+        [ProducesResponseType(StatusCodes.Status204NoContent, Type = typeof(void))]
         public async Task<IActionResult> DeleteAsync(Guid id)
         {
             var memberToDelete = await _memberRepository.GetByIdAsync(id);

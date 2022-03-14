@@ -26,9 +26,8 @@ namespace IMBox.Services.Movie.API.Controllers
             _publishEndpoint = publishEndpoint;
         }
 
-        // GET /movies
         [HttpGet()]
-        [ProducesResponseType((int)200, Type = typeof(IEnumerable<MovieDTO>))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<MovieDTO>))]
         public async Task<IActionResult> GetAsync()
         {
             var movies = await _movieRepository.GetAllAsync();
@@ -42,9 +41,8 @@ namespace IMBox.Services.Movie.API.Controllers
             return Ok(movieDTOs);
         }
 
-        // GET /movies/{id}
         [HttpGet("{id}")]
-        [ProducesResponseType((int)200, Type = typeof(MovieDTO))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(MovieDTO))]
         public async Task<IActionResult> GetByIdAsync(Guid id)
         {
             var movie = await _movieRepository.GetByIdAsync(id);
@@ -54,9 +52,8 @@ namespace IMBox.Services.Movie.API.Controllers
             return Ok(movie.ToDTO(members));
         }
 
-        // POST /movies
         [HttpPost()]
-        [ProducesResponseType((int)201, Type = typeof(MovieDTO))]
+        [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(MovieDTO))]
         public async Task<IActionResult> CreateAsync(CreateMovieDTO createMovieDTO)
         {
             var movie = new MovieEntity
@@ -84,9 +81,8 @@ namespace IMBox.Services.Movie.API.Controllers
             return CreatedAtAction(nameof(GetByIdAsync), new { id = movie.Id }, movieDTO);
         }
 
-        // PATCH /movies/{id}
         [HttpPatch("{id}")]
-        [ProducesResponseType((int)204, Type = typeof(void))]
+        [ProducesResponseType(StatusCodes.Status204NoContent, Type = typeof(void))]
         public async Task<IActionResult> UpdateAsync(Guid id, UpdateMovieDTO updateMovieDTO)
         {
             var existingMovie = await _movieRepository.GetByIdAsync(id);
@@ -111,9 +107,8 @@ namespace IMBox.Services.Movie.API.Controllers
             return NoContent();
         }
 
-        // DELETE /movies/{id}
         [HttpDelete("{id}")]
-        [ProducesResponseType((int)204, Type = typeof(void))]
+        [ProducesResponseType(StatusCodes.Status204NoContent, Type = typeof(void))]
         public async Task<IActionResult> DeleteAsync(Guid id)
         {
             var movieToDelete = await _movieRepository.GetByIdAsync(id);
