@@ -1,3 +1,4 @@
+using IMBox.Services.Comment.Infrastructure;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
@@ -12,6 +13,8 @@ builder.Services.AddControllers(options =>
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddInfrastructure();
 
 builder.Services.Configure<RouteOptions>(options => options.LowercaseUrls = true);
 
