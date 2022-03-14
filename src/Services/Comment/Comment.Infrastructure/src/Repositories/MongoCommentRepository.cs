@@ -14,29 +14,29 @@ namespace IMBox.Services.Comment.Infrastructure.Repositories
         {
         }
 
-        public Task CreateAsync(CommentEntity entity)
+        public async Task CreateAsync(CommentEntity entity)
         {
-            throw new NotImplementedException();
+            await base.InsertAsync(entity);
         }
 
-        public Task<List<CommentEntity>> GetAllAsync()
+        public async Task<List<CommentEntity>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            return await base.FindAllAsync();
         }
 
-        public Task<CommentEntity> GetByIdAsync(Guid id)
+        public async Task<CommentEntity> GetByIdAsync(Guid id)
         {
-            throw new NotImplementedException();
+            return await base.FindByIdAsync(id);
         }
 
-        public Task RemoveAsync(Guid id)
+        public async Task RemoveAsync(Guid id)
         {
-            throw new NotImplementedException();
+            await base.DeleteAsync(id);
         }
 
-        public Task UpdateAsync(CommentEntity entity)
+        public async Task UpdateAsync(CommentEntity entity)
         {
-            throw new NotImplementedException();
+            await base.ReplaceAsync(entity);
         }
     }
 }
