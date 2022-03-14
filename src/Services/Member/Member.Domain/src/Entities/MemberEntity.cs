@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using IMBox.Shared.Domain.Base;
 
 namespace IMBox.Services.Member.Domain.Entities
@@ -9,6 +10,7 @@ namespace IMBox.Services.Member.Domain.Entities
         public string Description { get; set; }
         public DateTime BirthDate { get; set; }
         public string Role { get; set; }
+
 
         public MemberEntity UpdateName(string newName)
         {

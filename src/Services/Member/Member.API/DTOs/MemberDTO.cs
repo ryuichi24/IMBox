@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace IMBox.Services.Member.API.DTOs
 {
@@ -9,6 +10,7 @@ namespace IMBox.Services.Member.API.DTOs
         public string Description { get; init; }
         public DateTime BirthDate { get; init; }
         public string Role { get; init; }
+        public IEnumerable<MovieDTO> Movies { get; init; }
     }
 
 }

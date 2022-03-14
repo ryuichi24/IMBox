@@ -17,11 +17,13 @@ namespace IMBox.Services.Member.API.Controllers
     public class MembersController : ControllerBase
     {
         private readonly IMemberRepository _memberRepository;
+        private readonly IMovieRepository _movieRepository;
         private readonly IPublishEndpoint _publishEndpoint;
 
-        public MembersController(IMemberRepository memberRepository, IPublishEndpoint publishEndpoint)
+        public MembersController(IMemberRepository memberRepository, IMovieRepository movieRepository, IPublishEndpoint publishEndpoint)
         {
             _memberRepository = memberRepository;
+            _movieRepository = movieRepository;
             _publishEndpoint = publishEndpoint;
         }
 
@@ -31,7 +33,13 @@ namespace IMBox.Services.Member.API.Controllers
         public async Task<IActionResult> GetAsync()
         {
             var members = await _memberRepository.GetAllAsync();
-            return Ok(members.Select(member => member.ToDTO()));
+            var memberDTOs = await Task.WhenAll(members.Select(async (member) =>
+            {
+                var movies = await _movieRepository.GetAllByMemberIdAsync(member.Id);
+                return member.ToDTO(movies);
+            }));
+
+            return Ok(memberDTOs);
         }
 
         // GET /members/{id}
@@ -41,7 +49,9 @@ namespace IMBox.Services.Member.API.Controllers
         {
             var member = await _memberRepository.GetByIdAsync(id);
             if (member == null) return NotFound();
-            return Ok(member.ToDTO());
+
+            var movies = await _movieRepository.GetAllByMemberIdAsync(member.Id);
+            return Ok(member.ToDTO(movies));
         }
 
         // POST /members
