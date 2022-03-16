@@ -1,6 +1,5 @@
 using System.Threading.Tasks;
 using IMBox.Services.IntegrationEvents;
-using IMBox.Services.Rating.Domain.Entities;
 using IMBox.Services.Rating.Domain.Repositories;
 using MassTransit;
 using Microsoft.Extensions.Logging;

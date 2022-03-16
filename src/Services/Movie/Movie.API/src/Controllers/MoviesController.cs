@@ -7,6 +7,7 @@ using IMBox.Services.Movie.API.DTOs;
 using IMBox.Services.Movie.Domain.Entities;
 using IMBox.Services.Movie.Domain.Repositories;
 using MassTransit;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace IMBox.Services.Movie.API.Controllers

@@ -13,6 +13,7 @@ namespace IMBox.Services.Member.API.DTOs
             return new UserDTO
             {
                 Id = userEntity.Id,
+                Username = userEntity.Username,
                 Email = userEntity.Email,
                 Gender = userEntity.Gender,
                 BirthDate = userEntity.BirthDate,
