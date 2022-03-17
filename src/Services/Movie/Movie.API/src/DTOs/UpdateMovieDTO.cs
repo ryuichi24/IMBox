@@ -8,7 +8,7 @@ namespace IMBox.Services.Movie.API.DTOs
     {
         public string Title { get; init; }
         public string Description { get; init; }
-        public List<Guid> MemberIds { get; set; }
+        public List<Guid> MemberIds { get; init; }
     }
 
 }

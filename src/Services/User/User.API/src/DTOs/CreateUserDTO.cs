@@ -1,14 +1,18 @@
 using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace IMBox.Services.User.API.DTOs
 {
     public record CreateUserDTO
     {
-        public string Username { get; set; }
-        public string Email { get; set; }
-        public string Password { get; set; }
-        public DateTime BirthDate { get; set; }
-        public Char Gender { get; set; }
-        public string Continent { get; set; }
+        [Required]
+        public string Username { get; init; }
+        [Required]
+        public string Email { get; init; }
+        [Required]
+        public string Password { get; init; }
+        public DateTime BirthDate { get; init; }
+        public Char Gender { get; init; }
+        public string Continent { get; init; }
     }
 }

@@ -5,10 +5,10 @@ namespace IMBox.Services.User.API.DTOs
     public record SignupDTO
     {
         [Required]
-        public string Username { get; set; }
+        public string Username { get; init; }
         [Required]
-        public string Email { get; set; }
+        public string Email { get; init; }
         [Required]
-        public string Password { get; set; }
+        public string Password { get; init; }
     }
 }

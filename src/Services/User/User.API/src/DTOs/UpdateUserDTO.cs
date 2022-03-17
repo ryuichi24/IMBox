@@ -4,11 +4,11 @@ namespace IMBox.Services.User.API.DTOs
 {
     public record UpdateUserDTO
     {
-        public string Username { get; set; }
-        public string Email { get; set; }
-        public string Password { get; set; }
-        public DateTime BirthDate { get; set; }
-        public Char Gender { get; set; }
-        public string Continent { get; set; }
+        public string Username { get; init; }
+        public string Email { get; init; }
+        public string Password { get; init; }
+        public DateTime BirthDate { get; init; }
+        public Char Gender { get; init; }
+        public string Continent { get; init; }
     }
 }
