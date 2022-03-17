@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using IMBox.Shared.Domain.Base;
 
 namespace IMBox.Services.User.Domain.Entities
@@ -14,6 +15,7 @@ namespace IMBox.Services.User.Domain.Entities
         public string Continent { get; set; }
         public bool IsActive { get; set; } = false;
         public string EmailConfirmToken { get; set; }
+        public IEnumerable<string> Roles { get; set; }
 
         public UserEntity UpdateEmail(string newEmail)
         {
@@ -99,5 +101,14 @@ namespace IMBox.Services.User.Domain.Entities
             UpdatedAt = DateTimeOffset.UtcNow;
             return this;
         }
+
+        public UserEntity UpdateRoles(IEnumerable<string> roles)
+        {
+            if (roles == default(IEnumerable<string>)) return this;
+            Roles = roles;
+            UpdatedAt = DateTimeOffset.UtcNow;
+            return this;
+        }
+
     }
 }

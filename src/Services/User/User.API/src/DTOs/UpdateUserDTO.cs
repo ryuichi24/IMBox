@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace IMBox.Services.User.API.DTOs
@@ -13,5 +14,6 @@ namespace IMBox.Services.User.API.DTOs
         [StringLength(1)]
         public Char Gender { get; init; }
         public string Continent { get; init; }
+        public IEnumerable<string> Roles { get; init; }
     }
 }
