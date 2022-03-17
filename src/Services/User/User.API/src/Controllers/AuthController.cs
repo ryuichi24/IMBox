@@ -64,7 +64,10 @@ namespace IMBox.Services.User.API.Controllers
 
             if (!isValidPassword) return BadRequest("The email or password is invalid.");
 
-            return Ok(_tokenManager.createAccessToken(existingUser.Id));
+            return Ok(new
+            {
+                AccessToken = _tokenManager.createAccessToken(existingUser.Id)
+            });
         }
     }
 }

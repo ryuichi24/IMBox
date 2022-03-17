@@ -18,7 +18,7 @@ namespace IMBox.Shared.Infrastructure.Auth.Managers
             _jwtAuthSettings = _configuration.GetSection(nameof(JwtAuthSettings)).Get<JwtAuthSettings>();
         }
 
-        public string createAccessToken(Guid userId, IEnumerable<string> roles = default(IEnumerable<string>))
+        public AccessToken createAccessToken(Guid userId, IEnumerable<string> roles = default(IEnumerable<string>))
         {
             var claims = new List<Claim>
             {
@@ -33,10 +33,12 @@ namespace IMBox.Shared.Infrastructure.Auth.Managers
                 }
             }
 
+            var expiresIn = DateTime.UtcNow.AddMinutes(_jwtAuthSettings.AccessTokenExpiryInMin);
+
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(claims),
-                Expires = DateTime.UtcNow.AddMinutes(_jwtAuthSettings.AccessTokenExpiryInMin),
+                Expires = expiresIn,
                 SigningCredentials = new SigningCredentials
                 (
                     new SymmetricSecurityKey(Encoding.ASCII.GetBytes(_jwtAuthSettings.AccessTokenSecret)),
@@ -46,7 +48,12 @@ namespace IMBox.Shared.Infrastructure.Auth.Managers
 
             var tokenHandler = new JsonWebTokenHandler();
             var token = tokenHandler.CreateToken(tokenDescriptor);
-            return token;
+
+            return new AccessToken
+            {
+                Token = token,
+                ExpiresIn = expiresIn
+            };
         }
     }
 }

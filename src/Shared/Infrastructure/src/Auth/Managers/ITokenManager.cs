@@ -5,6 +5,6 @@ namespace IMBox.Shared.Infrastructure.Auth.Managers
 {
     public interface ITokenManager
     {
-        string createAccessToken(Guid userId, IEnumerable<string> roles = default(IEnumerable<string>));
+        AccessToken createAccessToken(Guid userId, IEnumerable<string> roles = default(IEnumerable<string>));
     }
 }
