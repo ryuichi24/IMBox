@@ -24,6 +24,11 @@ namespace IMBox.Services.User.Infrastructure.Repositories
             return await base.FindAllAsync();
         }
 
+        public async Task<UserEntity> GetByEmailAsync(string email)
+        {
+            return await base.FindAsync(user => user.Email == email);
+        }
+
         public async Task<UserEntity> GetByIdAsync(Guid id)
         {
             return await base.FindByIdAsync(id);
