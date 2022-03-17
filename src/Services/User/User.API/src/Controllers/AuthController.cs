@@ -2,6 +2,7 @@ using System.Threading.Tasks;
 using IMBox.Services.User.API.DTOs;
 using IMBox.Services.User.Domain.Entities;
 using IMBox.Services.User.Domain.Repositories;
+using IMBox.Shared.Infrastructure.Auth.Managers;
 using IMBox.Shared.Infrastructure.Helpers.Hash;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -13,11 +14,13 @@ namespace IMBox.Services.User.API.Controllers
     public class AuthController : ControllerBase
     {
         private readonly IUserRepository _UserRepository;
+        private readonly ITokenManager _tokenManager;
         private readonly IHashHelper _hashHelper;
 
-        public AuthController(IUserRepository UserRepository, IHashHelper hashHelper)
+        public AuthController(IUserRepository UserRepository, ITokenManager tokenManager, IHashHelper hashHelper)
         {
             _UserRepository = UserRepository;
+            _tokenManager = tokenManager;
             _hashHelper = hashHelper;
         }
 
@@ -61,9 +64,7 @@ namespace IMBox.Services.User.API.Controllers
 
             if (!isValidPassword) return BadRequest("The email or password is invalid.");
 
-            // TODO: issue JWT
-
-            return Ok();
+            return Ok(_tokenManager.createAccessToken(existingUser.Id));
         }
     }
 }

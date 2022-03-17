@@ -5,7 +5,7 @@ using System.Text;
 
 namespace IMBox.Shared.Infrastructure.Helpers.Hash
 {
-    public class HashService : IHashHelper
+    public class HashHelper : IHashHelper
     {
         public (byte[] hash, byte[] salt) CreateHash(string plainValue)
         {

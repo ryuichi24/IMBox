@@ -6,7 +6,7 @@ namespace IMBox.Shared.Infrastructure.Helpers.Hash
     {
         public static IServiceCollection AddHashHelper(this IServiceCollection services)
         {
-            services.AddSingleton<IHashHelper, HashService>();
+            services.AddSingleton<IHashHelper, HashHelper>();
             return services;
         }
     }

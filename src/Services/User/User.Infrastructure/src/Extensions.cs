@@ -5,6 +5,7 @@ using IMBox.Shared.Infrastructure.EventBus.MassTransit;
 using IMBox.Services.User.Domain.Repositories;
 using IMBox.Services.User.Infrastructure.Repositories;
 using IMBox.Shared.Infrastructure.Helpers.Hash;
+using IMBox.Shared.Infrastructure.Helpers.Auth;
 
 namespace IMBox.Services.User.Infrastructure
 {
@@ -15,7 +16,9 @@ namespace IMBox.Services.User.Infrastructure
             services.AddMongoDB()
                     .AddMongoRepositories()
                     .AddMassTransitWithRabbitMQ()
-                    .AddHashHelper();
+                    .AddHashHelper()
+                    .AddJwtAuth()
+                    .AddTokenManager();
 
             return services;
         }
