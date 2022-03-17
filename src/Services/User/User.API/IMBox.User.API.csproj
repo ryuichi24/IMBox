@@ -12,6 +12,7 @@
     <ProjectReference Include="..\User.Domain\IMBox.User.Domain.csproj" />
     <ProjectReference Include="..\User.Infrastructure\IMBox.User.Infrastructure.csproj" />
     <ProjectReference Include="..\..\..\Shared\Infrastructure\IMBox.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\..\Shared\Core\IMBox.Core.csproj" />
   </ItemGroup>
 
 </Project>

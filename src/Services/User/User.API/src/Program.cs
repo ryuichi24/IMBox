@@ -1,3 +1,4 @@
+using IMBox.Core.SwaggerConfig;
 using IMBox.Services.User.Infrastructure;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Routing;
@@ -11,7 +12,7 @@ builder.Services.AddControllers(options =>
     options.SuppressAsyncSuffixInActionNames = false;
 });
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(options => options.AddCustomOptions());
 
 builder.Services.AddInfrastructure();
 
