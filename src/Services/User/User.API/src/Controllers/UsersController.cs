@@ -23,6 +23,7 @@ namespace IMBox.Services.User.API.Controllers
         private readonly IUserRepository _UserRepository;
         private readonly IHashHelper _hashHelper;
         private readonly IPublishEndpoint _publishEndpoint;
+
         public UsersController(IUserRepository UserRepository, IHashHelper hashHelper, IPublishEndpoint publishEndpoint)
         {
             _UserRepository = UserRepository;
