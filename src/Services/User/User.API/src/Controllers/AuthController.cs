@@ -52,7 +52,7 @@ namespace IMBox.Services.User.API.Controllers
         }
 
         [HttpPost("signin")]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(void))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(TokenResponseDTO))]
         public async Task<IActionResult> SigninAsync(SigninDTO signinDTO)
         {
             var existingUser = await _UserRepository.GetByEmailAsync(signinDTO.Email);
@@ -65,7 +65,7 @@ namespace IMBox.Services.User.API.Controllers
 
             if (!isValidPassword) return BadRequest("The email or password is invalid.");
 
-            return Ok(new
+            return Ok(new TokenResponseDTO
             {
                 AccessToken = _tokenManager.createAccessToken(existingUser),
                 RefreshToken = _tokenManager.createRefreshToken(existingUser.Id)
@@ -73,7 +73,7 @@ namespace IMBox.Services.User.API.Controllers
         }
 
         [HttpPost("refresh-token")]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(void))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(TokenResponseDTO))]
         public async Task<IActionResult> RefreshTokenAsync(RefreshTokenDTO refreshTokenDTO)
         {
             var userId = _tokenManager.VerifyRefreshToken(refreshTokenDTO.RefreshToken);
@@ -91,7 +91,7 @@ namespace IMBox.Services.User.API.Controllers
                 return Unauthorized("The refresh token is invalid.");
             }
 
-            return Ok(new
+            return Ok(new TokenResponseDTO
             {
                 AccessToken = _tokenManager.createAccessToken(existingUser),
                 RefreshToken = _tokenManager.createRefreshToken(existingUser.Id)

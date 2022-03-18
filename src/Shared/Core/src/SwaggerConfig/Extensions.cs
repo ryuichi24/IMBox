@@ -20,6 +20,7 @@ namespace IMBox.Core.SwaggerConfig
                 Type = SecuritySchemeType.ApiKey,
                 Scheme = "Bearer"
             });
+
             options.AddSecurityRequirement(
                 new OpenApiSecurityRequirement
                 {
