@@ -29,6 +29,11 @@ namespace IMBox.Services.User.Infrastructure.Repositories
             return await base.FindAsync(user => user.Email == email);
         }
 
+        public Task<UserEntity> GetByEmailConfirmTokenAsync(string token)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<UserEntity> GetByIdAsync(Guid id)
         {
             return await base.FindByIdAsync(id);

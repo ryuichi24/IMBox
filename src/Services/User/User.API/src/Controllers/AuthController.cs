@@ -1,10 +1,12 @@
 using System;
 using System.Threading.Tasks;
+using IMBox.Services.IntegrationEvents;
 using IMBox.Services.User.API.DTOs;
 using IMBox.Services.User.Domain.Entities;
 using IMBox.Services.User.Domain.Repositories;
 using IMBox.Services.User.Infrastructure.Managers.Auth;
 using IMBox.Shared.Infrastructure.Helpers.Hash;
+using MassTransit;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,12 +19,14 @@ namespace IMBox.Services.User.API.Controllers
         private readonly IUserRepository _UserRepository;
         private readonly ITokenManager _tokenManager;
         private readonly IHashHelper _hashHelper;
+        private readonly IPublishEndpoint _publishEndpoint;
 
-        public AuthController(IUserRepository UserRepository, ITokenManager tokenManager, IHashHelper hashHelper)
+        public AuthController(IUserRepository UserRepository, ITokenManager tokenManager, IHashHelper hashHelper, IPublishEndpoint publishEndpoint)
         {
             _UserRepository = UserRepository;
             _tokenManager = tokenManager;
             _hashHelper = hashHelper;
+            _publishEndpoint = publishEndpoint;
         }
 
         [HttpPost("signup")]
@@ -70,6 +74,33 @@ namespace IMBox.Services.User.API.Controllers
                 AccessToken = _tokenManager.createAccessToken(existingUser),
                 RefreshToken = _tokenManager.createRefreshToken(existingUser.Id)
             });
+        }
+
+        [HttpGet("confirm-email/{token}")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(void))]
+        public async Task<IActionResult> ConfirmEmailAsync(string token)
+        {
+            var existingUser = await _UserRepository.GetByEmailConfirmTokenAsync(token);
+
+            if (existingUser == null) return BadRequest("The email confirm token is invalid.");
+
+            if(existingUser.IsActive) return Ok();
+
+            existingUser.RevokeEmailConfirmToken();
+            existingUser.Activate();
+
+            await _UserRepository.UpdateAsync(existingUser);
+
+            await _publishEndpoint.Publish(new UserCreatedIntegrationEvent
+            {
+                UserId = existingUser.Id,
+                UserUsername = existingUser.Username,
+                UserBirthDate = existingUser.BirthDate,
+                UserGender = existingUser.Gender,
+                UserContinent = existingUser.Continent
+            });
+
+            return Ok();
         }
 
         [HttpPost("refresh-token")]
