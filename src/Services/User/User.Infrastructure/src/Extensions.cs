@@ -14,12 +14,14 @@ namespace IMBox.Services.User.Infrastructure
     {
         public static IServiceCollection AddInfrastructure(this IServiceCollection services)
         {
-            services.AddMongoDB()
-                    .AddMongoRepositories()
-                    .AddMassTransitWithRabbitMQ()
-                    .AddHashHelper()
-                    .AddJwtAuth()
-                    .AddManagers();
+            services
+                .AddMemoryCache()
+                .AddMongoDB()
+                .AddMongoRepositories()
+                .AddMassTransitWithRabbitMQ()
+                .AddHashHelper()
+                .AddJwtAuth()
+                .AddManagers();
 
             return services;
         }

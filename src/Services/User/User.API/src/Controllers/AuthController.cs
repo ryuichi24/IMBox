@@ -66,7 +66,8 @@ namespace IMBox.Services.User.API.Controllers
 
             return Ok(new
             {
-                AccessToken = _tokenManager.createAccessToken(existingUser)
+                AccessToken = _tokenManager.createAccessToken(existingUser),
+                RefreshToken = _tokenManager.createRefreshToken(existingUser.Id)
             });
         }
     }

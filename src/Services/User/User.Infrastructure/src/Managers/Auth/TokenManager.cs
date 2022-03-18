@@ -1,9 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
 using IMBox.Services.User.Domain.Entities;
 using IMBox.Shared.Infrastructure.Auth;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Tokens;
@@ -12,10 +14,12 @@ namespace IMBox.Services.User.Infrastructure.Managers.Auth
 {
     public class TokenManager : ITokenManager
     {
+        private readonly IMemoryCache _memoryCache;
         private readonly IConfiguration _configuration;
         private readonly JwtAuthSettings _jwtAuthSettings;
-        public TokenManager(IConfiguration configuration)
+        public TokenManager(IMemoryCache memoryCache, IConfiguration configuration)
         {
+            _memoryCache = memoryCache;
             _configuration = configuration;
             _jwtAuthSettings = _configuration.GetSection(nameof(JwtAuthSettings)).Get<JwtAuthSettings>();
         }
@@ -57,6 +61,39 @@ namespace IMBox.Services.User.Infrastructure.Managers.Auth
                 Token = token,
                 ExpiresIn = expiresIn
             };
+        }
+
+        public RefreshToken createRefreshToken(Guid userId)
+        {
+            var randomNumber = new byte[64];
+            using var randomNumberGenerator = RandomNumberGenerator.Create();
+            randomNumberGenerator.GetBytes(randomNumber);
+
+            var token = Convert.ToBase64String(randomNumber);
+            var expiresIn = DateTime.UtcNow.AddMinutes(_jwtAuthSettings.RefreshTokenExpiryInMin);
+
+            _memoryCache.Set(token, userId, expiresIn);
+
+            return new RefreshToken
+            {
+                Token = token,
+                ExpiresIn = expiresIn
+            };
+        }
+
+        public Guid VerifyRefreshToken(string token)
+        {
+            if(!_memoryCache.TryGetValue(token, out Guid userId))
+            {
+                return default(Guid);
+            }
+            
+            return userId;
+        }
+
+        public void RevokeRefreshToken(string token)
+        {
+            _memoryCache.Remove(token);
         }
     }
 }
