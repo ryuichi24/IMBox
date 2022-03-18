@@ -2,11 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using IMBox.Services.IntegrationEvents;
 using IMBox.Services.Member.API.DTOs;
 using IMBox.Services.User.API.DTOs;
 using IMBox.Services.User.Domain.Entities;
 using IMBox.Services.User.Domain.Repositories;
 using IMBox.Shared.Infrastructure.Helpers.Hash;
+using MassTransit;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -20,10 +22,12 @@ namespace IMBox.Services.User.API.Controllers
     {
         private readonly IUserRepository _UserRepository;
         private readonly IHashHelper _hashHelper;
-        public UsersController(IUserRepository UserRepository, IHashHelper hashHelper)
+        private readonly IPublishEndpoint _publishEndpoint;
+        public UsersController(IUserRepository UserRepository, IHashHelper hashHelper, IPublishEndpoint publishEndpoint)
         {
             _UserRepository = UserRepository;
             _hashHelper = hashHelper;
+            _publishEndpoint = publishEndpoint;
         }
 
         [HttpGet()]
@@ -63,6 +67,15 @@ namespace IMBox.Services.User.API.Controllers
 
             await _UserRepository.CreateAsync(newUser);
 
+            await _publishEndpoint.Publish(new UserCreatedIntegrationEvent
+            {
+                UserId = newUser.Id,
+                UserUsername = newUser.Username,
+                UserBirthDate = newUser.BirthDate,
+                UserGender = newUser.Gender,
+                UserContinent = newUser.Continent
+            });
+
             return CreatedAtAction(nameof(GetByIdAsync), new { id = newUser.Id }, newUser.ToDTO());
         }
 
@@ -92,6 +105,15 @@ namespace IMBox.Services.User.API.Controllers
 
             await _UserRepository.UpdateAsync(userToUpdate);
 
+            await _publishEndpoint.Publish(new UserUpdatedIntegrationEvent
+            {
+                UserId = userToUpdate.Id,
+                UserUsername = userToUpdate.Username,
+                UserBirthDate = userToUpdate.BirthDate,
+                UserGender = userToUpdate.Gender,
+                UserContinent = userToUpdate.Continent
+            });
+
             return NoContent();
         }
 
@@ -104,6 +126,11 @@ namespace IMBox.Services.User.API.Controllers
             if (userToDelete == null) return BadRequest("No User found");
 
             await _UserRepository.RemoveAsync(userToDelete.Id);
+
+            await _publishEndpoint.Publish(new UserDeletedIntegrationEvent
+            {
+                UserId = userToDelete.Id
+            });
 
             return NoContent();
         }
