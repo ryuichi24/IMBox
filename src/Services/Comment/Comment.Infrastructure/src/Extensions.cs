@@ -2,6 +2,7 @@ using IMBox.Services.Comment.Domain.Repositories;
 using IMBox.Services.Comment.Infrastructure.Repositories;
 using IMBox.Shared.Infrastructure.Database.MongoDB;
 using IMBox.Shared.Infrastructure.EventBus.MassTransit;
+using IMBox.Shared.Infrastructure.Helpers.Auth;
 using Microsoft.Extensions.DependencyInjection;
 using MongoDB.Driver;
 
@@ -13,7 +14,8 @@ namespace IMBox.Services.Comment.Infrastructure
         {
             services.AddMongoDB()
                     .AddMongoRepositories()
-                    .AddMassTransitWithRabbitMQ();
+                    .AddMassTransitWithRabbitMQ()
+                    .AddJwtAuth();
 
             return services;
         }
@@ -24,6 +26,12 @@ namespace IMBox.Services.Comment.Infrastructure
             {
                 var database = serviceProvider.GetService<IMongoDatabase>();
                 return new MongoCommentRepository(database, "comments");
+            });
+
+            services.AddScoped<ICommenterRepository>(serviceProvider =>
+            {
+                var database = serviceProvider.GetService<IMongoDatabase>();
+                return new MongoCommenterRepository(database, "commenters");
             });
 
             return services;

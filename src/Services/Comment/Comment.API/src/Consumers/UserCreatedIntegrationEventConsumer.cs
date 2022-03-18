@@ -9,12 +9,12 @@ namespace IMBox.Services.Comment.API.Consumers
 {
     public class UserCreatedIntegrationEventConsumer : IConsumer<UserCreatedIntegrationEvent>
     {
-        private readonly IUserRepository _userRepository;
+        private readonly ICommenterRepository _commenterRepository;
         private readonly ILogger<UserCreatedIntegrationEventConsumer> _logger;
 
-        public UserCreatedIntegrationEventConsumer(IUserRepository userRepository, ILogger<UserCreatedIntegrationEventConsumer> logger)
+        public UserCreatedIntegrationEventConsumer(ICommenterRepository commenterRepository, ILogger<UserCreatedIntegrationEventConsumer> logger)
         {
-            _userRepository = userRepository;
+            _commenterRepository = commenterRepository;
             _logger = logger;
         }
 
@@ -24,20 +24,20 @@ namespace IMBox.Services.Comment.API.Consumers
 
             _logger.LogDebug($"Message: {message.Id} has been consummed by {nameof(UserCreatedIntegrationEventConsumer)}");
 
-            var existingUser = await _userRepository.GetByIdAsync(message.UserId);
+            var existingCommenter = await _commenterRepository.GetByIdAsync(message.UserId);
 
-            if (existingUser != null) return;
+            if (existingCommenter != null) return;
 
-            var newUser = new UserEntity
+            var newCommenter = new CommenterEntity
             {
                 Id = message.UserId,
-                Username = message.UserUsername,
+                Name = message.UserUsername,
                 Gender = message.UserGender,
                 BirthDate = message.UserBirthDate,
                 Continent = message.UserContinent
             };
 
-            await _userRepository.CreateAsync(newUser);
+            await _commenterRepository.CreateAsync(newCommenter);
         }
     }
 }

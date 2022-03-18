@@ -7,7 +7,7 @@ namespace IMBox.Services.Comment.Domain.Entities
     {
         public string Text { get; set; }
         public Guid MovieId { get; set; }
-        public Guid UserId { get; set; }
+        public Guid CommenterId { get; set; }
 
         public CommentEntity UpdateText(string newText)
         {

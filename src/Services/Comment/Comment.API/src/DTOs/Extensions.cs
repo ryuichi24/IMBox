@@ -10,9 +10,29 @@ namespace IMBox.Services.Comment.API.DTOs
             {
                 Id = commentEntity.Id,
                 MovieId = commentEntity.MovieId,
-                UserId = commentEntity.UserId,
+                CommenterId = commentEntity.CommenterId,
                 Text = commentEntity.Text,
                 CreatedAt = commentEntity.CreatedAt
+            };
+        }
+
+        public static CommentDTO ToDTO(this CommentEntity commentEntity, CommenterEntity commenterEntity)
+        {
+            return new CommentDTO
+            {
+                Id = commentEntity.Id,
+                MovieId = commentEntity.MovieId,
+                Text = commentEntity.Text,
+                CreatedAt = commentEntity.CreatedAt,
+                CommenterId = commentEntity.CommenterId,
+                Commenter = new CommenterDTO
+                {
+                    Id = commenterEntity.Id,
+                    Name = commenterEntity.Name,
+                    Gender = commenterEntity.Gender,
+                    BirthDate = commenterEntity.BirthDate,
+                    Continent = commenterEntity.Continent
+                }
             };
         }
     }

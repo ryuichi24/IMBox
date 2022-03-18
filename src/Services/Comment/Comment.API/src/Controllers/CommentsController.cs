@@ -5,51 +5,66 @@ using System.Threading.Tasks;
 using IMBox.Services.Comment.API.DTOs;
 using IMBox.Services.Comment.Domain.Entities;
 using IMBox.Services.Comment.Domain.Repositories;
+using IMBox.Shared.Infrastructure.Helpers.Auth;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace IMBox.Services.Comment.API.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class CommentsController : ControllerBase
     {
         private readonly ICommentRepository _commentRepository;
-        public CommentsController(ICommentRepository commentRepository)
+        private readonly ICommenterRepository _commenterRepository;
+
+        public CommentsController(ICommentRepository commentRepository, ICommenterRepository commenterRepository)
         {
             _commentRepository = commentRepository;
+            _commenterRepository = commenterRepository;
         }
 
+        [AllowAnonymous]
         [HttpGet()]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<CommentDTO>))]
         public async Task<IActionResult> GetAsync()
         {
             var comments = await _commentRepository.GetAllAsync();
-            return Ok(comments.Select(comment => comment.ToDTO()));
+            var commenters = await _commenterRepository.GetAllAsync();
+
+            var commentDTOs = comments.Select(comment => comment.ToDTO(commenters.Find(commenter => commenter.Id == comment.CommenterId)));
+
+            return Ok(commentDTOs);
         }
 
+        [AllowAnonymous]
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CommentDTO))]
         public async Task<IActionResult> GetByIdAsync(Guid id)
         {
             var comment = await _commentRepository.GetByIdAsync(id);
-            return Ok(comment.ToDTO());
+            var commenter = await _commenterRepository.GetByIdAsync(comment.CommenterId);
+            return Ok(comment.ToDTO(commenter));
         }
 
         [HttpPost()]
         [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(CommentDTO))]
         public async Task<IActionResult> CreateAsync(CreateCommentDTO createCommentDTO)
         {
+            Guid.TryParse(User.SubjectId(), out Guid userId);
+
             var newComment = new CommentEntity
             {
                 Text = createCommentDTO.Text,
                 MovieId = createCommentDTO.MovieId,
-                UserId = createCommentDTO.UserId
+                CommenterId = userId
             };
 
             await _commentRepository.CreateAsync(newComment);
 
-            return CreatedAtAction(nameof(GetByIdAsync), new { id = newComment.Id }, newComment);
+            return CreatedAtAction(nameof(GetByIdAsync), new { id = newComment.Id }, newComment.ToDTO());
         }
 
         [HttpPatch("{id}")]

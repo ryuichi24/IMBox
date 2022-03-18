@@ -1,3 +1,6 @@
+using System;
+using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using IMBox.Shared.Infrastructure.Auth;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -34,6 +37,12 @@ namespace IMBox.Shared.Infrastructure.Helpers.Auth
             });
 
             return services;
+        }
+
+        public static string SubjectId(this ClaimsPrincipal user)
+        {
+            // dotnet automatically converts JwtRegisteredClaimNames.Sub into ClaimTypes.NameIdentifier
+            return user?.Claims?.FirstOrDefault(c => c.Type.Equals(ClaimTypes.NameIdentifier, StringComparison.OrdinalIgnoreCase))?.Value;
         }
     }
 }

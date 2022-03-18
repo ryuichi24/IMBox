@@ -8,12 +8,12 @@ namespace IMBox.Services.Comment.API.Consumers
 {
     public class UserDeletedIntegrationEventConsumer : IConsumer<UserDeletedIntegrationEvent>
     {
-        private readonly IUserRepository _userRepository;
+        private readonly ICommenterRepository _commenterRepository;
         private readonly ILogger<UserDeletedIntegrationEventConsumer> _logger;
 
-        public UserDeletedIntegrationEventConsumer(IUserRepository userRepository, ILogger<UserDeletedIntegrationEventConsumer> logger)
+        public UserDeletedIntegrationEventConsumer(ICommenterRepository commenterRepository, ILogger<UserDeletedIntegrationEventConsumer> logger)
         {
-            _userRepository = userRepository;
+            _commenterRepository = commenterRepository;
             _logger = logger;
         }
 
@@ -23,11 +23,11 @@ namespace IMBox.Services.Comment.API.Consumers
 
             _logger.LogDebug($"Message: {message.Id} has been consummed by {nameof(UserDeletedIntegrationEventConsumer)}");
 
-            var existingUser = await _userRepository.GetByIdAsync(message.UserId);
+            var existingCommenter = await _commenterRepository.GetByIdAsync(message.UserId);
 
-            if(existingUser == null) return;
+            if(existingCommenter == null) return;
 
-            await _userRepository.RemoveAsync(existingUser.Id);
+            await _commenterRepository.RemoveAsync(existingCommenter.Id);
         }
     }
 }
