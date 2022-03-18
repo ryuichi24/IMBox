@@ -6,7 +6,9 @@ using IMBox.Core.StringHelpers;
 using IMBox.Services.Comment.API.DTOs;
 using IMBox.Services.Comment.Domain.Entities;
 using IMBox.Services.Comment.Domain.Repositories;
+using IMBox.Services.IntegrationEvents;
 using IMBox.Shared.Infrastructure.Helpers.Auth;
+using MassTransit;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -20,11 +22,13 @@ namespace IMBox.Services.Comment.API.Controllers
     {
         private readonly ICommentRepository _commentRepository;
         private readonly ICommenterRepository _commenterRepository;
+        private readonly IPublishEndpoint _publishEndpoint;
 
-        public CommentsController(ICommentRepository commentRepository, ICommenterRepository commenterRepository)
+        public CommentsController(ICommentRepository commentRepository, ICommenterRepository commenterRepository, IPublishEndpoint publishEndpoint)
         {
             _commentRepository = commentRepository;
             _commenterRepository = commenterRepository;
+            _publishEndpoint = publishEndpoint;
         }
 
         [AllowAnonymous]
@@ -63,6 +67,14 @@ namespace IMBox.Services.Comment.API.Controllers
 
             await _commentRepository.CreateAsync(newComment);
 
+            await _publishEndpoint.Publish(new CommentCreatedIntegrationEvent
+            {
+                CommentId = newComment.Id,
+                MovieId = newComment.MovieId,
+                CommenterId = newComment.CommenterId,
+                Text = newComment.Text
+            });
+
             return CreatedAtAction(nameof(GetByIdAsync), new { id = newComment.Id }, newComment.ToDTO());
         }
 
@@ -91,6 +103,12 @@ namespace IMBox.Services.Comment.API.Controllers
             if (commentToDelete == null) return BadRequest("No comment found");
 
             await _commentRepository.RemoveAsync(commentToDelete.Id);
+
+            await _publishEndpoint.Publish(new CommentDeletedIntegrationEvent
+            {
+                CommentId = commentToDelete.Id,
+                MovieId = commentToDelete.MovieId
+            });
 
             return NoContent();
         }

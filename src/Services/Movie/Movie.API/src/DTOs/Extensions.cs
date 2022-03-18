@@ -20,6 +20,7 @@ namespace IMBox.Services.Movie.API.DTOs
                 Id = MovieEntity.Id,
                 Title = MovieEntity.Title,
                 Description = MovieEntity.Description,
+                CommentCount = MovieEntity.CommentCount,
                 Members = memberDTOs
             };
         }
