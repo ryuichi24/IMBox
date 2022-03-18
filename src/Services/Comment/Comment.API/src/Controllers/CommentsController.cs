@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using IMBox.Core.StringHelpers;
 using IMBox.Services.Comment.API.DTOs;
 using IMBox.Services.Comment.Domain.Entities;
 using IMBox.Services.Comment.Domain.Repositories;
@@ -53,13 +54,11 @@ namespace IMBox.Services.Comment.API.Controllers
         [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(CommentDTO))]
         public async Task<IActionResult> CreateAsync(CreateCommentDTO createCommentDTO)
         {
-            Guid.TryParse(User.SubjectId(), out Guid userId);
-
             var newComment = new CommentEntity
             {
                 Text = createCommentDTO.Text,
                 MovieId = createCommentDTO.MovieId,
-                CommenterId = userId
+                CommenterId = User.SubjectId().ToGuid()
             };
 
             await _commentRepository.CreateAsync(newComment);
