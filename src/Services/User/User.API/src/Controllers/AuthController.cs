@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using IMBox.Services.User.API.DTOs;
 using IMBox.Services.User.Domain.Entities;
@@ -63,6 +64,32 @@ namespace IMBox.Services.User.API.Controllers
             var isValidPassword = _hashHelper.VerifyHash(signinDTO.Password, existingUser.PasswordHash, existingUser.PasswordHashSalt);
 
             if (!isValidPassword) return BadRequest("The email or password is invalid.");
+
+            return Ok(new
+            {
+                AccessToken = _tokenManager.createAccessToken(existingUser),
+                RefreshToken = _tokenManager.createRefreshToken(existingUser.Id)
+            });
+        }
+
+        [HttpPost("refresh-token")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(void))]
+        public async Task<IActionResult> RefreshTokenAsync(RefreshTokenDTO refreshTokenDTO)
+        {
+            var userId = _tokenManager.VerifyRefreshToken(refreshTokenDTO.RefreshToken);
+            _tokenManager.RevokeRefreshToken(refreshTokenDTO.RefreshToken);
+
+            if (userId == default(Guid))
+            {
+                return Unauthorized("The refresh token is invalid.");
+            }
+
+            var existingUser = await _UserRepository.GetByIdAsync(userId);
+
+            if (existingUser == null)
+            {
+                return Unauthorized("The refresh token is invalid.");
+            }
 
             return Ok(new
             {
