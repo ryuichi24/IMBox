@@ -2,11 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Security.Claims;
 using System.Text;
+using IMBox.Services.User.Domain.Entities;
+using IMBox.Shared.Infrastructure.Auth;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Tokens;
 
-namespace IMBox.Shared.Infrastructure.Auth.Managers
+namespace IMBox.Services.User.Infrastructure.Managers.Auth
 {
     public class TokenManager : ITokenManager
     {
@@ -18,16 +20,17 @@ namespace IMBox.Shared.Infrastructure.Auth.Managers
             _jwtAuthSettings = _configuration.GetSection(nameof(JwtAuthSettings)).Get<JwtAuthSettings>();
         }
 
-        public AccessToken createAccessToken(Guid userId, IEnumerable<string> roles = default(IEnumerable<string>))
+        public AccessToken createAccessToken(UserEntity user)
         {
             var claims = new List<Claim>
             {
-                new Claim(ClaimTypes.NameIdentifier, userId.ToString())
+                new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
+                new Claim(JwtRegisteredClaimNames.UniqueName, user.Username),
             };
 
-            if (roles != null)
+            if (user.Roles != null)
             {
-                foreach (var role in roles)
+                foreach (var role in user.Roles)
                 {
                     claims.Add(new Claim(ClaimTypes.Role, role));
                 }

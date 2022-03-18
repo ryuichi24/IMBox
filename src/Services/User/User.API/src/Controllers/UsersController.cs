@@ -7,11 +7,13 @@ using IMBox.Services.User.API.DTOs;
 using IMBox.Services.User.Domain.Entities;
 using IMBox.Services.User.Domain.Repositories;
 using IMBox.Shared.Infrastructure.Helpers.Hash;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace IMBox.Services.User.API.Controllers
 {
+    [Authorize(Roles = "admin")]
     [Route("api/[controller]")]
     [ApiController]
     public class UsersController : ControllerBase
@@ -24,7 +26,6 @@ namespace IMBox.Services.User.API.Controllers
             _hashHelper = hashHelper;
         }
 
-        // TODO: protect route only for Admin role
         [HttpGet()]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<UserDTO>))]
         public async Task<IActionResult> GetAsync()
@@ -33,7 +34,6 @@ namespace IMBox.Services.User.API.Controllers
             return Ok(users.Select(User => User.ToDTO()));
         }
 
-        // TODO: protect route only for Admin role
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(UserDTO))]
         public async Task<IActionResult> GetByIdAsync(Guid id)
@@ -42,7 +42,6 @@ namespace IMBox.Services.User.API.Controllers
             return Ok(user.ToDTO());
         }
 
-        // TODO: protect route only for Admin role
         [HttpPost()]
         [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(UserDTO))]
         public async Task<IActionResult> CreateAsync(CreateUserDTO createUserDTO)
@@ -58,7 +57,8 @@ namespace IMBox.Services.User.API.Controllers
                 BirthDate = createUserDTO.BirthDate,
                 Continent = createUserDTO.Continent,
                 Gender = createUserDTO.Gender,
-                IsActive = true
+                IsActive = true,
+                Roles = createUserDTO.Roles
             };
 
             await _UserRepository.CreateAsync(newUser);
@@ -66,7 +66,6 @@ namespace IMBox.Services.User.API.Controllers
             return CreatedAtAction(nameof(GetByIdAsync), new { id = newUser.Id }, newUser.ToDTO());
         }
 
-        // TODO: protect route only for Admin role
         [HttpPatch("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent, Type = typeof(void))]
         public async Task<IActionResult> UpdateAsync(Guid id, UpdateUserDTO updateUserDTO)
@@ -80,7 +79,8 @@ namespace IMBox.Services.User.API.Controllers
                 .UpdateEmail(updateUserDTO.Email)
                 .UpdateGender(updateUserDTO.Gender)
                 .UpdateBirthDate(updateUserDTO.BirthDate)
-                .UpdateContinent(updateUserDTO.Continent);
+                .UpdateContinent(updateUserDTO.Continent)
+                .UpdateRoles(updateUserDTO.Roles);
 
             if (!string.IsNullOrWhiteSpace(updateUserDTO.Password))
             {
@@ -95,7 +95,6 @@ namespace IMBox.Services.User.API.Controllers
             return NoContent();
         }
 
-        // TODO: protect route only for Admin role
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent, Type = typeof(void))]
         public async Task<IActionResult> DeleteAsync(Guid id)

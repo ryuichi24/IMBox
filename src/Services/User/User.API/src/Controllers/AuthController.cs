@@ -2,7 +2,7 @@ using System.Threading.Tasks;
 using IMBox.Services.User.API.DTOs;
 using IMBox.Services.User.Domain.Entities;
 using IMBox.Services.User.Domain.Repositories;
-using IMBox.Shared.Infrastructure.Auth.Managers;
+using IMBox.Services.User.Infrastructure.Managers.Auth;
 using IMBox.Shared.Infrastructure.Helpers.Hash;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -66,7 +66,7 @@ namespace IMBox.Services.User.API.Controllers
 
             return Ok(new
             {
-                AccessToken = _tokenManager.createAccessToken(existingUser.Id)
+                AccessToken = _tokenManager.createAccessToken(existingUser)
             });
         }
     }

@@ -12,7 +12,7 @@ namespace IMBox.Services.User.API.DTOs
         public string Password { get; init; }
         public DateTime BirthDate { get; init; }
         [StringLength(1)]
-        public Char Gender { get; init; }
+        public string Gender { get; init; }
         public string Continent { get; init; }
         public IEnumerable<string> Roles { get; init; }
     }

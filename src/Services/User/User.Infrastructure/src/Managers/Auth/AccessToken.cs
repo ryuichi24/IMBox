@@ -1,6 +1,6 @@
 using System;
 
-namespace IMBox.Shared.Infrastructure.Auth.Managers
+namespace IMBox.Services.User.Infrastructure.Managers.Auth
 {
     public record AccessToken
     {

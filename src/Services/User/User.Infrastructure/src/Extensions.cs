@@ -6,6 +6,7 @@ using IMBox.Services.User.Domain.Repositories;
 using IMBox.Services.User.Infrastructure.Repositories;
 using IMBox.Shared.Infrastructure.Helpers.Hash;
 using IMBox.Shared.Infrastructure.Helpers.Auth;
+using IMBox.Services.User.Infrastructure.Managers.Auth;
 
 namespace IMBox.Services.User.Infrastructure
 {
@@ -18,7 +19,7 @@ namespace IMBox.Services.User.Infrastructure
                     .AddMassTransitWithRabbitMQ()
                     .AddHashHelper()
                     .AddJwtAuth()
-                    .AddTokenManager();
+                    .AddManagers();
 
             return services;
         }
@@ -31,6 +32,12 @@ namespace IMBox.Services.User.Infrastructure
                 return new MongoUserRepository(database, "Users");
             });
 
+            return services;
+        }
+
+        private static IServiceCollection AddManagers(this IServiceCollection services)
+        {
+            services.AddSingleton<ITokenManager, TokenManager>();
             return services;
         }
     }

@@ -1,6 +1,5 @@
 using System.Text;
 using IMBox.Shared.Infrastructure.Auth;
-using IMBox.Shared.Infrastructure.Auth.Managers;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -34,12 +33,6 @@ namespace IMBox.Shared.Infrastructure.Helpers.Auth
                 };
             });
 
-            return services;
-        }
-
-        public static IServiceCollection AddTokenManager(this IServiceCollection services)
-        {
-            services.AddSingleton<ITokenManager, TokenManager>();
             return services;
         }
     }

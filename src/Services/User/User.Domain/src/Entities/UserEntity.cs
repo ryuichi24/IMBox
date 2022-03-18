@@ -11,7 +11,7 @@ namespace IMBox.Services.User.Domain.Entities
         public Byte[] PasswordHash { get; set; }
         public Byte[] PasswordHashSalt { get; set; }
         public DateTime BirthDate { get; set; }
-        public Char Gender { get; set; }
+        public string Gender { get; set; }
         public string Continent { get; set; }
         public bool IsActive { get; set; } = false;
         public string EmailConfirmToken { get; set; }
@@ -57,9 +57,9 @@ namespace IMBox.Services.User.Domain.Entities
             return this;
         }
 
-        public UserEntity UpdateGender(Char newGender)
+        public UserEntity UpdateGender(string newGender)
         {
-            if (newGender == default(Char)) return this;
+            if (String.IsNullOrWhiteSpace(newGender)) return this;
             Gender = newGender;
             UpdatedAt = DateTimeOffset.UtcNow;
             return this;
