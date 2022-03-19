@@ -22,6 +22,12 @@ namespace IMBox.Services.Rating.API.Consumers
             var message = context.Message;
 
             _logger.LogDebug($"Message: {message.Id} has been consummed by {nameof(MovieDeletedIntegrationEventConsumer)}");
+
+            var existingMovie = await _movieRepository.GetByIdAsync(message.MovieId);
+
+            if (existingMovie == null) return;
+
+            await _movieRepository.RemoveAsync(existingMovie.Id);
         }
     }
 }

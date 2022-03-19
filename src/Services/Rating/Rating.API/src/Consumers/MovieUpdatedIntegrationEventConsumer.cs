@@ -23,6 +23,27 @@ namespace IMBox.Services.Rating.API.Consumers
             var message = context.Message;
 
             _logger.LogDebug($"Message: {message.Id} has been consummed by {nameof(MovieUpdatedIntegrationEventConsumer)}");
+
+            var existingMovie = await _movieRepository.GetByIdAsync(message.MovieId);
+
+            if (existingMovie == null)
+            {
+                var newMovie = new MovieEntity
+                {
+                    Id = message.MovieId,
+                    Title = message.MovieTitle,
+                    Description = message.MovieDescription
+                };
+
+                await _movieRepository.CreateAsync(newMovie);
+                return;
+            }
+
+            existingMovie
+                .UpdateTitle(message.MovieTitle)
+                .UpdateDescription(message.MovieDescription);
+
+            await _movieRepository.UpdateAsync(existingMovie);
         }
     }
 }

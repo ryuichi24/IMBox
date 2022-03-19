@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using IMBox.Services.IntegrationEvents;
+using IMBox.Services.Rating.Domain.Entities;
 using IMBox.Services.Rating.Domain.Repositories;
 using MassTransit;
 using Microsoft.Extensions.Logging;
@@ -22,6 +23,19 @@ namespace IMBox.Services.Rating.API.Consumers
             var message = context.Message;
 
             _logger.LogDebug($"Message: {message.Id} has been consummed by {nameof(MovieCreatedIntegrationEventConsumer)}");
+
+            var existingMovie = await _movieRepository.GetByIdAsync(message.MovieId);
+
+            if (existingMovie != null) return;
+
+            var newMovie = new MovieEntity
+            {
+                Id = message.MovieId,
+                Title = message.MovieTitle,
+                Description = message.MovieDescription
+            };
+
+            await _movieRepository.CreateAsync(newMovie);
         }
     }
 }
