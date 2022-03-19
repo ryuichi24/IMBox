@@ -4,6 +4,7 @@ using IMBox.Shared.Infrastructure.Database.MongoDB;
 using IMBox.Shared.Infrastructure.EventBus.MassTransit;
 using IMBox.Services.Movie.Domain.Repositories;
 using IMBox.Services.Movie.Infrastructure.Repositories;
+using IMBox.Shared.Infrastructure.Helpers.Auth;
 
 namespace IMBox.Services.Movie.Infrastructure
 {
@@ -13,7 +14,8 @@ namespace IMBox.Services.Movie.Infrastructure
         {
             services.AddMongoDB()
                     .AddMongoRepositories()
-                    .AddMassTransitWithRabbitMQ();
+                    .AddMassTransitWithRabbitMQ()
+                    .AddJwtAuth();
 
             return services;
         }

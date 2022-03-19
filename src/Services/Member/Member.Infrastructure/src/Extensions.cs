@@ -2,6 +2,7 @@ using IMBox.Services.Member.Domain.Repositories;
 using IMBox.Services.Member.Infrastructure.Repositories;
 using IMBox.Shared.Infrastructure.Database.MongoDB;
 using IMBox.Shared.Infrastructure.EventBus.MassTransit;
+using IMBox.Shared.Infrastructure.Helpers.Auth;
 using Microsoft.Extensions.DependencyInjection;
 using MongoDB.Driver;
 
@@ -13,7 +14,8 @@ namespace IMBox.Services.Member.Infrastructure
         {
             services.AddMongoDB()
                     .AddMongoRepositories()
-                    .AddMassTransitWithRabbitMQ();
+                    .AddMassTransitWithRabbitMQ()
+                    .AddJwtAuth();
 
             return services;
         }
