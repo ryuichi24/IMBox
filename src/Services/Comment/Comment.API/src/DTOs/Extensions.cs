@@ -31,7 +31,7 @@ namespace IMBox.Services.Comment.API.DTOs
                     Name = commenterEntity.Name,
                     Gender = commenterEntity.Gender,
                     BirthDate = commenterEntity.BirthDate,
-                    Continent = commenterEntity.Continent
+                    Country = commenterEntity.Country
                 }
             };
         }

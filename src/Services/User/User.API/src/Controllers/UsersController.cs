@@ -62,7 +62,7 @@ namespace IMBox.Services.User.API.Controllers
                 PasswordHash = passwordHash,
                 PasswordHashSalt = passwordHashSalt,
                 BirthDate = createUserDTO.BirthDate,
-                Continent = createUserDTO.Continent,
+                Country = createUserDTO.Country,
                 Gender = createUserDTO.Gender,
                 IsActive = true,
                 Roles = createUserDTO.Roles
@@ -76,7 +76,7 @@ namespace IMBox.Services.User.API.Controllers
                 UserUsername = newUser.Username,
                 UserBirthDate = newUser.BirthDate,
                 UserGender = newUser.Gender,
-                UserContinent = newUser.Continent
+                UserCountry = newUser.Country
             });
 
             return CreatedAtAction(nameof(GetByIdAsync), new { id = newUser.Id }, newUser.ToDTO());
@@ -95,7 +95,7 @@ namespace IMBox.Services.User.API.Controllers
                 .UpdateEmail(updateUserDTO.Email)
                 .UpdateGender(updateUserDTO.Gender)
                 .UpdateBirthDate(updateUserDTO.BirthDate)
-                .UpdateContinent(updateUserDTO.Continent)
+                .UpdateCountry(updateUserDTO.Country)
                 .UpdateRoles(updateUserDTO.Roles);
 
             if (!string.IsNullOrWhiteSpace(updateUserDTO.Password))
@@ -114,7 +114,7 @@ namespace IMBox.Services.User.API.Controllers
                 UserUsername = userToUpdate.Username,
                 UserBirthDate = userToUpdate.BirthDate,
                 UserGender = userToUpdate.Gender,
-                UserContinent = userToUpdate.Continent
+                UserCountry = userToUpdate.Country
             });
 
             return NoContent();

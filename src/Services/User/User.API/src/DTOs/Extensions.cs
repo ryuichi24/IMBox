@@ -17,7 +17,7 @@ namespace IMBox.Services.Member.API.DTOs
                 Email = userEntity.Email,
                 Gender = userEntity.Gender,
                 BirthDate = userEntity.BirthDate,
-                Continent = userEntity.Continent,
+                Country = userEntity.Country,
                 Roles = userEntity.Roles
             };
         }

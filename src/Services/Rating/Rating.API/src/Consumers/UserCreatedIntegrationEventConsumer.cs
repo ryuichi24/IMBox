@@ -34,7 +34,7 @@ namespace IMBox.Services.Rating.API.Consumers
                 Name = message.UserUsername,
                 Gender = message.UserGender,
                 BirthDate = message.UserBirthDate,
-                Continent = message.UserContinent
+                Country = message.UserCountry
             };
 
             await _raterRepository.CreateAsync(newRater);

@@ -97,7 +97,7 @@ namespace IMBox.Services.User.API.Controllers
                 UserUsername = existingUser.Username,
                 UserBirthDate = existingUser.BirthDate,
                 UserGender = existingUser.Gender,
-                UserContinent = existingUser.Continent
+                UserCountry = existingUser.Country
             });
 
             return Ok();

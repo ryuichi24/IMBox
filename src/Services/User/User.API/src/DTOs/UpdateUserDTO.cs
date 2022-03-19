@@ -13,7 +13,7 @@ namespace IMBox.Services.User.API.DTOs
         public DateTime BirthDate { get; init; }
         [StringLength(1)]
         public string Gender { get; init; }
-        public string Continent { get; init; }
+        public string Country { get; init; }
         public IEnumerable<string> Roles { get; init; }
     }
 }

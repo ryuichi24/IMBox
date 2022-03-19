@@ -8,7 +8,7 @@ namespace IMBox.Services.Comment.Domain.Entities
         public string Name { get; set; }
         public DateTime BirthDate { get; set; }
         public string Gender { get; set; }
-        public string Continent { get; set; }
+        public string Country { get; set; }
 
 
         public CommenterEntity UpdateName(string newName)
@@ -36,10 +36,10 @@ namespace IMBox.Services.Comment.Domain.Entities
             return this;
         }
 
-        public CommenterEntity UpdateContinent(string newContinent)
+        public CommenterEntity UpdateCountry(string newCountry)
         {
-            if (String.IsNullOrWhiteSpace(newContinent)) return this;
-            Continent = newContinent;
+            if (String.IsNullOrWhiteSpace(newCountry)) return this;
+            Country = newCountry;
             UpdatedAt = DateTimeOffset.UtcNow;
             return this;
         }

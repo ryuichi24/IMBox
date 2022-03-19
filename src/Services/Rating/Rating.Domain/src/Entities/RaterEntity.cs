@@ -8,7 +8,7 @@ namespace IMBox.Services.Rating.Domain.Entities
         public string Name { get; set; }
         public DateTime BirthDate { get; set; }
         public string Gender { get; set; }
-        public string Continent { get; set; }
+        public string Country { get; set; }
         public int Age
         {
             get
@@ -46,10 +46,10 @@ namespace IMBox.Services.Rating.Domain.Entities
             return this;
         }
 
-        public RaterEntity UpdateContinent(string newContinent)
+        public RaterEntity UpdateCountry(string newCountry)
         {
-            if (String.IsNullOrWhiteSpace(newContinent)) return this;
-            Continent = newContinent;
+            if (String.IsNullOrWhiteSpace(newCountry)) return this;
+            Country = newCountry;
             UpdatedAt = DateTimeOffset.UtcNow;
             return this;
         }

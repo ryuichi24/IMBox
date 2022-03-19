@@ -12,7 +12,7 @@ namespace IMBox.Services.User.Domain.Entities
         public Byte[] PasswordHashSalt { get; set; }
         public DateTime BirthDate { get; set; }
         public string Gender { get; set; }
-        public string Continent { get; set; }
+        public string Country { get; set; }
         public bool IsActive { get; set; } = false;
         public string EmailConfirmToken { get; set; }
         public IEnumerable<string> Roles { get; set; }
@@ -65,10 +65,10 @@ namespace IMBox.Services.User.Domain.Entities
             return this;
         }
 
-        public UserEntity UpdateContinent(string newContinent)
+        public UserEntity UpdateCountry(string newCountry)
         {
-            if (String.IsNullOrWhiteSpace(newContinent)) return this;
-            Continent = newContinent;
+            if (String.IsNullOrWhiteSpace(newCountry)) return this;
+            Country = newCountry;
             UpdatedAt = DateTimeOffset.UtcNow;
             return this;
         }

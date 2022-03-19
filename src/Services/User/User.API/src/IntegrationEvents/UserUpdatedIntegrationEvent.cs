@@ -9,6 +9,6 @@ namespace IMBox.Services.IntegrationEvents
         public string UserUsername { get; init; }
         public DateTime UserBirthDate { get; init; }
         public string UserGender { get; init; }
-        public string UserContinent { get; init; }
+        public string UserCountry { get; init; }
     }
 }
