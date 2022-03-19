@@ -9,5 +9,6 @@ namespace IMBox.Services.Rating.Domain.Repositories
     public interface IRatingRepository : ICanCreate<RatingEntity>, ICanUpdate<RatingEntity>, ICanRemove, ICanGetById<RatingEntity>
     {
         Task<IEnumerable<RatingEntity>> GetAllByMovieId(Guid movieId);
+        Task<IEnumerable<RatingEntity>> GetAllByRaterId(Guid raterId);
     }
 }

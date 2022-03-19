@@ -8,6 +8,5 @@ namespace IMBox.Services.Rating.API.DTOs
         [Range(1, 5)]
         public int Rating { get; init; }
         public Guid MovieId { get; init; }
-        public Guid RaterId { get; init; }
     }
 }
