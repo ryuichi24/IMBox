@@ -32,6 +32,12 @@ namespace IMBox.Services.Rating.Infrastructure
                 return new MongoMovieRepository(database, "movies");
             });
 
+            services.AddScoped<IRaterRepository>(serviceProvider =>
+            {
+                var database = serviceProvider.GetService<IMongoDatabase>();
+                return new MongoRaterRepository(database, "raters");
+            });
+
             return services;
         }
     }

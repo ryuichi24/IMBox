@@ -8,23 +8,23 @@ using MongoDB.Driver;
 
 namespace IMBox.Services.Rating.Infrastructure.Repositories
 {
-    public class MongoMovieRepository : MongoRepository<MovieEntity>, IMovieRepository
+    public class MongoRaterRepository : MongoRepository<RaterEntity>, IRaterRepository
     {
-        public MongoMovieRepository(IMongoDatabase database, string collectionName) : base(database, collectionName)
+        public MongoRaterRepository(IMongoDatabase database, string collectionName) : base(database, collectionName)
         {
         }
 
-        public async Task CreateAsync(MovieEntity entity)
+        public async Task CreateAsync(RaterEntity entity)
         {
             await base.InsertAsync(entity);
         }
 
-        public async Task<List<MovieEntity>> GetAllAsync()
+        public async Task<List<RaterEntity>> GetAllAsync()
         {
             return await base.FindAllAsync();
         }
 
-        public async Task<MovieEntity> GetByIdAsync(Guid id)
+        public async Task<RaterEntity> GetByIdAsync(Guid id)
         {
             return await base.FindByIdAsync(id);
         }
@@ -34,7 +34,7 @@ namespace IMBox.Services.Rating.Infrastructure.Repositories
             await base.DeleteAsync(id);
         }
 
-        public async Task UpdateAsync(MovieEntity entity)
+        public async Task UpdateAsync(RaterEntity entity)
         {
             await base.ReplaceAsync(entity);
         }

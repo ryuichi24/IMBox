@@ -14,29 +14,24 @@ namespace IMBox.Services.Rating.Infrastructure.Repositories
         {
         }
 
-        public Task CreateAsync(RatingEntity entity)
+        public async Task CreateAsync(RatingEntity entity)
         {
-            throw new NotImplementedException();
+            await base.InsertAsync(entity);
         }
 
-        public Task<List<RatingEntity>> GetAllAsync()
+        public async Task<RatingEntity> GetByIdAsync(Guid id)
         {
-            throw new NotImplementedException();
+            return await base.FindByIdAsync(id);
         }
 
-        public Task<RatingEntity> GetByIdAsync(Guid id)
+        public async Task RemoveAsync(Guid id)
         {
-            throw new NotImplementedException();
+            await base.DeleteAsync(id);
         }
 
-        public Task RemoveAsync(Guid id)
+        public async Task UpdateAsync(RatingEntity entity)
         {
-            throw new NotImplementedException();
-        }
-
-        public Task UpdateAsync(RatingEntity entity)
-        {
-            throw new NotImplementedException();
+            await base.ReplaceAsync(entity);
         }
     }
 }
