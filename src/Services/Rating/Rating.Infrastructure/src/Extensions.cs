@@ -1,9 +1,11 @@
+using IMBox.Services.Rating.Domain.Entities;
 using IMBox.Services.Rating.Domain.Repositories;
 using IMBox.Services.Rating.Infrastructure.Repositories;
 using IMBox.Shared.Infrastructure.Database.MongoDB;
 using IMBox.Shared.Infrastructure.EventBus.MassTransit;
 using IMBox.Shared.Infrastructure.Helpers.Auth;
 using Microsoft.Extensions.DependencyInjection;
+using MongoDB.Bson.Serialization;
 using MongoDB.Driver;
 
 namespace IMBox.Services.Rating.Infrastructure
@@ -12,6 +14,8 @@ namespace IMBox.Services.Rating.Infrastructure
     {
         public static IServiceCollection AddInfrastructure(this IServiceCollection services)
         {
+            RegisterMongoClassMap();
+
             services.AddMongoDB()
                     .AddMongoRepositories()
                     .AddMassTransitWithRabbitMQ()
@@ -41,6 +45,15 @@ namespace IMBox.Services.Rating.Infrastructure
             });
 
             return services;
+        }
+
+        private static void RegisterMongoClassMap()
+        {
+            BsonClassMap.RegisterClassMap<RatingEntity>(classMap => 
+            {
+                classMap.AutoMap();
+                classMap.UnmapMember(member => member.Rater);
+            });
         }
     }
 }

@@ -19,6 +19,11 @@ namespace IMBox.Services.Rating.Infrastructure.Repositories
             await base.InsertAsync(entity);
         }
 
+        public async Task<IEnumerable<RatingEntity>> GetAllByMovieId(Guid movieId)
+        {
+            return await base.FindAllAsync(rating => rating.MovieId == movieId);
+        }
+
         public async Task<RatingEntity> GetByIdAsync(Guid id)
         {
             return await base.FindByIdAsync(id);

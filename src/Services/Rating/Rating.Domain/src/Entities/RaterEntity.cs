@@ -9,7 +9,17 @@ namespace IMBox.Services.Rating.Domain.Entities
         public DateTime BirthDate { get; set; }
         public string Gender { get; set; }
         public string Continent { get; set; }
-
+        public int Age
+        {
+            get
+            {
+                DateTime now = DateTime.Today;
+                int age = now.Year - BirthDate.Year;
+                if (BirthDate.AddYears(age) > now)
+                    age--;
+                return age;
+            }
+        }
 
         public RaterEntity UpdateName(string newName)
         {

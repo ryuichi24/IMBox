@@ -10,7 +10,7 @@ namespace IMBox.Shared.Infrastructure.Database.MongoDB
     public abstract class MongoRepository<TEntity> where TEntity : Entity
     {
         private readonly IMongoCollection<TEntity> _dbCollection;
-        private readonly FilterDefinitionBuilder<TEntity> _filterBuilder = Builders<TEntity>.Filter;
+        protected readonly FilterDefinitionBuilder<TEntity> _filterBuilder = Builders<TEntity>.Filter;
 
         protected MongoRepository(IMongoDatabase database, string collectionName)
         {
@@ -27,6 +27,11 @@ namespace IMBox.Shared.Infrastructure.Database.MongoDB
             return await _dbCollection.Find(filter).ToListAsync();
         }
 
+        protected async Task<List<TEntity>> FindAllAsync(FilterDefinition<TEntity> filter)
+        {
+            return await _dbCollection.Find(filter).ToListAsync();
+        }
+
         protected async Task<TEntity> FindByIdAsync(Guid id)
         {
             FilterDefinition<TEntity> filter = _filterBuilder.Eq(entityFromDB => entityFromDB.Id, id);
@@ -34,6 +39,11 @@ namespace IMBox.Shared.Infrastructure.Database.MongoDB
         }
 
         protected async Task<TEntity> FindAsync(Expression<Func<TEntity, bool>> filter)
+        {
+            return await _dbCollection.Find(filter).SingleOrDefaultAsync();
+        }
+
+        protected async Task<TEntity> FindAsync(FilterDefinition<TEntity> filter)
         {
             return await _dbCollection.Find(filter).SingleOrDefaultAsync();
         }

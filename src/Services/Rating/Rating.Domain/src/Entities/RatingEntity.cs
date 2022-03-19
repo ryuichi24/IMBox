@@ -8,6 +8,8 @@ namespace IMBox.Services.Rating.Domain.Entities
         public int Rating { get; set; }
         public Guid MovieId { get; set; }
         public Guid RaterId { get; set; }
+        // unmapped from db model
+        public RaterEntity Rater { get; set; }
 
         public RatingEntity UpdateRating(int newRating)
         {

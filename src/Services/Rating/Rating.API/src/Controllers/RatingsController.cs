@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using IMBox.Core.StringHelpers;
 using IMBox.Services.Rating.API.DTOs;
@@ -18,17 +19,63 @@ namespace IMBox.Services.Rating.API.Controllers
     public class RatingsController : ControllerBase
     {
         private readonly IRatingRepository _ratingRepository;
-        public RatingsController(IRatingRepository ratingRepository)
+        private readonly IRaterRepository _raterRepository;
+        public RatingsController(IRatingRepository ratingRepository, IRaterRepository raterRepository)
         {
             _ratingRepository = ratingRepository;
+            _raterRepository = raterRepository;
         }
 
         [AllowAnonymous]
         [HttpGet()]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<string>))]
-        public async Task<IActionResult> GetAsync()
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GetRatingsResponseDTO))]
+        public async Task<IActionResult> GetAsync([FromQuery] GetRatingsDTO getRatingDTO)
         {
-            return Ok();
+            if (getRatingDTO.MovieId == null) return BadRequest("Movie Id is not provided.");
+
+            var ratings = await _ratingRepository.GetAllByMovieId(getRatingDTO.MovieId);
+            var raters = await _raterRepository.GetAllAsync();
+
+            var ratingsWithRaters = ratings.Select(rating =>
+            {
+                rating.Rater = raters.Find(rater => rater.Id == rating.RaterId);
+                return rating;
+            });
+
+            Func<RatingEntity, bool> ratingsFilter = ratings => true;
+
+            if (getRatingDTO.DemographicType == "all")
+            {
+                ratingsFilter = ratings => true;
+            }
+            if (getRatingDTO.DemographicType == "male")
+            {
+                ratingsFilter = ratings => ratings.Rater.Gender == "m";
+            }
+            if (getRatingDTO.DemographicType == "female")
+            {
+                ratingsFilter = ratings => ratings.Rater.Gender == "f";
+            }
+            if (getRatingDTO.DemographicType == "aged_under_18")
+            {
+                ratingsFilter = ratings => ratings.Rater.Age < 18;
+            }
+            if (getRatingDTO.DemographicType == "aged_18_29")
+            {
+                ratingsFilter = ratings => (18 <= ratings.Rater.Age) && (ratings.Rater.Age <= 29);
+            }
+            if (getRatingDTO.DemographicType == "aged_30_44")
+            {
+                ratingsFilter = ratings => (30 <= ratings.Rater.Age) && (ratings.Rater.Age <= 44);
+            }
+            if (getRatingDTO.DemographicType == "aged_45_plus")
+            {
+                ratingsFilter = ratings => (45 <= ratings.Rater.Age);
+            }
+
+            var filteredRatings = ratingsWithRaters.Where(ratingsFilter);
+
+            return Ok(filteredRatings);
         }
 
         [HttpPost()]
