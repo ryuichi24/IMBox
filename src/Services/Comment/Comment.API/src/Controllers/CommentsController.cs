@@ -34,9 +34,9 @@ namespace IMBox.Services.Comment.API.Controllers
         [AllowAnonymous]
         [HttpGet()]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<CommentDTO>))]
-        public async Task<IActionResult> GetAsync()
+        public async Task<IActionResult> GetAsync([FromQuery] Guid movieId)
         {
-            var comments = await _commentRepository.GetAllAsync();
+            var comments = await _commentRepository.GetAllByMovieIdAsync(movieId);
             var commenters = await _commenterRepository.GetAllAsync();
 
             var commentDTOs = comments.Select(comment => comment.ToDTO(commenters.Find(commenter => commenter.Id == comment.CommenterId)));

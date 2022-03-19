@@ -24,6 +24,11 @@ namespace IMBox.Services.Comment.Infrastructure.Repositories
             return await base.FindAllAsync();
         }
 
+        public async Task<IEnumerable<CommentEntity>> GetAllByMovieIdAsync(Guid movieId)
+        {
+            return await base.FindAllAsync(comment => comment.MovieId == movieId);
+        }
+
         public async Task<CommentEntity> GetByIdAsync(Guid id)
         {
             return await base.FindByIdAsync(id);
