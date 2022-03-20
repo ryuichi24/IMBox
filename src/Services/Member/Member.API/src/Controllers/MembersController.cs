@@ -9,9 +9,11 @@ using IMBox.Services.Member.Domain.Repositories;
 using MassTransit;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 namespace IMBox.Services.Member.API.Controllers
 {
+    [Authorize(Roles = "admin")]
     [Route("api/[controller]")]
     [ApiController]
     public class MembersController : ControllerBase
@@ -27,6 +29,7 @@ namespace IMBox.Services.Member.API.Controllers
             _publishEndpoint = publishEndpoint;
         }
 
+        [AllowAnonymous]
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<MemberDTO>))]
         public async Task<IActionResult> GetAsync()
@@ -41,6 +44,7 @@ namespace IMBox.Services.Member.API.Controllers
             return Ok(memberDTOs);
         }
 
+        [AllowAnonymous]
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(MemberDTO))]
         public async Task<IActionResult> GetByIdAsync(Guid id)

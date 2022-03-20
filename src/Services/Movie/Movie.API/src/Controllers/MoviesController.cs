@@ -7,11 +7,13 @@ using IMBox.Services.Movie.API.DTOs;
 using IMBox.Services.Movie.Domain.Entities;
 using IMBox.Services.Movie.Domain.Repositories;
 using MassTransit;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace IMBox.Services.Movie.API.Controllers
 {
+    [Authorize(Roles = "admin")]
     [Route("api/[controller]")]
     [ApiController]
     public class MoviesController : ControllerBase
@@ -27,6 +29,7 @@ namespace IMBox.Services.Movie.API.Controllers
             _publishEndpoint = publishEndpoint;
         }
 
+        [AllowAnonymous]
         [HttpGet()]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<MovieDTO>))]
         public async Task<IActionResult> GetAsync()
@@ -42,6 +45,7 @@ namespace IMBox.Services.Movie.API.Controllers
             return Ok(movieDTOs);
         }
 
+        [AllowAnonymous]
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(MovieDTO))]
         public async Task<IActionResult> GetByIdAsync(Guid id)
