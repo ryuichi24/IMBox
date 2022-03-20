@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using IMBox.Shared.Domain.Base;
 
 namespace IMBox.Services.Member.Domain.Entities
@@ -8,6 +7,7 @@ namespace IMBox.Services.Member.Domain.Entities
     {
         public string Name { get; set; }
         public string Description { get; set; }
+        public string HeadshotUrl { get; set; }
         public DateTime BirthDate { get; set; }
         public string Role { get; set; }
 
@@ -20,26 +20,34 @@ namespace IMBox.Services.Member.Domain.Entities
             return this;
         }
 
-        public MemberEntity UpdateDescription(string description)
+        public MemberEntity UpdateDescription(string newDescription)
         {
-            if (String.IsNullOrEmpty(description)) return this;
-            Description = description;
+            if (String.IsNullOrEmpty(newDescription)) return this;
+            Description = newDescription;
             UpdatedAt = DateTimeOffset.UtcNow;
             return this;
         }
 
-        public MemberEntity UpdateRole(string role)
+        public MemberEntity UpdateHeadshotUrl(string newHeadshotUrl)
         {
-            if (String.IsNullOrEmpty(role)) return this;
-            Role = role;
+            if (String.IsNullOrEmpty(newHeadshotUrl)) return this;
+            HeadshotUrl = newHeadshotUrl;
             UpdatedAt = DateTimeOffset.UtcNow;
             return this;
         }
 
-        public MemberEntity UpdateBirthDate(DateTime birthDate)
+        public MemberEntity UpdateRole(string newRole)
         {
-            if (birthDate == default(DateTime)) return this;
-            BirthDate = birthDate;
+            if (String.IsNullOrEmpty(newRole)) return this;
+            Role = newRole;
+            UpdatedAt = DateTimeOffset.UtcNow;
+            return this;
+        }
+
+        public MemberEntity UpdateBirthDate(DateTime newBirthDate)
+        {
+            if (newBirthDate == default(DateTime)) return this;
+            BirthDate = newBirthDate;
             UpdatedAt = DateTimeOffset.UtcNow;
             return this;
         }

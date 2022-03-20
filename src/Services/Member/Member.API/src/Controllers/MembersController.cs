@@ -60,6 +60,7 @@ namespace IMBox.Services.Member.API.Controllers
             {
                 Name = createMemberDTO.Name,
                 Description = createMemberDTO.Description,
+                HeadshotUrl = createMemberDTO.HeadshotUrl,
                 BirthDate = createMemberDTO.BirthDate,
                 Role = createMemberDTO.Role
             };
@@ -88,6 +89,7 @@ namespace IMBox.Services.Member.API.Controllers
             existingMember
                 .UpdateName(updateMemberDTO.Name)
                 .UpdateDescription(updateMemberDTO.Description)
+                .UpdateHeadshotUrl(updateMemberDTO.HeadshotUrl)
                 .UpdateBirthDate(updateMemberDTO.BirthDate)
                 .UpdateRole(updateMemberDTO.Role);
 

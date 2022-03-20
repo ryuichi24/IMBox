@@ -21,6 +21,7 @@ namespace IMBox.Services.Member.API.DTOs
                 Id = memberEntity.Id,
                 Name = memberEntity.Name,
                 Description = memberEntity.Description,
+                HeadshotUrl = memberEntity.HeadshotUrl,
                 BirthDate = memberEntity.BirthDate,
                 Role = memberEntity.Role,
                 Movies = movieDTOs
@@ -34,6 +35,7 @@ namespace IMBox.Services.Member.API.DTOs
                 Id = memberEntity.Id,
                 Name = memberEntity.Name,
                 Description = memberEntity.Description,
+                HeadshotUrl = memberEntity.HeadshotUrl,
                 BirthDate = memberEntity.BirthDate,
                 Role = memberEntity.Role,
                 Movies = new List<MovieDTO>()
