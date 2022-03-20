@@ -9,6 +9,10 @@ namespace IMBox.Services.Movie.API.DTOs
         public string Title { get; init; }
         public string Description { get; init; }
         public int CommentCount { get; init; }
+        public string MainPosterUrl { get; init; }
+        public string MainTrailerUrl { get; init; }
+        public List<string> OtherPostUrls { get; init; }
+        public List<string> OtherTrailerUrls { get; init; }
         public IEnumerable<MemberDTO> Members { get; init; }
     }
 

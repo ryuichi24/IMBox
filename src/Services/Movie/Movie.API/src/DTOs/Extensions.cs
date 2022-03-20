@@ -6,7 +6,7 @@ namespace IMBox.Services.Movie.API.DTOs
 {
     public static class Extensions
     {
-        public static MovieDTO ToDTO(this MovieEntity MovieEntity, IEnumerable<MemberEntity> members)
+        public static MovieDTO ToDTO(this MovieEntity movieEntity, IEnumerable<MemberEntity> members)
         {
             var memberDTOs = members.Select(member => new MemberDTO
             {
@@ -17,10 +17,14 @@ namespace IMBox.Services.Movie.API.DTOs
 
             return new MovieDTO
             {
-                Id = MovieEntity.Id,
-                Title = MovieEntity.Title,
-                Description = MovieEntity.Description,
-                CommentCount = MovieEntity.CommentCount,
+                Id = movieEntity.Id,
+                Title = movieEntity.Title,
+                Description = movieEntity.Description,
+                MainPosterUrl = movieEntity.MainPosterUrl,
+                MainTrailerUrl = movieEntity.MainTrailerUrl,
+                OtherPostUrls = movieEntity.OtherPostUrls,
+                OtherTrailerUrls = movieEntity.OtherTrailerUrls,
+                CommentCount = movieEntity.CommentCount,
                 Members = memberDTOs
             };
         }

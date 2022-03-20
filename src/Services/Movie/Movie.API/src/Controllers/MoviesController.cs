@@ -61,6 +61,10 @@ namespace IMBox.Services.Movie.API.Controllers
             {
                 Title = createMovieDTO.Title,
                 Description = createMovieDTO.Description,
+                MainPosterUrl = createMovieDTO.MainPosterUrl,
+                MainTrailerUrl = createMovieDTO.MainTrailerUrl,
+                OtherPostUrls = createMovieDTO.OtherPostUrls,
+                OtherTrailerUrls = createMovieDTO.OtherTrailerUrls,
                 MemberIds = createMovieDTO.MemberIds
             };
 
@@ -93,6 +97,10 @@ namespace IMBox.Services.Movie.API.Controllers
             existingMovie
                 .UpdateTitle(updateMovieDTO.Title)
                 .UpdateDescription(updateMovieDTO.Description)
+                .UpdateMainPosterUrl(updateMovieDTO.MainTrailerUrl)
+                .UpdateMainTrailerUrl(updateMovieDTO.MainPosterUrl)
+                .UpdateOtherPostUrls(updateMovieDTO.OtherPostUrls)
+                .UpdateOtherTrailerUrls(updateMovieDTO.OtherTrailerUrls)
                 .UpdateMemberIds(updateMovieDTO.MemberIds);
 
             await _movieRepository.UpdateAsync(existingMovie);
