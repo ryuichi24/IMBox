@@ -1,0 +1,18 @@
+{
+  "name": "IMBoxWeb",
+  "version": "1.0.0",
+  "private": true,
+  "license": "MIT",
+  "workspaces": [
+    "modules/*"
+  ],
+  "scripts": {
+    "dev-admin": "yarn workspace @IMBoxWeb/Admin dev",
+    "build-admin": "yarn workspace @IMBoxWeb/Admin build",
+    "dev-public": "yarn workspace @IMBoxWeb/Public dev",
+    "build-public": "yarn workspace @IMBoxWeb/Public build"
+  },
+  "devDependencies": {
+    "concurrently": "^7.0.0"
+  }
+}
