@@ -33,11 +33,11 @@ yarn install
 ```
 
 ```bash
-yarn dev-admin // admin dashboard
+yarn dev-admin # admin dashboard
 ```
 
 ```bash
-yarn dev-public // IMBox public frontend
+yarn dev-public # IMBox public frontend
 ```
 
 ### With docker compose for production
