@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace IMBox.Services.User.API.Controllers
 {
-    [Route("api/user-service/users")]
+    [Route("api/users")]
     [ApiController]
     public class AuthController : ControllerBase
     {

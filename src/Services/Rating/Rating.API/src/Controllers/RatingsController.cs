@@ -13,7 +13,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace IMBox.Services.Rating.API.Controllers
 {
     [Authorize]
-    [Route("api/rating-service/[controller]")]
+    [Route("api/[controller]")]
     [ApiController]
     public class RatingsController : ControllerBase
     {
@@ -28,7 +28,7 @@ namespace IMBox.Services.Rating.API.Controllers
         }
 
         [AllowAnonymous]
-        [Route("/api/rating-service/movies/{movieId}/ratings")]
+        [Route("/api/movies/{movieId}/ratings")]
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GetByMovieIdResponseDTO))]
         public async Task<IActionResult> GetByMovieIdAsync([FromRoute] Guid movieId, [FromQuery(Name = "demographic")] string demographicType = "all")
@@ -71,7 +71,7 @@ namespace IMBox.Services.Rating.API.Controllers
         }
 
         [AllowAnonymous]
-        [Route("/api/rating-service/raters/{raterId}/ratings")]
+        [Route("/api/raters/{raterId}/ratings")]
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GetByRaterIdResponseDTO))]
         public async Task<IActionResult> GetByRaterIdAsync([FromRoute] Guid raterId)

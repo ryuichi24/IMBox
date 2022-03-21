@@ -16,7 +16,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace IMBox.Services.User.API.Controllers
 {
     [Authorize(Roles = "admin")]
-    [Route("api/user-service/[controller]")]
+    [Route("api/[controller]")]
     [ApiController]
     public class UsersController : ControllerBase
     {

@@ -14,7 +14,7 @@ using Microsoft.AspNetCore.Authorization;
 namespace IMBox.Services.Member.API.Controllers
 {
     [Authorize(Roles = "admin")]
-    [Route("api/member-service/[controller]")]
+    [Route("api/[controller]")]
     [ApiController]
     public class MembersController : ControllerBase
     {
