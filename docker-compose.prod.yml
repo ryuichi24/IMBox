@@ -1,0 +1,180 @@
+version: '3.7'
+
+services:
+
+  # comment service
+  comment-service:
+    build:
+      context: .
+      dockerfile: src/Services/Comment/Comment.API/Dockerfile
+    container_name: IMBox-comment-service-prod-container
+    ports:
+      - 80
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      ASPNETCORE_URLS: http://0.0.0.0:80
+    depends_on:
+      - comment-service-mongodb
+      - rabbitMQ
+
+  comment-service-mongodb:
+    image: mongo:5.0
+    restart: unless-stopped
+    container_name: IMBox-comment-service-mongodb-prod-container
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: mongouser
+      MONGO_INITDB_ROOT_PASSWORD: mongopassword
+    ports:
+      - 27020:27017
+    volumes:
+      - ./comment_service_mongodbdata:/data/db
+
+  # member service
+  member-service:
+    build:
+      context: .
+      dockerfile: src/Services/Member/Member.API/Dockerfile
+    container_name: IMBox-member-service-prod-container
+    ports:
+      - 80
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      ASPNETCORE_URLS: http://0.0.0.0:80
+    depends_on:
+      - member-service-mongodb
+      - rabbitMQ
+
+  member-service-mongodb:
+    image: mongo:5.0
+    restart: unless-stopped
+    container_name: IMBox-member-service-mongodb-prod-container
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: mongouser
+      MONGO_INITDB_ROOT_PASSWORD: mongopassword
+    ports:
+      - 27025:27017
+    volumes:
+      - ./member_service_mongodbdata:/data/db
+
+  # movie service
+  movie-service:
+    build:
+      context: .
+      dockerfile: src/Services/Movie/Movie.API/Dockerfile
+    container_name: IMBox-movie-service-prod-container
+    ports:
+      - 80
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      ASPNETCORE_URLS: http://0.0.0.0:80
+    depends_on:
+      - movie-service-mongodb
+      - rabbitMQ
+
+  movie-service-mongodb:
+    image: mongo:5.0
+    restart: unless-stopped
+    container_name: IMBox-movie-service-mongodb-prod-container
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: mongouser
+      MONGO_INITDB_ROOT_PASSWORD: mongopassword
+    ports:
+      - 27030:27017
+    volumes:
+      - ./movie_service_mongodbdata:/data/db
+
+  # rating service
+  rating-service:
+    build:
+      context: .
+      dockerfile: src/Services/Rating/Rating.API/Dockerfile
+    container_name: IMBox-rating-service-prod-container
+    ports:
+      - 80
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      ASPNETCORE_URLS: http://0.0.0.0:80
+    depends_on:
+      - rating-service-mongodb
+      - rabbitMQ
+
+  rating-service-mongodb:
+    image: mongo:5.0
+    restart: unless-stopped
+    container_name: IMBox-rating-service-mongodb-prod-container
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: mongouser
+      MONGO_INITDB_ROOT_PASSWORD: mongopassword
+    ports:
+      - 27035:27017
+    volumes:
+      - ./rating_service_mongodbdata:/data/db
+
+  # user service
+  user-service:
+    build:
+      context: .
+      dockerfile: src/Services/User/User.API/Dockerfile
+    container_name: IMBox-user-service-prod-container
+    ports:
+      - 80
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      ASPNETCORE_URLS: http://0.0.0.0:80
+    depends_on:
+      - user-service-mongodb
+      - rabbitMQ
+
+  user-service-mongodb:
+    image: mongo:5.0
+    restart: unless-stopped
+    container_name: IMBox-user-service-mongodb-prod-container
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: mongouser
+      MONGO_INITDB_ROOT_PASSWORD: mongopassword
+    ports:
+      - 27040:27017
+    volumes:
+      - ./user_service_mongodbdata:/data/db
+  
+  # frontend
+  admin-dashboard:
+    build:
+      context: .
+      dockerfile: src/Web/modules/Admin/Dockerfile
+    container_name: IMBox-admin-dashboard-prod-container
+    ports:
+      - 3333:80
+    volumes:
+    - ./src/Web/modules/Admin/nginx.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+    - apigateway
+
+  # infrastructures
+  apigateway:
+    build:
+      context: .
+      dockerfile: src/ApiGateway/Dockerfile.prod
+    container_name: IMBox-apigateway-prod-container
+    ports:
+      - 5555:80
+    volumes:
+      - ./src/ApiGateway/nginx.prod.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+    - comment-service
+    - member-service
+    - movie-service
+    - rating-service
+    - user-service
+
+  rabbitMQ:
+    image: rabbitmq:3.9.13-management-alpine
+    container_name: IMBox-rabbitmq-prod-container
+    ports:
+      - 5672:5672
+      - 15672:15672
+    volumes:
+      - ./rabbitmqdata_prod:/var/lib/rabbitmq
+    hostname: rabbitmq
+
+networks: { IMBox-prod: { driver: bridge } }

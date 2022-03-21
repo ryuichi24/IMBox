@@ -449,7 +449,16 @@ $RECYCLE.BIN/
 ##
 .vscode/*
 
+comment_service_mongodbdata
+member_service_mongodbdata
+movie_service_mongodbdata
+rating_service_mongodbdata
+user_service_mongodbdata
+rabbitmqdata_prod
+
 mongodbdata
 rabbitmqdata
 
 dist
+
+appsettings.Production.json
