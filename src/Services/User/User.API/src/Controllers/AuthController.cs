@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace IMBox.Services.User.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/user-service/users")]
     [ApiController]
     public class AuthController : ControllerBase
     {
@@ -84,7 +84,7 @@ namespace IMBox.Services.User.API.Controllers
 
             if (existingUser == null) return BadRequest("The email confirm token is invalid.");
 
-            if(existingUser.IsActive) return Ok();
+            if (existingUser.IsActive) return Ok();
 
             existingUser.RevokeEmailConfirmToken();
             existingUser.Activate();

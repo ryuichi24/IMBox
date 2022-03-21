@@ -14,7 +14,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace IMBox.Services.Movie.API.Controllers
 {
     [Authorize(Roles = "admin")]
-    [Route("api/[controller]")]
+    [Route("api/movie-service/[controller]")]
     [ApiController]
     public class MoviesController : ControllerBase
     {

@@ -16,7 +16,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace IMBox.Services.Comment.API.Controllers
 {
     [Authorize]
-    [Route("api/[controller]")]
+    [Route("api/comment-service/[controller]")]
     [ApiController]
     public class CommentsController : ControllerBase
     {
