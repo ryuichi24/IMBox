@@ -1,7 +1,7 @@
 FROM node:16.13.2-alpine3.15 as builder
 
 WORKDIR /builder
-COPY ./src/Web/modules/Public ./
+COPY ./src/Web/modules/public ./
 
 RUN yarn install --frozen-lockfile
 
