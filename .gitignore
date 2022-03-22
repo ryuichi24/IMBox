@@ -462,3 +462,5 @@ rabbitmqdata
 dist
 
 appsettings.Production.json
+
+tsconfig.tsbuildinfo
