@@ -1,12 +1,5 @@
+import { MemberModel } from '@/models/member-model';
 import { apiClient } from '@IMBoxWeb/core/dist/api-client';
-
-interface MemberModel {
-  name: string;
-  description: string;
-  headshotUrl: string;
-  birthDate: Date;
-  role: string;
-}
 
 const BASE_URL = '/member-service/api';
 
@@ -17,7 +10,7 @@ interface GetMembersRequest {
 const get = async (request: GetMembersRequest) => {
   const res = await apiClient.get(`${BASE_URL}/members`);
   const result = res.data;
-  return result;
+  return result as MemberModel[];
 };
 
 interface GetMemberByIdRequest {
@@ -27,7 +20,7 @@ interface GetMemberByIdRequest {
 const getById = async (request: GetMemberByIdRequest) => {
   const res = await apiClient.get(`${BASE_URL}/members/${request.memberId}`);
   const result = res.data;
-  return result;
+  return result as MemberModel;
 };
 
 interface CreateMemberRequest {
