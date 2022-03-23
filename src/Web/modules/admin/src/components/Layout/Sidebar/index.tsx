@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, useLocation, Outlet } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 export const Sidebar = () => {
   const { pathname } = useLocation();
@@ -48,7 +48,6 @@ export const Sidebar = () => {
         </ul>
         <hr />
       </div>
-      <Outlet />
     </div>
   );
 };
