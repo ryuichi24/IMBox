@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { authService } from '@/services/auth-service';
 import { userService } from '@/services/user-service';
 import { memberService } from '@/services/member-service';
+import { movieService } from '@/services/movie-service';
 
 export const App = () => {
   useEffect(() => {
@@ -16,6 +17,10 @@ export const App = () => {
           userService.getById({ userId: result[0].id }).then((result) => console.log(result));
 
           memberService.get({ page: 1 }).then((result) => {
+            console.log(result);
+          });
+
+          movieService.get({ page: 1 }).then((result) => {
             console.log(result);
           });
         });
