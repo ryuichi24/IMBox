@@ -13,4 +13,10 @@ const signIn = async (request: SignInRequest) => {
   return result;
 };
 
-export const authService = Object.freeze({ signIn });
+const checkAuth = async () => {
+  const res = await apiClient.get(`${BASE_URL}/check-auth`);
+  const result = res.data;
+  return result;
+};
+
+export const authService = Object.freeze({ signIn, checkAuth });

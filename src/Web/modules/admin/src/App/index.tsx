@@ -1,35 +1,30 @@
 import React, { useEffect } from 'react';
-import { authService } from '@/services/auth-service';
-import { userService } from '@/services/user-service';
-import { memberService } from '@/services/member-service';
-import { movieService } from '@/services/movie-service';
+import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
+// hooks
+import { useAuth } from '@/hooks/useAuth';
+// page components
 import { SignInPage } from '@/pages/SigninPage';
+// components
+import { ProtectedRoute } from '@/components/ProtectedRoute';
 
 export const App = () => {
-  useEffect(() => {
-    console.log('mounted!');
-    authService
-      .signIn({ email: 'test@example.com', password: '11111111' })
-      .then((result) => console.log(result))
-      .then(() => {
-        userService.get({ page: 1 }).then((result) => {
-          console.log(result);
+  const location = useLocation();
+  const [isAuthenticated, loading, error] = useAuth(location.pathname);
 
-          userService.getById({ userId: result[0].id }).then((result) => console.log(result));
-
-          memberService.get({ page: 1 }).then((result) => {
-            console.log(result);
-          });
-
-          movieService.get({ page: 1 }).then((result) => {
-            console.log(result);
-          });
-        });
-      });
-  });
+  if (loading) return <div>loading...</div>;
   return (
     <div className="container-fluid vh-100 p-0">
-      <SignInPage />
+      <Routes>
+        <Route element={<ProtectedRoute isAllowed={isAuthenticated} redirectPath="/signin" />}>
+          <Route path="/*" element={<div>Home</div>} />
+        </Route>
+
+        <Route element={<ProtectedRoute isAllowed={!isAuthenticated} redirectPath="/" />}>
+          <Route path="/signin" element={<SignInPage />} />
+        </Route>
+
+        <Route path="*" element={<Navigate to="/" />} />
+      </Routes>
     </div>
   );
 };

@@ -1,7 +1,10 @@
 import { authService } from '@/services/auth-service';
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export const SignInPage = () => {
+  const navigate = useNavigate();
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -10,18 +13,17 @@ export const SignInPage = () => {
     setPassword('');
   };
 
-  const handleSubmit: React.FormEventHandler<HTMLFormElement> = (e) => {
+  const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
 
-    (async () => {
-      try {
-        await authService.signIn({ email, password });
-        clearInputs();
-      } catch (error) {
-        const errorMsg = (error as any).response.data;
-        alert(errorMsg);
-      }
-    })();
+    try {
+      await authService.signIn({ email, password });
+      clearInputs();
+      navigate('/');
+    } catch (error) {
+      const errorMsg = (error as any).response.data;
+      alert(errorMsg);
+    }
   };
 
   return (

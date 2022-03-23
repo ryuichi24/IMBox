@@ -1,12 +1,16 @@
 using System;
 using System.Threading.Tasks;
+using IMBox.Core.StringHelpers;
 using IMBox.Services.IntegrationEvents;
+using IMBox.Services.Member.API.DTOs;
 using IMBox.Services.User.API.DTOs;
 using IMBox.Services.User.Domain.Entities;
 using IMBox.Services.User.Domain.Repositories;
 using IMBox.Services.User.Infrastructure.Managers.Auth;
+using IMBox.Shared.Infrastructure.Helpers.Auth;
 using IMBox.Shared.Infrastructure.Helpers.Hash;
 using MassTransit;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -101,6 +105,21 @@ namespace IMBox.Services.User.API.Controllers
             });
 
             return Ok();
+        }
+
+        [Authorize]
+        [HttpGet("check-auth")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(UserDTO))]
+        public async Task<IActionResult> CheckAuthAsync()
+        {
+            var userId = User.SubjectId().ToGuid();
+            var existingUser = await _UserRepository.GetByIdAsync(userId);
+
+            if (existingUser == null) return Unauthorized("The token is invalid.");
+
+            if (!existingUser.IsActive) return Unauthorized("The token is invalid.");
+
+            return Ok(existingUser.ToDTO());
         }
 
         [HttpPost("refresh-token")]
