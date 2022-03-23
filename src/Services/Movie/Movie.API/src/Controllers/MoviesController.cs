@@ -101,8 +101,8 @@ namespace IMBox.Services.Movie.API.Controllers
             existingMovie
                 .UpdateTitle(updateMovieDTO.Title)
                 .UpdateDescription(updateMovieDTO.Description)
-                .UpdateMainPosterUrl(updateMovieDTO.MainTrailerUrl)
-                .UpdateMainTrailerUrl(updateMovieDTO.MainPosterUrl)
+                .UpdateMainPosterUrl(updateMovieDTO.MainPosterUrl)
+                .UpdateMainTrailerUrl(updateMovieDTO.MainTrailerUrl)
                 .UpdateOtherPostUrls(updateMovieDTO.OtherPostUrls)
                 .UpdateOtherTrailerUrls(updateMovieDTO.OtherTrailerUrls)
                 .UpdateMemberIds(updateMovieDTO.MemberIds);

@@ -1,14 +1,5 @@
+import { MovieModel } from '@/models/movie-model';
 import { apiClient } from '@IMBoxWeb/core/dist/api-client';
-
-interface MovieModel {
-  title: string;
-  description: string;
-  mainPosterUrl: string;
-  mainTrailerUrl: string;
-  otherPostUrls: [string];
-  otherTrailerUrls: [string];
-  memberIds: [string];
-}
 
 const BASE_URL = '/movie-service/api';
 
@@ -19,7 +10,7 @@ interface GetMoviesRequest {
 const get = async (request: GetMoviesRequest) => {
   const res = await apiClient.get(`${BASE_URL}/movies`);
   const result = res.data;
-  return result;
+  return result as MovieModel[];
 };
 
 interface GetMovieByIdRequest {
@@ -29,7 +20,7 @@ interface GetMovieByIdRequest {
 const getById = async (request: GetMovieByIdRequest) => {
   const res = await apiClient.get(`${BASE_URL}/movies/${request.movieId}`);
   const result = res.data;
-  return result;
+  return result as MovieModel;
 };
 
 interface CreateMovieRequest {
