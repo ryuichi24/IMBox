@@ -3,6 +3,7 @@ import { authService } from '@/services/auth-service';
 import { userService } from '@/services/user-service';
 import { memberService } from '@/services/member-service';
 import { movieService } from '@/services/movie-service';
+import { SignInPage } from '@/pages/SigninPage';
 
 export const App = () => {
   useEffect(() => {
@@ -26,5 +27,9 @@ export const App = () => {
         });
       });
   });
-  return <div>IMBox Admin</div>;
+  return (
+    <div className="container-fluid vh-100 p-0">
+      <SignInPage />
+    </div>
+  );
 };
