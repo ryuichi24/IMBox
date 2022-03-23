@@ -7,10 +7,11 @@
     "modules/*"
   ],
   "scripts": {
-    "dev-admin": "yarn workspace @IMBoxWeb/Admin dev",
-    "build-admin": "yarn workspace @IMBoxWeb/Admin build",
-    "dev-public": "yarn workspace @IMBoxWeb/Public dev",
-    "build-public": "yarn workspace @IMBoxWeb/Public build"
+    "dev-admin": "yarn workspace @IMBoxWeb/admin dev",
+    "build-admin": "yarn workspace @IMBoxWeb/admin build",
+    "dev-public": "yarn workspace @IMBoxWeb/public dev",
+    "build-public": "yarn workspace @IMBoxWeb/public build",
+    "build-core": "yarn workspace @IMBoxWeb/core build"
   },
   "devDependencies": {
     "concurrently": "^7.0.0"

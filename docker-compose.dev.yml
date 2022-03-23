@@ -10,7 +10,7 @@ services:
     ports:
       - 5555:80
     volumes:
-      - ./src/ApiGateway/nginx.dev.conf:/etc/nginx/conf.d/default.conf
+      - ./src/ApiGateway/conf.d.dev:/etc/nginx/conf.d
 
   mongodb-dev:
     image: mongo:5.0

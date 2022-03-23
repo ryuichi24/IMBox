@@ -1,15 +1,13 @@
 import axios, { AxiosError } from 'axios';
 import { tokenManager } from './token-manager';
 
-const refreshTokenEndpoint =
-  process.env.REFRESH_TOKEN_URL || 'http://apigateway:80/user-service/api/users/refresh-token';
+const refreshTokenEndpoint = process.env.REFRESH_TOKEN_URL || '/user-service/api/users/refresh-token';
 
 export const apiClient = axios.create({
-  baseURL: process.env.API_URL,
-  withCredentials: true,
+  baseURL: process.env.API_URL || 'http://localhost:5555',
 });
 
-const retryAxios = axios.create({ baseURL: process.env.API_URL, withCredentials: true });
+const retryAxios = axios.create({ baseURL: process.env.API_URL || 'http://localhost:5555' });
 
 apiClient.interceptors.response.use(
   (response) => {
