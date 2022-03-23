@@ -15,12 +15,12 @@ apiClient.interceptors.response.use(
   (response) => {
     const result = response.data;
 
-    if (result?.accessToken?.value) {
-      tokenManager.accessToken.set(result.accessToken.value, result.accessToken.expiresIn);
+    if (result?.accessToken?.token) {
+      tokenManager.accessToken.set(result.accessToken.token, result.accessToken.expiresIn);
     }
 
-    if (result?.refreshToken?.value) {
-      tokenManager.refreshToken.set(result.refreshToken.value);
+    if (result?.refreshToken?.token) {
+      tokenManager.refreshToken.set(result.refreshToken.token);
     }
 
     return response;
@@ -41,12 +41,12 @@ apiClient.interceptors.response.use(
     const res = await retryAxios.post(refreshTokenEndpoint, { refreshToken });
     const result = res.data;
 
-    if (result?.accessToken?.value) {
-      tokenManager.accessToken.set(result.accessToken.value, result.accessToken.expiresIn);
+    if (result?.accessToken?.token) {
+      tokenManager.accessToken.set(result.accessToken.token, result.accessToken.expiresIn);
     }
 
-    if (result?.refreshToken?.value) {
-      tokenManager.refreshToken.set(result.refreshToken.value);
+    if (result?.refreshToken?.token) {
+      tokenManager.refreshToken.set(result.refreshToken.token);
     }
 
     return await apiClient(config);
