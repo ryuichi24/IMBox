@@ -1,14 +1,5 @@
+import { UserModel } from '@/models/user-model';
 import { apiClient } from '@IMBoxWeb/core/dist/api-client';
-
-interface UserModel {
-  username: string;
-  email: string;
-  password: string;
-  birthDate: Date;
-  gender: 'm' | 'f' | 'n';
-  country: string;
-  roles: [string];
-}
 
 const BASE_URL = '/user-service/api';
 
@@ -19,7 +10,7 @@ interface GetUsersRequest {
 const get = async (request: GetUsersRequest) => {
   const res = await apiClient.get(`${BASE_URL}/users`);
   const result = res.data;
-  return result;
+  return result as UserModel[];
 };
 
 interface GetUserByIdRequest {
@@ -29,7 +20,7 @@ interface GetUserByIdRequest {
 const getById = async (request: GetUserByIdRequest) => {
   const res = await apiClient.get(`${BASE_URL}/users/${request.userId}`);
   const result = res.data;
-  return result;
+  return result as UserModel;
 };
 
 interface CreateUserRequest {
