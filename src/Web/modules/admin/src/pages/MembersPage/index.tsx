@@ -15,8 +15,13 @@ export const MembersPage = () => {
   const [memberList, setMemberList] = useState<MemberModel[]>([]);
   useEffect(() => {
     (async () => {
-      const members = await memberService.get({ page: 1 });
-      setMemberList(members);
+      try {
+        const members = await memberService.get({ page: 1 });
+        setMemberList(members);
+      } catch (error) {
+        console.error(error);
+        alert((error as any)?.response?.data || (error as any).message);
+      }
     })();
   }, []);
 
@@ -27,20 +32,25 @@ export const MembersPage = () => {
   const [memberRole, setMemberRole] = useState('label');
 
   const handleNewMemberFormSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
-    e.preventDefault();
-    const newMember: MemberModel = {
-      name: memberName,
-      description: memberDescription,
-      headshotUrl: memberImage,
-      birthDate: new Date(memberBirthDate).toISOString(),
-      role: memberRole,
-    };
+    try {
+      e.preventDefault();
+      const newMember: MemberModel = {
+        name: memberName,
+        description: memberDescription,
+        headshotUrl: memberImage,
+        birthDate: new Date(memberBirthDate).toISOString(),
+        role: memberRole,
+      };
 
-    setMemberList((prev) => [...prev, newMember]);
+      setMemberList((prev) => [...prev, newMember]);
 
-    await memberService.create({ member: newMember });
+      await memberService.create({ member: newMember });
 
-    clearInputs();
+      clearInputs();
+    } catch (error) {
+      console.error(error);
+      alert((error as any)?.response?.data || (error as any).message);
+    }
   };
 
   const clearInputs = () => {

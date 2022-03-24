@@ -1,13 +1,18 @@
+import React, { useEffect, useState } from 'react';
 import { MovieModel } from '@/models/movie-model';
 import { movieService } from '@/services/movie-service';
-import React, { useEffect, useState } from 'react';
 
 export const MoviesPaage = () => {
   const [movieList, setMovieList] = useState<MovieModel[]>([]);
   useEffect(() => {
     (async () => {
-      const movies = await movieService.get({ page: 1 });
-      setMovieList(movies);
+      try {
+        const movies = await movieService.get({ page: 1 });
+        setMovieList(movies);
+      } catch (error) {
+        console.error(error);
+        alert((error as any)?.response?.data || (error as any).message);
+      }
     })();
   }, []);
 

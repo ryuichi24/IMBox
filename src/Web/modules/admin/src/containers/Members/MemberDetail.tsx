@@ -31,7 +31,7 @@ export const MemberDetail = () => {
         setInputs(fetchedMember);
       } catch (error) {
         console.error(error);
-        alert((error as any).response.data);
+        alert((error as any)?.response?.data || (error as any).message);
       }
     })();
   }, [memberId]);

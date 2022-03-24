@@ -1,13 +1,18 @@
+import React, { useEffect, useState } from 'react';
 import { UserModel } from '@/models/user-model';
 import { userService } from '@/services/user-service';
-import React, { useEffect, useState } from 'react';
 
 export const UsersPage = () => {
   const [userList, setUserList] = useState<UserModel[]>([]);
   useEffect(() => {
     (async () => {
-      const users = await userService.get({ page: 1 });
-      setUserList(users);
+      try {
+        const users = await userService.get({ page: 1 });
+        setUserList(users);
+      } catch (error) {
+        console.error(error);
+        alert((error as any)?.response?.data || (error as any).message);
+      }
     })();
   }, []);
 
