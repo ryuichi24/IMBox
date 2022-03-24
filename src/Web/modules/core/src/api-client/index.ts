@@ -9,6 +9,20 @@ export const apiClient = axios.create({
 
 const retryAxios = axios.create({ baseURL: process.env.API_URL || 'http://localhost:5555' });
 
+retryAxios.interceptors.response.use(
+  (response) => {
+    return response;
+  },
+  async (err: AxiosError) => {
+    const { config, response } = err;
+
+    if (config.url === refreshTokenEndpoint) {
+      tokenManager.refreshToken.remove();
+      throw err;
+    }
+  },
+);
+
 apiClient.interceptors.response.use(
   (response) => {
     const result = response.data;
@@ -28,16 +42,13 @@ apiClient.interceptors.response.use(
 
     if (response?.status !== 401) throw err;
 
-    if (config.url === refreshTokenEndpoint) {
-      tokenManager.refreshToken.remove();
-      throw err;
-    }
-
     const refreshToken = tokenManager.refreshToken.get();
+
     if (!refreshToken) throw err;
 
     const res = await retryAxios.post(refreshTokenEndpoint, { refreshToken });
-    const result = res.data;
+
+    const result = res?.data;
 
     if (result?.accessToken?.token) {
       tokenManager.accessToken.set(result.accessToken.token, result.accessToken.expiresIn);
@@ -47,7 +58,9 @@ apiClient.interceptors.response.use(
       tokenManager.refreshToken.set(result.refreshToken.token);
     }
 
-    return await apiClient(config);
+    if (config.headers) config.headers.Authorization = `Bearer ${result?.accessToken?.token}`;
+
+    return await apiClient.request(config);
   },
 );
 
