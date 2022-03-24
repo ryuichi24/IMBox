@@ -23,6 +23,7 @@ export const App = () => {
       <Routes>
         <Route element={<ProtectedRoute isAllowed={isAuthenticated} redirectPath="/signin" />}>
           <Route path="/" element={<Layout />}>
+            <Route path="/" element={<Navigate to="/dashboard" />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/users" element={<UsersPage />} />
             <Route path="/movies" element={<MoviesPaage />} />
