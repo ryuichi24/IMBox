@@ -3,7 +3,6 @@ import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
 // hooks
 import { useAuth } from '@/hooks/useAuth';
 // page components
-import { Dashboard } from '@/pages/Dashboard';
 import { UsersPage } from '@/pages/UsersPage';
 import { MoviesPaage } from '@/pages/MoviesPage';
 import { MembersPage } from '@/pages/MembersPage';
@@ -12,6 +11,7 @@ import { SignInPage } from '@/pages/SigninPage';
 import { ProtectedRoute } from '@/components/ProtectedRoute';
 import { Layout } from '@/components/Layout';
 import { MemberDetail } from '@/containers/Members/MemberDetail';
+import { MovieDetail } from '@/containers/Movies/MovieDetail';
 
 export const App = () => {
   const location = useLocation();
@@ -23,10 +23,10 @@ export const App = () => {
       <Routes>
         <Route element={<ProtectedRoute isAllowed={isAuthenticated} redirectPath="/signin" />}>
           <Route path="/" element={<Layout />}>
-            <Route path="/" element={<Navigate to="/dashboard" />} />
-            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/" element={<Navigate to="/users" />} />
             <Route path="/users" element={<UsersPage />} />
             <Route path="/movies" element={<MoviesPaage />} />
+            <Route path="/movies/:movieId" element={<MovieDetail />} />
             <Route path="/members" element={<MembersPage />} />
             <Route path="/members/:memberId" element={<MemberDetail />} />
           </Route>
@@ -36,7 +36,7 @@ export const App = () => {
           <Route path="/signin" element={<SignInPage />} />
         </Route>
 
-        <Route path="*" element={<Navigate to="/dashboard" />} />
+        <Route path="*" element={<Navigate to="/users" />} />
       </Routes>
     </div>
   );

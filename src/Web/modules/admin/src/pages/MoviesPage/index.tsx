@@ -6,6 +6,7 @@ import { PrimaryBtn, SecondaryBtn } from '@/components/UI';
 import { InputField } from '@/components/InputField';
 import { MemberModel } from '@/models/member-model';
 import { memberService } from '@/services/member-service';
+import { MovieItem } from '@/components/MovieItem';
 
 export const MoviesPaage = () => {
   const [movieList, setMovieList] = useState<MovieModel[]>([]);
@@ -88,14 +89,7 @@ export const MoviesPaage = () => {
         </div>
         <div className="card h-100 d-flex flex-row" style={{ gap: '1rem' }}>
           {movieList.map((movieItem) => (
-            <div key={movieItem.id} className="card shadow-sm h-auto" style={{ maxWidth: '230px', maxHeight: '500px' }}>
-              <img src={movieItem.mainPosterUrl} alt={movieItem.title} className="w-100" />
-              <div className="card-body">
-                <p className="fw-bold text-center">{movieItem.title}</p>
-                <p className="text-truncate">{movieItem.description}</p>
-                <small>{movieItem.commentCount} comments</small>
-              </div>
-            </div>
+            <MovieItem key={movieItem.id} movieItem={movieItem} />
           ))}
         </div>
       </div>
@@ -153,7 +147,7 @@ export const MoviesPaage = () => {
                 className="form-select"
                 multiple
                 value={movieMembers}
-                size={3}
+                size={5}
                 onChange={(e) => setMovieMembers(Array.from(e.target.selectedOptions, (option) => option.value))}
               >
                 {memberList.map((memberItem) => (

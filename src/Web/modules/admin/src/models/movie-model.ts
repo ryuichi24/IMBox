@@ -8,4 +8,5 @@ export interface MovieModel {
   otherPostUrls?: string[];
   otherTrailerUrls?: string[];
   memberIds?: string[];
+  members?: any[];
 }

@@ -6,11 +6,6 @@ export const Sidebar = () => {
 
   const navItems = [
     {
-      itemName: 'Dashboard',
-      path: '/dashboard',
-      icon: 'fa-solid fa-gauge',
-    },
-    {
       itemName: 'Users',
       path: '/users',
       icon: 'fa-solid fa-users',
