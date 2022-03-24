@@ -43,16 +43,62 @@ export const MembersPage = () => {
           ))}
         </div>
       </div>
-      <ReusableModal show={showNewFormModal} onClose={closeNewFormModal}>
+      <ReusableModal show={showNewFormModal}>
         <>New Member</>
-        <>some inputs</>
         <>
-          <button type="button" className="btn btn-secondary" data-bs-dismiss="modal" onClick={closeNewFormModal}>
-            Close
-          </button>
-          <button type="button" className="btn btn-primary">
-            Save changes
-          </button>
+          <form>
+            <div className="mb-3">
+              <label htmlFor="memberName" className="form-label">
+                Name
+              </label>
+              <input type="email" className="form-control" id="memberName" />
+            </div>
+
+            <div className="mb-3">
+              <label htmlFor="memberDescription" className="form-label">
+                Description
+              </label>
+              <textarea className="form-control" id="memberDescription" rows={3}></textarea>
+            </div>
+
+            <div className="mb-3">
+              <label htmlFor="memberImage" className="form-label">
+                Image
+              </label>
+              <input type="url" className="form-control" id="memberImage" placeholder="https//example.com/image.jpeg" />
+              <div id="emailHelp" className="form-text">
+                Please paste URL of the image
+              </div>
+            </div>
+
+            <div className="mb-3">
+              <label htmlFor="memberBirthDate" className="form-label">
+                Birth date
+              </label>
+              <input id="memberBirthDate" className="form-control" type="date" />
+            </div>
+
+            <div className="mb-3">
+              <label htmlFor="memberRole" className="form-label">
+                Role
+              </label>
+              <select id="memberRole" className="form-select">
+                <option selected>--- Member role ---</option>
+                <option value="cast">Cast</option>
+                <option value="director">Director</option>
+                <option value="writer">Writer</option>
+              </select>
+            </div>
+
+            <div className="d-flex justify-content-end" style={{ gap: '1rem' }}>
+              <button type="button" className="btn btn-secondary" data-bs-dismiss="modal" onClick={closeNewFormModal}>
+                Close
+              </button>
+              <button type="button" className="btn btn-primary">
+                Save changes
+              </button>
+            </div>
+          </form>
         </>
       </ReusableModal>
     </>

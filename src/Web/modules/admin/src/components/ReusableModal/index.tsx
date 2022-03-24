@@ -7,7 +7,7 @@ interface Props {
 }
 
 export const ReusableModal = ({ children, show }: Props) => {
-  const [headerChild, bodyChild, footerChild] = React.Children.toArray(children);
+  const [headerChild, bodyChild] = React.Children.toArray(children);
 
   return ReactDOM.createPortal(
     <>
@@ -19,7 +19,6 @@ export const ReusableModal = ({ children, show }: Props) => {
               <div className="modal-content">
                 <div className="modal-header">{headerChild}</div>
                 <div className="modal-body">{bodyChild}</div>
-                <div className="modal-footer">{footerChild}</div>
               </div>
             </div>
           </div>
