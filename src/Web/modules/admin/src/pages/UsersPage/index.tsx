@@ -13,7 +13,10 @@ export const UsersPage = () => {
 
   return (
     <div className="p-4 h-100" style={{ overflow: 'scroll' }}>
-      <h2 className="mb-3">Users</h2>
+      <div className="mb-3 d-flex w-100 justify-content-between">
+        <h2>Users</h2>
+        <button className="btn btn-primary">+ New user</button>
+      </div>
       <div className="card h-100">
         <table className="table">
           <thead>

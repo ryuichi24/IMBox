@@ -13,7 +13,10 @@ export const MembersPage = () => {
 
   return (
     <div className="p-4 h-100" style={{ overflow: 'scroll' }}>
-      <h2 className="pb-3">Members</h2>
+      <div className="mb-3 d-flex w-100 justify-content-between">
+        <h2>Members</h2>
+        <button className="btn btn-primary">+ New member</button>
+      </div>
       <div className="card h-100 d-flex flex-row" style={{ gap: '1rem' }}>
         {memberList.map((memberItem) => (
           <div key={memberItem.id} className="card shadow-sm h-auto" style={{ maxWidth: '230px', maxHeight: '470px' }}>
