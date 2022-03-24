@@ -11,7 +11,7 @@ import { SignInPage } from '@/pages/SigninPage';
 // components
 import { ProtectedRoute } from '@/components/ProtectedRoute';
 import { Layout } from '@/components/Layout';
-import { MemberDetail } from '@/containers/MemberDetail';
+import { MemberDetail } from '@/containers/Members/MemberDetail';
 
 export const App = () => {
   const location = useLocation();
