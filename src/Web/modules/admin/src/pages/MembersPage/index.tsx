@@ -46,6 +46,8 @@ export const MembersPage = () => {
 
       await memberService.create({ member: newMember });
 
+      alert('successfully created');
+
       clearInputs();
     } catch (error) {
       console.error(error);
