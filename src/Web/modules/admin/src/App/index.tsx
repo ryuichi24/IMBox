@@ -11,6 +11,7 @@ import { SignInPage } from '@/pages/SigninPage';
 // components
 import { ProtectedRoute } from '@/components/ProtectedRoute';
 import { Layout } from '@/components/Layout';
+import { MemberDetail } from '@/containers/MemberDetail';
 
 export const App = () => {
   const location = useLocation();
@@ -26,6 +27,7 @@ export const App = () => {
             <Route path="/users" element={<UsersPage />} />
             <Route path="/movies" element={<MoviesPaage />} />
             <Route path="/members" element={<MembersPage />} />
+            <Route path="/members/:memberId" element={<MemberDetail />} />
           </Route>
         </Route>
 

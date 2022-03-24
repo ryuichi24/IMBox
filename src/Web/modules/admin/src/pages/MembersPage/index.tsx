@@ -4,6 +4,7 @@ import { memberService } from '@/services/member-service';
 import { ReusableModal } from '@/components/ReusableModal';
 import { MemberItem } from '@/components/MemberItem';
 import { PrimaryBtn, SecondaryBtn } from '@/components/UI';
+import { InputField } from '@/components/InputField';
 
 export const MembersPage = () => {
   const [showNewFormModal, setShowNewFormModal] = useState(false);
@@ -68,55 +69,42 @@ export const MembersPage = () => {
         <>
           <form onSubmit={handleNewMemberFormSubmit}>
             <div className="mb-3">
-              <label htmlFor="memberName" className="form-label">
-                Name
-              </label>
-              <input
-                type="text"
-                className="form-control"
+              <InputField
+                label="Name"
                 id="memberName"
+                type="text"
                 onChange={(e) => setMemberName(e.target.value)}
                 value={memberName}
               />
             </div>
 
             <div className="mb-3">
-              <label htmlFor="memberDescription" className="form-label">
-                Description
-              </label>
-              <textarea
-                className="form-control"
+              <InputField
+                multiLine
+                maxRows={3}
+                label="Description"
                 id="memberDescription"
-                rows={3}
-                value={memberDescription}
                 onChange={(e) => setMemberDescription(e.target.value)}
-              ></textarea>
+                value={memberDescription}
+              />
             </div>
 
             <div className="mb-3">
-              <label htmlFor="memberImage" className="form-label">
-                Image
-              </label>
-              <input
-                type="url"
-                className="form-control"
+              <InputField
+                label="Image"
                 id="memberImage"
                 placeholder="https//example.com/image.jpeg"
-                value={memberImage}
+                formText="Please paste URL of the image"
+                type="url"
                 onChange={(e) => setMemberImage(e.target.value)}
+                value={memberImage}
               />
-              <div id="emailHelp" className="form-text">
-                Please paste URL of the image
-              </div>
             </div>
 
             <div className="mb-3">
-              <label htmlFor="memberBirthDate" className="form-label">
-                Birth date
-              </label>
-              <input
+              <InputField
+                label="Birth date"
                 id="memberBirthDate"
-                className="form-control"
                 type="date"
                 onChange={(e) => setMemberBirthDate(e.target.value)}
                 value={memberBirthDate}
