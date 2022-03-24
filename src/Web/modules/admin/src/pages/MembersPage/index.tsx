@@ -3,7 +3,7 @@ import { MemberModel } from '@/models/member-model';
 import { memberService } from '@/services/member-service';
 import { ReusableModal } from '@/components/ReusableModal';
 import { MemberItem } from '@/components/MemberItem';
-import { PrimaryBtn } from '@/components/UI';
+import { PrimaryBtn, SecondaryBtn } from '@/components/UI';
 
 export const MembersPage = () => {
   const [showNewFormModal, setShowNewFormModal] = useState(false);
@@ -80,12 +80,8 @@ export const MembersPage = () => {
             </div>
 
             <div className="d-flex justify-content-end" style={{ gap: '1rem' }}>
-              <button type="button" className="btn btn-secondary" data-bs-dismiss="modal" onClick={closeNewFormModal}>
-                Close
-              </button>
-              <button type="button" className="btn btn-primary">
-                Save changes
-              </button>
+              <SecondaryBtn btnText="Close" onClick={closeNewFormModal} />
+              <PrimaryBtn btnText="Save" />
             </div>
           </form>
         </>
