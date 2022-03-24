@@ -1,5 +1,5 @@
 import { InputField } from '@/components/InputField';
-import { PrimaryBtn, SecondaryBtn } from '@/components/UI';
+import { PrimaryBtn } from '@/components/UI';
 import { MemberModel } from '@/models/member-model';
 import { MovieModel } from '@/models/movie-model';
 import { memberService } from '@/services/member-service';

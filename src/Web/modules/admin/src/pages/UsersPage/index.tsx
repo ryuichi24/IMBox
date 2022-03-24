@@ -5,6 +5,7 @@ import { ReusableModal } from '@/components/ReusableModal';
 import { PrimaryBtn, SecondaryBtn } from '@/components/UI';
 import { InputField } from '@/components/InputField';
 import { countries } from '@/utils/countries';
+import { UserItem } from '@/components/UserItem';
 
 export const UsersPage = () => {
   const [userList, setUserList] = useState<UserModel[]>([]);
@@ -89,22 +90,12 @@ export const UsersPage = () => {
                 <th scope="col">Country</th>
                 <th scope="col">Birth date</th>
                 <th scope="col">Role</th>
+                <th scope="col">Actions</th>
               </tr>
             </thead>
             <tbody>
               {userList.map((userItem) => (
-                <tr key={userItem.id}>
-                  <td>{userItem.username}</td>
-                  <td>{userItem.email}</td>
-                  <td>{userItem.gender}</td>
-                  <td>{userItem.country}</td>
-                  <td>{userItem.birthDate.toString().split('T')[0]}</td>
-                  <td>
-                    {userItem.roles.map((role) => (
-                      <span key={role}>{role} </span>
-                    ))}
-                  </td>
-                </tr>
+                <UserItem key={userItem.id} userItem={userItem} />
               ))}
             </tbody>
           </table>

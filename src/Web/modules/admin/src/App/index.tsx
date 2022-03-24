@@ -12,6 +12,7 @@ import { ProtectedRoute } from '@/components/ProtectedRoute';
 import { Layout } from '@/components/Layout';
 import { MemberDetail } from '@/containers/Members/MemberDetail';
 import { MovieDetail } from '@/containers/Movies/MovieDetail';
+import { UserDetail } from '@/containers/Users/UserDetail';
 
 export const App = () => {
   const location = useLocation();
@@ -25,6 +26,7 @@ export const App = () => {
           <Route path="/" element={<Layout />}>
             <Route path="/" element={<Navigate to="/users" />} />
             <Route path="/users" element={<UsersPage />} />
+            <Route path="/users/:userId" element={<UserDetail />} />
             <Route path="/movies" element={<MoviesPaage />} />
             <Route path="/movies/:movieId" element={<MovieDetail />} />
             <Route path="/members" element={<MembersPage />} />
