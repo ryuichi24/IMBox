@@ -109,6 +109,8 @@ export const MoviesPaage = () => {
             </div>
             <div className="mb-3">
               <InputField
+                multiLine
+                maxRows={3}
                 label="Description"
                 id="movieDescription"
                 type="text"
