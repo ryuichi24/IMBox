@@ -3,7 +3,7 @@ export interface UserModel {
   username: string;
   email: string;
   password: string;
-  birthDate: Date;
+  birthDate: Date | string;
   gender: 'm' | 'f' | 'n';
   country: string;
   roles: string[];
