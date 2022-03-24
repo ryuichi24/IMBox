@@ -3,6 +3,6 @@ export interface MemberModel {
   name: string;
   description: string;
   headshotUrl: string;
-  birthDate: Date;
+  birthDate: Date | string;
   role: string;
 }

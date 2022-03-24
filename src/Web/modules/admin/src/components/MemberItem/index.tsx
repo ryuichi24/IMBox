@@ -12,7 +12,8 @@ export const MemberItem = ({ memberItem }: Props) => {
       <div className="card-body">
         <p className="fw-bold text-center">{memberItem.name}</p>
         <p className="text-truncate">{memberItem.description}</p>
-        <small>Birth Date: {memberItem.birthDate.toString().split('T')[0]}</small>
+        <small className="d-block">Role: {memberItem.role}</small>
+        <small className="d-block">Birth Date: {memberItem.birthDate.toString().split('T')[0]}</small>
       </div>
     </div>
   );
