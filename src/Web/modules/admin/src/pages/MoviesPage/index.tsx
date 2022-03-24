@@ -12,17 +12,20 @@ export const MoviesPaage = () => {
   }, []);
 
   return (
-    <div className="card h-100 m-4 d-flex flex-row" style={{ gap: '1rem' }}>
-      {movieList.map((movieItem) => (
-        <div key={movieItem.id} className="card shadow-sm h-auto" style={{ maxWidth: '230px', maxHeight: '470px' }}>
-          <img src={movieItem.mainPosterUrl} alt={movieItem.title} className="w-100" />
-          <div className="card-body">
-            <p className="fw-bold text-center">{movieItem.title}</p>
-            <p className="text-truncate">{movieItem.description}</p>
-            <small>{movieItem.commentCount} comments</small>
+    <div className="p-4 h-100" style={{ overflow: 'scroll' }}>
+      <h2 className="mb-3">Movies</h2>
+      <div className="card h-100 d-flex flex-row" style={{ gap: '1rem' }}>
+        {movieList.map((movieItem) => (
+          <div key={movieItem.id} className="card shadow-sm h-auto" style={{ maxWidth: '230px', maxHeight: '470px' }}>
+            <img src={movieItem.mainPosterUrl} alt={movieItem.title} className="w-100" />
+            <div className="card-body">
+              <p className="fw-bold text-center">{movieItem.title}</p>
+              <p className="text-truncate">{movieItem.description}</p>
+              <small>{movieItem.commentCount} comments</small>
+            </div>
           </div>
-        </div>
-      ))}
+        ))}
+      </div>
     </div>
   );
 };

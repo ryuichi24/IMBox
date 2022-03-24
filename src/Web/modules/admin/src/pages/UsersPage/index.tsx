@@ -12,35 +12,38 @@ export const UsersPage = () => {
   }, []);
 
   return (
-    <div className="card h-100 m-4">
-      <table className="table">
-        <thead>
-          <tr>
-            <th scope="col">Username</th>
-            <th scope="col">Email</th>
-            <th scope="col">Gender</th>
-            <th scope="col">Country</th>
-            <th scope="col">Birth date</th>
-            <th scope="col">Role</th>
-          </tr>
-        </thead>
-        <tbody>
-          {userList.map((userItem) => (
-            <tr key={userItem.id}>
-              <td>{userItem.username}</td>
-              <td>{userItem.email}</td>
-              <td>{userItem.gender}</td>
-              <td>{userItem.country}</td>
-              <td>{userItem.birthDate.toString().split('T')[0]}</td>
-              <td>
-                {userItem.roles.map((role) => (
-                  <span key={role}>{role} </span>
-                ))}
-              </td>
+    <div className="p-4 h-100" style={{ overflow: 'scroll' }}>
+      <h2 className="mb-3">Users</h2>
+      <div className="card h-100">
+        <table className="table">
+          <thead>
+            <tr>
+              <th scope="col">Username</th>
+              <th scope="col">Email</th>
+              <th scope="col">Gender</th>
+              <th scope="col">Country</th>
+              <th scope="col">Birth date</th>
+              <th scope="col">Role</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {userList.map((userItem) => (
+              <tr key={userItem.id}>
+                <td>{userItem.username}</td>
+                <td>{userItem.email}</td>
+                <td>{userItem.gender}</td>
+                <td>{userItem.country}</td>
+                <td>{userItem.birthDate.toString().split('T')[0]}</td>
+                <td>
+                  {userItem.roles.map((role) => (
+                    <span key={role}>{role} </span>
+                  ))}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };
