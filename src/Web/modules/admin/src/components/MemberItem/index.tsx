@@ -1,5 +1,5 @@
 import React from 'react';
-import { MemberModel } from '@/models/member-model';
+import { MemberModel } from '@IMBoxWeb/core/dist/models';
 import { SecondaryBtn } from '../UI';
 import { Link } from 'react-router-dom';
 

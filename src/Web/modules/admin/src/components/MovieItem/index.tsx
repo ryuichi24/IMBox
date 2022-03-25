@@ -1,5 +1,5 @@
 import React from 'react';
-import { MovieModel } from '@/models/movie-model';
+import { MovieModel } from '@IMBoxWeb/core/dist/models';
 import { Link } from 'react-router-dom';
 import { SecondaryBtn } from '../UI';
 

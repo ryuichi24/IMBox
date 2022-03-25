@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { UserModel } from '@/models/user-model';
+import { UserModel } from '@IMBoxWeb/core/dist/models';
 import { SecondaryBtn } from '../UI';
 
 interface Props {
