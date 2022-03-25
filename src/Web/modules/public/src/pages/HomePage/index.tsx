@@ -3,6 +3,7 @@ import { MovieModel } from '@IMBoxWeb/core/dist/models';
 import { movieService } from '@IMBoxWeb/core/dist/services';
 import { MovieItem } from '@/components/MovieItem';
 import { Link } from 'react-router-dom';
+import { Heading } from '@/components/UI';
 
 export const HomePage = () => {
   const [movieList, setMovieList] = useState<MovieModel[]>([]);
@@ -29,8 +30,7 @@ export const HomePage = () => {
         </Link>
       </div>
       <div className="p-1 mt-5">
-        <h2 className="border-start border-warning border-4 ps-2 mb-3">Top rating</h2>
-        <hr />
+        <Heading level={2} text="Top Rating" />
         <div className="d-flex flex-wrap justify-content-between" style={{ gap: '1rem' }}>
           {movieList.map((movieItem) => (
             <MovieItem key={movieItem.id} movieItem={movieItem} />
@@ -39,8 +39,7 @@ export const HomePage = () => {
       </div>
 
       <div className="p-1 mt-5">
-        <h2 className="border-start border-warning border-4 ps-2 mb-3">Newly added</h2>
-        <hr />
+        <Heading level={2} text="Newly added" />
         <div className="d-flex flex-wrap justify-content-between" style={{ gap: '1rem' }}>
           {movieList.map((movieItem) => (
             <MovieItem key={movieItem.id} movieItem={movieItem} />

@@ -3,6 +3,7 @@ import { movieService } from '@IMBoxWeb/core/dist/services';
 import { useParams } from 'react-router-dom';
 import { MovieModel } from '@IMBoxWeb/core/src/models';
 import { Link } from 'react-router-dom';
+import { Heading } from '@/components/UI';
 
 export const MovieDetailPage = () => {
   const { movieId } = useParams();
@@ -31,13 +32,13 @@ export const MovieDetailPage = () => {
           className="w-auto d-block"
           style={{ maxHeight: '800px' }}
         />
-        <div className="">
+        <div>
           <div>
-            <h3 className="border-start border-warning border-4 ps-2 mb-3 w-75">Summary</h3>
-            <p className="">{movieItem?.description}</p>
+            <Heading level={3} text="Summary" />
+            <p>{movieItem?.description}</p>
           </div>
           <div>
-            <h3 className="border-start border-warning border-4 ps-2 mb-3 w-75">Members</h3>
+            <Heading level={3} text="Members" />
             <h4>Directors</h4>
             <div>
               {movieItem?.members
@@ -73,7 +74,7 @@ export const MovieDetailPage = () => {
             <hr />
           </div>
           <div>
-            <h3 className="border-start border-warning border-4 ps-2 mb-3 w-75">Rating</h3>
+            <Heading level={3} text="Rating" />
           </div>
           <div className="d-flex justify-content-between pt-2">
             <div></div>
@@ -81,7 +82,7 @@ export const MovieDetailPage = () => {
         </div>
       </div>
       <div className="mt-5">
-        <h2 className="border-start border-warning border-4 ps-2">Comments</h2>
+        <Heading level={2} text="Comments" />
       </div>
     </div>
   );
