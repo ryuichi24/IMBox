@@ -10,6 +10,7 @@ import { SigninPage } from '@/pages/SigninPage';
 import { ProtectedRoute } from '@/components/ProtectedRoute';
 import { Layout } from '@/components/Layout';
 import { MoviesPage } from '@/pages/MoviesPage';
+import { MemberDetailPage } from '@/pages/MemberDetailPage';
 
 export const App = () => {
   const isAuthenticated = true;
@@ -21,6 +22,7 @@ export const App = () => {
           <Route path="/" element={<HomePage />} />
           <Route path="/movies" element={<MoviesPage />} />
           <Route path="/movies/:movieId" element={<MovieDetailPage />} />
+          <Route path="/members/:memberId" element={<MemberDetailPage />} />
           <Route path="/movies/:movieId/ratings" element={<RatingsPage />} />
 
           <Route element={<ProtectedRoute isAllowed={isAuthenticated} redirectPath="/signin" />}>
