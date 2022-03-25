@@ -4,9 +4,12 @@ import { movieService } from '@IMBoxWeb/core/dist/services';
 import { MovieItem } from '@/components/MovieItem';
 import { Link } from 'react-router-dom';
 import { Heading } from '@/components/UI';
+import { useAuthContext } from '@/contexts/auth-context';
+import { Spinner } from '@/components/Spinner';
 
 export const HomePage = () => {
   const [movieList, setMovieList] = useState<MovieModel[]>([]);
+  const { isAuthenticated, isLoading } = useAuthContext();
   useEffect(() => {
     (async () => {
       try {
@@ -25,9 +28,15 @@ export const HomePage = () => {
         <p className="lead">This is a movie database web service.</p>
         <hr className="my-4" />
         <p>You can explore a variety type of movies in one place.</p>
-        <Link className="btn btn-warning btn-lg" to="/signin" role="button">
-          Sign In
-        </Link>
+        {isLoading ? (
+          <Spinner color="yellow" />
+        ) : (
+          !isAuthenticated && (
+            <Link className="btn btn-warning btn-lg" to="/signin" role="button">
+              Sign In
+            </Link>
+          )
+        )}
       </div>
       <div className="p-1 mt-5">
         <Heading level={2} text="Top Rating" />

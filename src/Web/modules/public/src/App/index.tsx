@@ -11,9 +11,11 @@ import { ProtectedRoute } from '@/components/ProtectedRoute';
 import { Layout } from '@/components/Layout';
 import { MoviesPage } from '@/pages/MoviesPage';
 import { MemberDetailPage } from '@/pages/MemberDetailPage';
+// contexts
+import { useAuthContext } from '@/contexts/auth-context';
 
 export const App = () => {
-  const isAuthenticated = true;
+  const { isAuthenticated } = useAuthContext();
 
   return (
     <>

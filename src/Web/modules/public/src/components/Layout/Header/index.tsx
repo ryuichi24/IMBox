@@ -1,9 +1,12 @@
 import React from 'react';
+import { useAuthContext } from '@/contexts/auth-context';
 import { Link } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
+import { Spinner } from '@/components/Spinner';
 
 export const Header = () => {
   const { pathname } = useLocation();
+  const { isAuthenticated, isLoading } = useAuthContext();
 
   const navItemList = [
     {
@@ -45,9 +48,18 @@ export const Header = () => {
           </ul>
 
           <div className="text-end">
-            <button type="button" className="btn btn-warning">
-              Sign In
-            </button>
+            {isLoading ? (
+              <Spinner color="yellow" />
+            ) : (
+              !isAuthenticated && (
+                <button type="button" className="btn btn-warning">
+                  <Link className="text-decoration-none" to={`/signin`} style={{ color: 'black' }}>
+                    Sign In
+                  </Link>
+                </button>
+              )
+            )}
+            {}
           </div>
         </div>
       </div>
