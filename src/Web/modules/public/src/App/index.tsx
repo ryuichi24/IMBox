@@ -2,23 +2,25 @@ import React from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
 // pages
 import { HomePage } from '@/pages/HomePage';
-import { MoviePage } from '@/pages/MoviePage';
+import { MovieDetailPage } from '../pages/MovieDetailPage';
 import { RatingsPage } from '@/pages/RatingsPage';
 import { UserProfilePage } from '@/pages/UserProfilePage';
 import { SigninPage } from '@/pages/SigninPage';
 // components
 import { ProtectedRoute } from '@/components/ProtectedRoute';
 import { Layout } from '@/components/Layout';
+import { MoviesPage } from '@/pages/MoviesPage';
 
 export const App = () => {
   const isAuthenticated = true;
 
   return (
-    <div className="container">
+    <>
       <Routes>
         <Route element={<Layout />}>
           <Route path="/" element={<HomePage />} />
-          <Route path="/movies/:movieId" element={<MoviePage />} />
+          <Route path="/movies" element={<MoviesPage />} />
+          <Route path="/movies/:movieId" element={<MovieDetailPage />} />
           <Route path="/movies/:movieId/ratings" element={<RatingsPage />} />
 
           <Route element={<ProtectedRoute isAllowed={isAuthenticated} redirectPath="/signin" />}>
@@ -32,6 +34,6 @@ export const App = () => {
 
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>
-    </div>
+    </>
   );
 };
