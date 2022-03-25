@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { MovieModel } from '@IMBoxWeb/core/dist/models';
 import { movieService } from '@IMBoxWeb/core/dist/services';
+import { MovieItem } from '@/components/MovieItem';
+import { Link } from 'react-router-dom';
 
 export const HomePage = () => {
   const [movieList, setMovieList] = useState<MovieModel[]>([]);
@@ -17,19 +19,33 @@ export const HomePage = () => {
   }, []);
   return (
     <>
-      <div className="d-flex flex-wrap" style={{ gap: '1rem' }}>
-        {movieList.map((movieItem) => (
-          <div className="card p-2 shadow-sm w-25" key={movieItem.id}>
-            {movieItem.title}
-            <div className="card-body">
-              <p className="text-truncate">{movieItem.description}</p>
-              <p className="text-truncate">{movieItem.commentCount} comments</p>
-              {movieItem.members?.map((memberItem) => (
-                <div key={memberItem.id}>{memberItem.name}</div>
-              ))}
-            </div>
-          </div>
-        ))}
+      <div className="jumbotron">
+        <h1 className="display-4">IMBox</h1>
+        <p className="lead">This is a movie database web service.</p>
+        <hr className="my-4" />
+        <p>You can explore a variety type of movies in one place.</p>
+        <Link className="btn btn-warning btn-lg" to="/signin" role="button">
+          Sign In
+        </Link>
+      </div>
+      <div className="p-1 mt-5">
+        <h2 className="border-start border-warning border-4 ps-2 mb-3">Top rating</h2>
+        <hr />
+        <div className="d-flex flex-wrap justify-content-between" style={{ gap: '1rem' }}>
+          {movieList.map((movieItem) => (
+            <MovieItem key={movieItem.id} movieItem={movieItem} />
+          ))}
+        </div>
+      </div>
+
+      <div className="p-1 mt-5">
+        <h2 className="border-start border-warning border-4 ps-2 mb-3">Newly added</h2>
+        <hr />
+        <div className="d-flex flex-wrap justify-content-between" style={{ gap: '1rem' }}>
+          {movieList.map((movieItem) => (
+            <MovieItem key={movieItem.id} movieItem={movieItem} />
+          ))}
+        </div>
       </div>
     </>
   );
