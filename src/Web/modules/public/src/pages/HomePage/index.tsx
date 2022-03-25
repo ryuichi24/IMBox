@@ -6,8 +6,13 @@ export const HomePage = () => {
   const [movieList, setMovieList] = useState<MovieModel[]>([]);
   useEffect(() => {
     (async () => {
-      const fetchedMovies = await movieService.get({ page: 1 });
-      setMovieList(fetchedMovies);
+      try {
+        const fetchedMovies = await movieService.get({ page: 1 });
+        setMovieList(fetchedMovies);
+      } catch (error) {
+        console.error(error);
+        alert((error as any)?.response?.data || (error as any).message);
+      }
     })();
   }, []);
   return (
