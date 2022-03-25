@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { MovieModel } from '@IMBoxWeb/core/src/models';
 
 interface Props {
@@ -13,7 +14,9 @@ export const MovieItem = ({ movieItem }: Props) => {
       key={movieItem.id}
     >
       <h3>{movieItem.title}</h3>
-      <img src={movieItem.mainPosterUrl} alt={movieItem.title} className="w-100" />
+      <Link to={`/movies/${movieItem.id}`}>
+        <img src={movieItem.mainPosterUrl} alt={movieItem.title} className="w-100" />
+      </Link>
       <div className="card-body">
         <p className="text-truncate">{movieItem.description}</p>
         <p className="text-truncate">{movieItem.commentCount} comments</p>
