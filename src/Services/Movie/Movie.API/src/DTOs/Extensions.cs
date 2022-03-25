@@ -25,7 +25,10 @@ namespace IMBox.Services.Movie.API.DTOs
                 OtherPostUrls = movieEntity.OtherPostUrls,
                 OtherTrailerUrls = movieEntity.OtherTrailerUrls,
                 CommentCount = movieEntity.CommentCount,
-                Members = memberDTOs
+                Members = memberDTOs,
+                Directors = memberDTOs.Where(memberItem => memberItem.Role == "director"),
+                Writers = memberDTOs.Where(memberItem => memberItem.Role == "writer"),
+                Casts = memberDTOs.Where(memberItem => memberItem.Role == "cast"),
             };
         }
     }

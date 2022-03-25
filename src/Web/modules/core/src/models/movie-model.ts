@@ -1,3 +1,9 @@
+interface MemberDTO {
+  id: string;
+  name: string;
+  role: string;
+}
+
 export interface MovieModel {
   id?: string;
   title?: string;
@@ -8,5 +14,8 @@ export interface MovieModel {
   otherPostUrls?: string[];
   otherTrailerUrls?: string[];
   memberIds?: string[];
-  members?: any[];
+  members?: MemberDTO[];
+  directors: MemberDTO[];
+  writers: MemberDTO[];
+  casts: MemberDTO[];
 }

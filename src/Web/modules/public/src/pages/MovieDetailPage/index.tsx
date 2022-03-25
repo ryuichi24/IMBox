@@ -41,35 +41,29 @@ export const MovieDetailPage = () => {
             <Heading level={3} text="Members" />
             <h4>Directors</h4>
             <div>
-              {movieItem?.members
-                ?.filter((memberItem) => memberItem?.role === 'director')
-                .map((memberItem) => (
-                  <Link className="me-2" key={memberItem.id} to={`/members/${memberItem.id}`}>
-                    {memberItem?.name}
-                  </Link>
-                ))}
+              {movieItem?.directors?.map((memberItem) => (
+                <Link className="me-2" key={memberItem.id} to={`/members/${memberItem.id}`}>
+                  {memberItem?.name}
+                </Link>
+              ))}
             </div>
             <hr />
             <h4>Writers</h4>
             <div>
-              {movieItem?.members
-                ?.filter((memberItem) => memberItem?.role === 'writer')
-                .map((memberItem) => (
-                  <Link className="me-2" key={memberItem.id} to={`/members/${memberItem.id}`}>
-                    {memberItem?.name}
-                  </Link>
-                ))}
+              {movieItem?.writers?.map((memberItem) => (
+                <Link className="me-2" key={memberItem.id} to={`/members/${memberItem.id}`}>
+                  {memberItem?.name}
+                </Link>
+              ))}
             </div>
             <hr />
             <h4>Casts</h4>
             <div>
-              {movieItem?.members
-                ?.filter((memberItem) => memberItem?.role === 'cast')
-                .map((memberItem) => (
-                  <Link className="me-2" key={memberItem.id} to={`/members/${memberItem.id}`}>
-                    {memberItem?.name}
-                  </Link>
-                ))}
+              {movieItem?.casts?.map((memberItem) => (
+                <Link className="me-2" key={memberItem.id} to={`/members/${memberItem.id}`}>
+                  {memberItem?.name}
+                </Link>
+              ))}
             </div>
             <hr />
           </div>
