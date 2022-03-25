@@ -4,7 +4,7 @@ import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
 // page components
 import { UsersPage } from '@/pages/UsersPage';
-import { MoviesPaage } from '@/pages/MoviesPage';
+import { MoviesPage } from '@/pages/MoviesPage';
 import { MembersPage } from '@/pages/MembersPage';
 import { SignInPage } from '@/pages/SigninPage';
 // components
@@ -27,7 +27,7 @@ export const App = () => {
             <Route path="/" element={<Navigate to="/users" />} />
             <Route path="/users" element={<UsersPage />} />
             <Route path="/users/:userId" element={<UserDetail />} />
-            <Route path="/movies" element={<MoviesPaage />} />
+            <Route path="/movies" element={<MoviesPage />} />
             <Route path="/movies/:movieId" element={<MovieDetail />} />
             <Route path="/members" element={<MembersPage />} />
             <Route path="/members/:memberId" element={<MemberDetail />} />

@@ -8,7 +8,7 @@ import { MemberModel } from '@/models/member-model';
 import { memberService } from '@/services/member-service';
 import { MovieItem } from '@/components/MovieItem';
 
-export const MoviesPaage = () => {
+export const MoviesPage = () => {
   const [movieList, setMovieList] = useState<MovieModel[]>([]);
   const [memberList, setMemberList] = useState<MemberModel[]>([]);
 
