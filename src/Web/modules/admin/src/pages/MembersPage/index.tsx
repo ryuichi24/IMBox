@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { MemberModel } from '@/models/member-model';
-import { memberService } from '@/services/member-service';
+import { MemberModel } from '@IMBoxWeb/core/dist/models';
+import { memberService } from '@IMBoxWeb/core/dist/services';
 import { ReusableModal } from '@/components/ReusableModal';
 import { MemberItem } from '@/components/MemberItem';
 import { PrimaryBtn, SecondaryBtn } from '@/components/UI';

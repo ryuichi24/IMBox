@@ -1,4 +1,4 @@
-import { authService } from '@/services/auth-service';
+import { authService } from '@IMBoxWeb/core/dist/services';
 import { useEffect, useState } from 'react';
 
 export const useAuth = (path: string) => {

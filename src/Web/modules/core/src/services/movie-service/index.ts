@@ -1,5 +1,5 @@
-import { MovieModel } from '@/models/movie-model';
-import { apiClient } from '@IMBoxWeb/core/dist/api-client';
+import { apiClient } from '../../api-client';
+import { MovieModel } from '../../models/movie-model';
 
 const BASE_URL = '/movie-service/api';
 

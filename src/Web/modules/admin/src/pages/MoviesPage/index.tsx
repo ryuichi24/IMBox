@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { MovieModel } from '@/models/movie-model';
-import { movieService } from '@/services/movie-service';
+import { MovieModel, MemberModel } from '@IMBoxWeb/core/dist/models';
+import { memberService, movieService } from '@IMBoxWeb/core/dist/services';
 import { ReusableModal } from '@/components/ReusableModal';
 import { PrimaryBtn, SecondaryBtn } from '@/components/UI';
 import { InputField } from '@/components/InputField';
-import { MemberModel } from '@/models/member-model';
-import { memberService } from '@/services/member-service';
 import { MovieItem } from '@/components/MovieItem';
 
 export const MoviesPage = () => {

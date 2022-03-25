@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { UserModel } from '@IMBoxWeb/core/dist/models';
+import { userService } from '@IMBoxWeb/core/dist/services';
+import { countries } from '@IMBoxWeb/core/dist/util/countries';
 import { PrimaryBtn } from '@/components/UI';
-import { userService } from '@/services/user-service';
 import { InputField } from '@/components/InputField';
-import { countries } from '@/utils/countries';
-import { UserModel } from '@/models/user-model';
 
 export const UserDetail = () => {
   const { userId } = useParams();

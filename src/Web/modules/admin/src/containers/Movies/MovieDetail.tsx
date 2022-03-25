@@ -1,9 +1,7 @@
+import { MovieModel, MemberModel } from '@IMBoxWeb/core/dist/models';
+import { memberService, movieService } from '@IMBoxWeb/core/dist/services';
 import { InputField } from '@/components/InputField';
 import { PrimaryBtn } from '@/components/UI';
-import { MemberModel } from '@/models/member-model';
-import { MovieModel } from '@/models/movie-model';
-import { memberService } from '@/services/member-service';
-import { movieService } from '@/services/movie-service';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 

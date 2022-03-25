@@ -1,4 +1,4 @@
-import { apiClient } from '@IMBoxWeb/core/dist/api-client';
+import { apiClient } from "../../api-client";
 
 const BASE_URL = '/user-service/api/users';
 

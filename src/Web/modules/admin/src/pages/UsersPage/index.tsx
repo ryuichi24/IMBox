@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { UserModel } from '@/models/user-model';
-import { userService } from '@/services/user-service';
+import { UserModel } from '@IMBoxWeb/core/dist/models';
+import { userService } from '@IMBoxWeb/core/dist/services';
+import { countries } from '@IMBoxWeb/core/dist/util/countries';
 import { ReusableModal } from '@/components/ReusableModal';
 import { PrimaryBtn, SecondaryBtn } from '@/components/UI';
 import { InputField } from '@/components/InputField';
-import { countries } from '@/utils/countries';
 import { UserItem } from '@/components/UserItem';
 
 export const UsersPage = () => {

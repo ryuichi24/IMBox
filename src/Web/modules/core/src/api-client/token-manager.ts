@@ -1,4 +1,4 @@
-import { Cache } from '../cache';
+import { Cache } from '../util/cache';
 
 const ACCESS_TOKEN = 'access-token';
 const REFRESH_TOKEN = 'refresh-token';

@@ -1,5 +1,5 @@
-import { authService } from '@/services/auth-service';
 import React, { useState } from 'react';
+import { authService } from '@IMBoxWeb/core/dist/services';
 import { useNavigate } from 'react-router-dom';
 
 export const SignInPage = () => {

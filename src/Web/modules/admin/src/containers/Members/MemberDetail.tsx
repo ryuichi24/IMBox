@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { memberService } from '@/services/member-service';
+import { MemberModel } from '@IMBoxWeb/core/dist/models';
+import { memberService } from '@IMBoxWeb/core/dist/services';
 import { useParams } from 'react-router-dom';
-import { MemberModel } from '@/models/member-model';
 import { InputField } from '@/components/InputField';
 import { PrimaryBtn } from '@/components/UI';
 

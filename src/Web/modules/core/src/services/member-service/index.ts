@@ -1,5 +1,5 @@
-import { MemberModel } from '@/models/member-model';
-import { apiClient } from '@IMBoxWeb/core/dist/api-client';
+import { apiClient } from '../../api-client';
+import { MemberModel } from '../../models/member-model';
 
 const BASE_URL = '/member-service/api';
 
