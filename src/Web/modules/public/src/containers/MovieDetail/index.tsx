@@ -3,6 +3,7 @@ import { Heading } from '@/components/UI';
 import { Link } from 'react-router-dom';
 import { MovieModel } from '@IMBoxWeb/core/src/models';
 import { CommentSection } from './CommentSection';
+import { RatingSection } from './RatingSection';
 
 interface Props {
   movieItem?: MovieModel;
@@ -57,6 +58,7 @@ export const MovieDetail = ({ movieItem }: Props) => {
             </div>
             <div>
               <Heading level={3} text="Rating" />
+              <RatingSection />
             </div>
             <div className="d-flex justify-content-between pt-2">
               <div></div>
