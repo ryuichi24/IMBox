@@ -1,7 +1,7 @@
 export interface UserModel {
-  id?: string;
+  id: string;
   username?: string;
-  email?: string;
+  email: string;
   password?: string;
   birthDate?: Date | string;
   gender?: 'm' | 'f' | 'n';

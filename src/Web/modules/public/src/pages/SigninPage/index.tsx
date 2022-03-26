@@ -1,16 +1,12 @@
 import React, { useState } from 'react';
-import { authService } from '@IMBoxWeb/core/dist/services';
-import { useNavigate } from 'react-router-dom';
 import { useAuthContext } from '@/contexts/auth-context';
 import { Spinner } from '@/components/Spinner';
 
 export const SigninPage = () => {
-  const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
 
-  const { setIsAuthenticated } = useAuthContext();
+  const { isLoading, signIn } = useAuthContext();
 
   const clearInputs = () => {
     setEmail('');
@@ -19,18 +15,9 @@ export const SigninPage = () => {
 
   const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
+    clearInputs();
 
-    try {
-      setIsLoading(true);
-      await authService.signIn({ email, password });
-      clearInputs();
-      setIsAuthenticated!(true);
-      setIsLoading(false);
-      navigate('/');
-    } catch (error) {
-      const errorMsg = (error as any).response.data;
-      alert(errorMsg);
-    }
+    await signIn({ email, password });
   };
 
   return (
