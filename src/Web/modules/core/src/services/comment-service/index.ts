@@ -25,21 +25,21 @@ const getById = async (request: GetCommentByIdRequest) => {
 };
 
 interface CreateCommentRequest {
-  member: CommentModel;
+  comment: CommentModel;
 }
 
 const create = async (request: CreateCommentRequest) => {
-  const res = await apiClient.post(`${BASE_URL}/comments`, request.member);
+  const res = await apiClient.post(`${BASE_URL}/comments`, request.comment);
   const result = res.data;
   return result;
 };
 
-interface UpdateMemberRequest {
+interface UpdateCommentRequest {
   commentId: string;
   comment: CommentModel;
 }
 
-const update = async (request: UpdateMemberRequest) => {
+const update = async (request: UpdateCommentRequest) => {
   const res = await apiClient.patch(`${BASE_URL}/comments/${request.commentId}`, request.comment);
   const result = res.data;
   return result;

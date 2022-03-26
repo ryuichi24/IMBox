@@ -4,11 +4,17 @@ import { commentService, movieService } from '@IMBoxWeb/core/dist/services';
 import { CommentModel, MovieModel } from '@IMBoxWeb/core/dist/models';
 import { Heading } from '@/components/UI';
 import { CommentItem } from '@/components/CommentItem';
+import { CircleIconWrapper } from '@/components/UI/CircleIconWrapper';
+import { useAuthContext } from '@/contexts/auth-context';
+import { Spinner } from '@/components/Spinner';
 
 export const MovieDetailPage = () => {
   const { movieId } = useParams();
+  const { isAuthenticated, isLoading } = useAuthContext();
+
   const [movieItem, setMovieItem] = useState<MovieModel>();
   const [commentList, setCommentList] = useState<CommentModel[]>([]);
+  const [commentText, setCommentText] = useState('');
 
   useEffect(() => {
     if (!movieId) return;
@@ -37,6 +43,15 @@ export const MovieDetailPage = () => {
       }
     })();
   }, [movieId]);
+
+  const handleCommentFormSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
+    if (!movieId) return;
+    e.preventDefault();
+
+    const createdComment = await commentService.create({ comment: { text: commentText, movieId: movieId } });
+    setCommentList((prev) => [...prev, createdComment]);
+    setCommentText('');
+  };
 
   return (
     <div className="shadow-sm h-auto">
@@ -95,6 +110,58 @@ export const MovieDetailPage = () => {
       </div>
       <div className="mt-5">
         <Heading level={2} text="Comments" />
+        {isLoading ? (
+          <Spinner color="yellow" />
+        ) : (
+          isAuthenticated && (
+            <div id="commentForm" className="d-flex">
+              <div style={{ flex: '0 0 60px', padding: '0.5rem' }}>
+                <CircleIconWrapper size={40}>{'R'}</CircleIconWrapper>
+              </div>
+              <form className="p-2" style={{ flex: '1 1 auto', minWidth: '0' }} onSubmit={handleCommentFormSubmit}>
+                <div className="d-flex flex-column" style={{ gap: '0.5rem' }}>
+                  <textarea
+                    id="movieComment"
+                    rows={1}
+                    onChange={(e) => setCommentText(e.target.value)}
+                    value={commentText}
+                    placeholder="Add a comment"
+                    style={{
+                      outline: 'none',
+                      backgroundColor: 'black',
+                      border: 'none',
+                      borderBottom: '1px solid grey',
+                      color: 'whitesmoke',
+                      width: '100%',
+                    }}
+                  />
+                  <div className="d-flex justify-content-end">
+                    <button
+                      style={{
+                        outline: 'none',
+                        backgroundColor: 'black',
+                        border: 'none',
+                        color: '#bebebe',
+                      }}
+                    >
+                      CANCEL
+                    </button>
+                    <button
+                      style={{
+                        outline: 'none',
+                        backgroundColor: 'black',
+                        border: 'none',
+                        color: '#bebebe',
+                      }}
+                    >
+                      COMMENT
+                    </button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          )
+        )}
         {commentList.map((commentItem) => (
           <CommentItem key={commentItem.id} commentItem={commentItem} />
         ))}

@@ -58,11 +58,15 @@ namespace IMBox.Services.Comment.API.Controllers
         [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(CommentDTO))]
         public async Task<IActionResult> CreateAsync(CreateCommentDTO createCommentDTO)
         {
+            var commenter = await _commenterRepository.GetByIdAsync(User.SubjectId().ToGuid());
+
+            if (commenter == null) return BadRequest("No commenter found");
+
             var newComment = new CommentEntity
             {
                 Text = createCommentDTO.Text,
                 MovieId = createCommentDTO.MovieId,
-                CommenterId = User.SubjectId().ToGuid()
+                CommenterId = commenter.Id
             };
 
             await _commentRepository.CreateAsync(newComment);
@@ -75,7 +79,7 @@ namespace IMBox.Services.Comment.API.Controllers
                 Text = newComment.Text
             });
 
-            return CreatedAtAction(nameof(GetByIdAsync), new { id = newComment.Id }, newComment.ToDTO());
+            return CreatedAtAction(nameof(GetByIdAsync), new { id = newComment.Id }, newComment.ToDTO(commenter));
         }
 
         [HttpPatch("{id}")]
