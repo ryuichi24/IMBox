@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using IMBox.Core.StringHelpers;
@@ -30,7 +31,7 @@ namespace IMBox.Services.Rating.API.Controllers
         [AllowAnonymous]
         [Route("/api/movies/{movieId}/ratings")]
         [HttpGet]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GetByMovieIdResponseDTO))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(RatingAnalysisDTO))]
         public async Task<IActionResult> GetByMovieIdAsync([FromRoute] Guid movieId, [FromQuery(Name = "demographic")] string demographicType = "all")
         {
             var movie = await _movieRepository.GetByIdAsync(movieId);
@@ -47,25 +48,72 @@ namespace IMBox.Services.Rating.API.Controllers
             });
 
             var filteredRatings = ratingsWithRaters.Where(BuildRatingsFilter(demographicType)).ToList();
+            var totalFilteredRatingCount = filteredRatings.Count;
 
-            var dto = new GetByMovieIdResponseDTO
+            var ratingOneItems = filteredRatings.Where(ratingItem => ratingItem.Rating == 1).ToList();
+            var totalRatingOneItemCount = ratingOneItems.Count;
+            var ratingOnePercent = ((decimal)totalRatingOneItemCount / (decimal)totalFilteredRatingCount) * 100;
+
+            var ratingTwoItems = filteredRatings.Where(ratingItem => ratingItem.Rating == 2).ToList();
+            var totalRatingTwoItemCount = ratingTwoItems.Count;
+            var ratingTwoPercent = ((decimal)totalRatingTwoItemCount / (decimal)totalFilteredRatingCount) * 100;
+
+            var ratingThreeItems = filteredRatings.Where(ratingItem => ratingItem.Rating == 3).ToList();
+            var totalRatingThreeItemCount = ratingThreeItems.Count;
+            var ratingThreePercent = ((decimal)totalRatingThreeItemCount / (decimal)totalFilteredRatingCount) * 100;
+
+            var ratingFourItems = filteredRatings.Where(ratingItem => ratingItem.Rating == 4).ToList();
+            var totalRatingFourItemCount = ratingFourItems.Count;
+            var ratingFourPercent = ((decimal)totalRatingFourItemCount / (decimal)totalFilteredRatingCount) * 100;
+
+            var ratingFiveItems = filteredRatings.Where(ratingItem => ratingItem.Rating == 5).ToList();
+            var totalRatingFiveItemCount = ratingFiveItems.Count;
+            var ratingFivePercent = ((decimal)totalRatingFiveItemCount / (decimal)totalFilteredRatingCount) * 100;
+
+            var ratingItems = new List<RatingItem>
+                {
+                    new RatingItem
+                    {
+                        Rating = 1,
+                        RatingVoteCount = totalRatingOneItemCount,
+                        Percent = $"{ratingOnePercent.ToString("0")}%"
+                    },
+                    new RatingItem
+                    {
+                        Rating = 2,
+                        RatingVoteCount = totalRatingTwoItemCount,
+                        Percent = $"{ratingTwoPercent.ToString("0")}%"
+                    },
+                    new RatingItem
+                    {
+                        Rating = 3,
+                        RatingVoteCount = totalRatingThreeItemCount,
+                        Percent = $"{ratingThreePercent.ToString("0")}%"
+                    },
+                    new RatingItem
+                    {
+                        Rating = 4,
+                        RatingVoteCount = totalRatingFourItemCount,
+                        Percent = $"{ratingFourPercent.ToString("0")}%"
+                    },
+                    new RatingItem
+                    {
+                        Rating = 5,
+                        RatingVoteCount = totalRatingFiveItemCount,
+                        Percent = $"{ratingFivePercent.ToString("0")}%"
+                    },
+                };
+
+            var averageRating = ratingItems.Select(ratingItem => ratingItem.RatingVoteCount * ratingItem.Rating).Sum() / totalFilteredRatingCount;
+
+            var dto = new RatingAnalysisDTO
             {
                 Movie = movie.ToDTO(),
                 DemographicType = demographicType,
-                TotalRatingVoteCount = filteredRatings.Count()
+                AverageRating = averageRating,
+                TotalRatingVoteCount = totalFilteredRatingCount,
+                Ratings = ratingItems
             };
-
-            filteredRatings.ForEach(rating =>
-            {
-                dto.Ratings.ForEach(ratingItem =>
-                {
-                    if (ratingItem.Rating == rating.Rating) ratingItem.IncrementRatingVoteCount();
-                });
-            });
-
-            dto.Ratings.ForEach(ratingItem => ratingItem.UpdatePercent(dto.TotalRatingVoteCount));
-
-            dto.AverageRating = dto.Ratings.Select(ratingItem => ratingItem.RatingVoteCount * ratingItem.Rating).Sum() / dto.TotalRatingVoteCount;
 
             return Ok(dto);
         }
@@ -73,7 +121,7 @@ namespace IMBox.Services.Rating.API.Controllers
         [AllowAnonymous]
         [Route("/api/raters/{raterId}/ratings")]
         [HttpGet]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GetByRaterIdResponseDTO))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(UserRatingsDTO))]
         public async Task<IActionResult> GetByRaterIdAsync([FromRoute] Guid raterId)
         {
             var rater = await _raterRepository.GetByIdAsync(raterId);
@@ -93,7 +141,7 @@ namespace IMBox.Services.Rating.API.Controllers
             });
 
 
-            return Ok(new GetByRaterIdResponseDTO
+            return Ok(new UserRatingsDTO
             {
                 Rater = rater.ToDTO(),
                 Ratings = ratingDTOs
@@ -104,6 +152,9 @@ namespace IMBox.Services.Rating.API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(void))]
         public async Task<IActionResult> CreateAsync(CreateRatingDTO createRatingDTO)
         {
+            var existingRating = await _ratingRepository.GetByRaterIdAndMovieId(User.SubjectId().ToGuid(), createRatingDTO.MovieId);
+            if (existingRating != null) return BadRequest("The user already rated the movie.");
+
             var newRating = new RatingEntity
             {
                 Rating = createRatingDTO.Rating,
@@ -152,11 +203,11 @@ namespace IMBox.Services.Rating.API.Controllers
             {
                 ratingsFilter = ratings => true;
             }
-            if (demographicType == "male")
+            if (demographicType == "males")
             {
                 ratingsFilter = ratings => ratings.Rater.Gender == "m";
             }
-            if (demographicType == "female")
+            if (demographicType == "females")
             {
                 ratingsFilter = ratings => ratings.Rater.Gender == "f";
             }
@@ -175,6 +226,38 @@ namespace IMBox.Services.Rating.API.Controllers
             if (demographicType == "aged_45_plus")
             {
                 ratingsFilter = ratings => (45 <= ratings.Rater.Age);
+            }
+            if (demographicType == "males_aged_under_18")
+            {
+                ratingsFilter = ratings => (ratings.Rater.Age < 18) && ratings.Rater.Gender == "m";
+            }
+            if (demographicType == "males_aged_18_29")
+            {
+                ratingsFilter = ratings => (18 <= ratings.Rater.Age) && (ratings.Rater.Age <= 29) && ratings.Rater.Gender == "m";
+            }
+            if (demographicType == "males_aged_30_44")
+            {
+                ratingsFilter = ratings => (30 <= ratings.Rater.Age) && (ratings.Rater.Age <= 44) && ratings.Rater.Gender == "m";
+            }
+            if (demographicType == "males_aged_45_plus")
+            {
+                ratingsFilter = ratings => (45 <= ratings.Rater.Age) && ratings.Rater.Gender == "m";
+            }
+            if (demographicType == "females_aged_under_18")
+            {
+                ratingsFilter = ratings => ratings.Rater.Age < 18 && (ratings.Rater.Gender == "f");
+            }
+            if (demographicType == "females_aged_18_29")
+            {
+                ratingsFilter = ratings => (18 <= ratings.Rater.Age) && (ratings.Rater.Age <= 29) && (ratings.Rater.Gender == "f");
+            }
+            if (demographicType == "females_aged_30_44")
+            {
+                ratingsFilter = ratings => (30 <= ratings.Rater.Age) && (ratings.Rater.Age <= 44) && (ratings.Rater.Gender == "f");
+            }
+            if (demographicType == "females_aged_45_plus")
+            {
+                ratingsFilter = ratings => (45 <= ratings.Rater.Age) && (ratings.Rater.Gender == "f");
             }
 
             return ratingsFilter;

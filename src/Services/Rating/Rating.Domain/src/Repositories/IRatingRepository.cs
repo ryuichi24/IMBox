@@ -10,5 +10,7 @@ namespace IMBox.Services.Rating.Domain.Repositories
     {
         Task<IEnumerable<RatingEntity>> GetAllByMovieId(Guid movieId);
         Task<IEnumerable<RatingEntity>> GetAllByRaterId(Guid raterId);
+        Task<RatingEntity> GetByRaterIdAndMovieId(Guid raterId, Guid movieId);
+
     }
 }

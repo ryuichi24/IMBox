@@ -34,6 +34,11 @@ namespace IMBox.Services.Rating.Infrastructure.Repositories
             return await base.FindByIdAsync(id);
         }
 
+        public async Task<RatingEntity> GetByRaterIdAndMovieId(Guid raterId, Guid movieId)
+        {
+            return await base.FindAsync(rating => rating.MovieId == movieId && rating.RaterId == raterId);
+        }
+
         public async Task RemoveAsync(Guid id)
         {
             await base.DeleteAsync(id);
