@@ -15,7 +15,7 @@ import { MemberDetailPage } from '@/pages/MemberDetailPage';
 import { useAuthContext } from '@/contexts/auth-context';
 
 export const App = () => {
-  const { isAuthenticated } = useAuthContext();
+  const { isAuthenticated, isLoading } = useAuthContext();
 
   return (
     <>
@@ -27,11 +27,15 @@ export const App = () => {
           <Route path="/members/:memberId" element={<MemberDetailPage />} />
           <Route path="/movies/:movieId/ratings" element={<RatingsPage />} />
 
-          <Route element={<ProtectedRoute isAllowed={isAuthenticated} redirectPath="/signin" />}>
+          <Route
+            element={<ProtectedRoute isAllowed={isAuthenticated} isAuthenticating={isLoading} redirectPath="/signin" />}
+          >
             <Route path="/user-profile/:userId" element={<UserProfilePage />} />
           </Route>
 
-          <Route element={<ProtectedRoute isAllowed={!isAuthenticated} redirectPath="/" />}>
+          <Route
+            element={<ProtectedRoute isAllowed={!isAuthenticated} isAuthenticating={isLoading} redirectPath="/" />}
+          >
             <Route path="/signin" element={<SigninPage />} />
           </Route>
         </Route>

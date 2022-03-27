@@ -3,8 +3,9 @@ export interface UserModel {
   username?: string;
   email: string;
   password?: string;
-  birthDate?: Date | string;
+  birthDate?: string;
   gender?: 'm' | 'f' | 'n';
   country?: string;
   roles?: string[];
+  createdAt: string;
 }

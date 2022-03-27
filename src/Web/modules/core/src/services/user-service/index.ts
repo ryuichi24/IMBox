@@ -35,7 +35,7 @@ const create = async (request: CreateUserRequest) => {
 
 interface UpdateUserRequest {
   userId: string;
-  user: UserModel;
+  user: Pick<UserModel, 'username' | 'gender' | 'country' | 'birthDate'>;
 }
 
 const update = async (request: UpdateUserRequest) => {

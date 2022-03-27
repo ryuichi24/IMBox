@@ -12,5 +12,6 @@ namespace IMBox.Services.User.API.DTOs
         public string Gender { get; init; }
         public string Country { get; init; }
         public IEnumerable<string> Roles { get; init; }
+        public DateTimeOffset CreatedAt { get; init; }
     }
 }
