@@ -20,9 +20,6 @@ export const MovieItem = ({ movieItem }: Props) => {
       <div className="card-body">
         <p className="text-truncate">{movieItem.description}</p>
         <p className="text-truncate">{movieItem.commentCount} comments</p>
-        {movieItem.members?.map((memberItem) => (
-          <div key={memberItem.id}>{memberItem.name}</div>
-        ))}
       </div>
     </div>
   );
