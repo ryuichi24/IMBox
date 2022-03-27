@@ -72,6 +72,8 @@ export const AuthContextProvider = ({ children }: Props): JSX.Element => {
     } catch (error) {
       const errorMsg = (error as any).response.data;
       alert(errorMsg);
+      setIsAuthenticated(false);
+      setIsLoading(false);
     }
   };
 
