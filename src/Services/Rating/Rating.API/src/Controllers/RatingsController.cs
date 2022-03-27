@@ -52,23 +52,23 @@ namespace IMBox.Services.Rating.API.Controllers
 
             var ratingOneItems = filteredRatings.Where(ratingItem => ratingItem.Rating == 1).ToList();
             var totalRatingOneItemCount = ratingOneItems.Count;
-            var ratingOnePercent = ((decimal)totalRatingOneItemCount / (decimal)totalFilteredRatingCount) * 100;
+            var ratingOnePercent = totalFilteredRatingCount == 0 ? 0 : ((decimal)totalRatingOneItemCount / (decimal)totalFilteredRatingCount) * 100;
 
             var ratingTwoItems = filteredRatings.Where(ratingItem => ratingItem.Rating == 2).ToList();
             var totalRatingTwoItemCount = ratingTwoItems.Count;
-            var ratingTwoPercent = ((decimal)totalRatingTwoItemCount / (decimal)totalFilteredRatingCount) * 100;
+            var ratingTwoPercent = totalFilteredRatingCount == 0 ? 0 : ((decimal)totalRatingTwoItemCount / (decimal)totalFilteredRatingCount) * 100;
 
             var ratingThreeItems = filteredRatings.Where(ratingItem => ratingItem.Rating == 3).ToList();
             var totalRatingThreeItemCount = ratingThreeItems.Count;
-            var ratingThreePercent = ((decimal)totalRatingThreeItemCount / (decimal)totalFilteredRatingCount) * 100;
+            var ratingThreePercent = totalFilteredRatingCount == 0 ? 0 : ((decimal)totalRatingThreeItemCount / (decimal)totalFilteredRatingCount) * 100;
 
             var ratingFourItems = filteredRatings.Where(ratingItem => ratingItem.Rating == 4).ToList();
             var totalRatingFourItemCount = ratingFourItems.Count;
-            var ratingFourPercent = ((decimal)totalRatingFourItemCount / (decimal)totalFilteredRatingCount) * 100;
+            var ratingFourPercent = totalFilteredRatingCount == 0 ? 0 : ((decimal)totalRatingFourItemCount / (decimal)totalFilteredRatingCount) * 100;
 
             var ratingFiveItems = filteredRatings.Where(ratingItem => ratingItem.Rating == 5).ToList();
             var totalRatingFiveItemCount = ratingFiveItems.Count;
-            var ratingFivePercent = ((decimal)totalRatingFiveItemCount / (decimal)totalFilteredRatingCount) * 100;
+            var ratingFivePercent = totalFilteredRatingCount == 0 ? 0 : ((decimal)totalRatingFiveItemCount / (decimal)totalFilteredRatingCount) * 100;
 
             var ratingItems = new List<RatingItem>
                 {
@@ -104,7 +104,7 @@ namespace IMBox.Services.Rating.API.Controllers
                     },
                 };
 
-            var averageRating = ratingItems.Select(ratingItem => ratingItem.RatingVoteCount * ratingItem.Rating).Sum() / totalFilteredRatingCount;
+            var averageRating = totalFilteredRatingCount == 0 ? 0 : (decimal)(ratingItems.Select(ratingItem => ratingItem.RatingVoteCount * ratingItem.Rating).Sum()) / (decimal)totalFilteredRatingCount;
 
             var dto = new RatingAnalysisDTO
             {
