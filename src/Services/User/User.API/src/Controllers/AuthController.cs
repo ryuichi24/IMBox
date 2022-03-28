@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using IMBox.Core.StringHelpers;
 using IMBox.Services.IntegrationEvents;
@@ -64,7 +65,8 @@ namespace IMBox.Services.User.API.Controllers
                 Username = signupDTO.Username,
                 Email = signupDTO.Email,
                 PasswordHash = passwordHash,
-                PasswordHashSalt = passwordHashSalt
+                PasswordHashSalt = passwordHashSalt,
+                Roles = new List<string> { "user" }
             };
 
             await _UserRepository.CreateAsync(newUser);
