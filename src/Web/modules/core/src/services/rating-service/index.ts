@@ -3,12 +3,12 @@ import { Demographic, RatingModel } from '../../models';
 
 const BASE_URL = '/rating-service/api';
 
-interface GetRatingAnalysisRequest {
+interface GetRatingAnalyticsRequest {
   movieId: string;
   demographic: Demographic;
 }
 
-const getRatingAnalysis = async (request: GetRatingAnalysisRequest) => {
+const getRatingAnalytics = async (request: GetRatingAnalyticsRequest) => {
   const res = await apiClient.get(`${BASE_URL}/movies/${request.movieId}/ratings?demographic=${request.demographic}`);
   const result = res.data;
   return result;
@@ -55,4 +55,4 @@ const remove = async (request: RemoveRatingRequest) => {
   return result;
 };
 
-export const ratingService = Object.freeze({ create, update, remove, getRatingAnalysis, getUsesRatings });
+export const ratingService = Object.freeze({ create, update, remove, getRatingAnalytics, getUsesRatings });

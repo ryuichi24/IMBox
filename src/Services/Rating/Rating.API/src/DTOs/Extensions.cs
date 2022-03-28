@@ -18,8 +18,9 @@ namespace IMBox.Services.Rating.API.DTOs
         {
             return new RatingDTO
             {
-                Movie = movieEntity.ToDTO(),
+                Id = ratingEntity.Id,
                 Rating = ratingEntity.Rating,
+                Movie = movieEntity.ToDTO(),
             };
         }
 

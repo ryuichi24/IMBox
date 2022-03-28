@@ -6,41 +6,28 @@ import { Demographic } from '@IMBoxWeb/core/dist/models';
 import { ratingService } from '@IMBoxWeb/core/dist/services';
 import { StarRating } from '@/components/StarRating';
 import { useAuthContext } from '@/contexts/auth-context';
-import { ReusableModal } from '@/components/ReusableModal';
+import { RatingForm } from './RatingForm';
 
 export const RatingSection = () => {
   const { movieId } = useParams();
-  const [ratingAnalysis, setRatingAnalysis] = useState();
-  const [rating, setRating] = useState(0);
-  const [ratingInput, setRatingInput] = useState(0);
+  const [ratingAnalytics, setRatingAnalytics] = useState<any>();
   const [showRatingForm, setShowRatingForm] = useState(false);
 
-  const { user, isAuthenticated } = useAuthContext();
+  const { isAuthenticated } = useAuthContext();
 
   useEffect(() => {
     if (!movieId) return;
     (async () => {
-      const ratingAnalysis = await ratingService.getRatingAnalysis({ movieId, demographic: Demographic.all });
-      console.log(ratingAnalysis);
-      setRatingAnalysis(ratingAnalysis);
-      setRating((ratingAnalysis as any)?.averageRating);
+      const ratingAnalytics = await ratingService.getRatingAnalytics({ movieId, demographic: Demographic.all });
+      setRatingAnalytics(ratingAnalytics);
     })();
   }, []);
 
   const handleRate = async () => {
     if (!movieId) return;
-    try {
-      await ratingService.create({ rating: { movieId, rating: ratingInput } });
-    } catch (error) {
-      alert('You already rated this movie.');
-    }
 
-    const ratingAnalysis = await ratingService.getRatingAnalysis({ movieId, demographic: Demographic.all });
-    console.log(ratingAnalysis);
-    setRatingAnalysis(ratingAnalysis);
-    setRating((ratingAnalysis as any)?.averageRating);
-
-    setShowRatingForm(false);
+    const ratingAnalytics = await ratingService.getRatingAnalytics({ movieId, demographic: Demographic.all });
+    setRatingAnalytics(ratingAnalytics);
   };
 
   return (
@@ -49,10 +36,11 @@ export const RatingSection = () => {
         <RatingContainer>
           <Link className="text-decoration-none text-white" to={`/movies/${movieId}/ratings`}>
             <div>
-              <RatingNumWrapper>{rating}</RatingNumWrapper> / <MaxRatingNumWrapper>5</MaxRatingNumWrapper>
+              <RatingNumWrapper>{ratingAnalytics?.averageRating}</RatingNumWrapper> /{' '}
+              <MaxRatingNumWrapper>5</MaxRatingNumWrapper>
             </div>
-            <StarRating rating={Math.trunc(rating)} displayOnly={true} />
-            <small>{(ratingAnalysis as any)?.totalRatingVoteCount} votes</small>
+            <StarRating rating={Math.trunc(ratingAnalytics?.averageRating)} displayOnly={true} />
+            <small>{ratingAnalytics?.totalRatingVoteCount} votes</small>
           </Link>
         </RatingContainer>
         {isAuthenticated && (
@@ -63,23 +51,13 @@ export const RatingSection = () => {
           </div>
         )}
       </div>
-      <ReusableModal show={showRatingForm} isDark={true}>
-        <>Rating movie</>
-        <>
-          <div className="d-flex flex-column align-items-center p-3" style={{ gap: '1rem' }}>
-            <div>{(ratingAnalysis as any)?.movie?.title}</div>
-            <StarRating rating={ratingInput} onRating={(rate) => setRatingInput(rate)} />
-          </div>
-          <div className="d-flex justify-content-end" style={{ gap: '1rem' }}>
-            <button className="btn btn-secondary" onClick={(e) => setShowRatingForm(false)}>
-              Close
-            </button>
-            <button className="btn btn-warning" type="submit" onClick={(e) => handleRate()}>
-              Save
-            </button>
-          </div>
-        </>
-      </ReusableModal>
+      {showRatingForm && (
+        <RatingForm
+          handleClose={() => setShowRatingForm(false)}
+          handleRate={handleRate}
+          ratingAnalytics={ratingAnalytics}
+        />
+      )}
     </>
   );
 };

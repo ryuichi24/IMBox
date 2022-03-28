@@ -31,7 +31,7 @@ namespace IMBox.Services.Rating.API.Controllers
         [AllowAnonymous]
         [Route("/api/movies/{movieId}/ratings")]
         [HttpGet]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(RatingAnalysisDTO))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(RatingAnalyticsDTO))]
         public async Task<IActionResult> GetByMovieIdAsync([FromRoute] Guid movieId, [FromQuery(Name = "demographic")] string demographicType = "all")
         {
             var movie = await _movieRepository.GetByIdAsync(movieId);
@@ -106,7 +106,7 @@ namespace IMBox.Services.Rating.API.Controllers
 
             var averageRating = totalFilteredRatingCount == 0 ? 0 : (decimal)(ratingItems.Select(ratingItem => ratingItem.RatingVoteCount * ratingItem.Rating).Sum()) / (decimal)totalFilteredRatingCount;
 
-            var dto = new RatingAnalysisDTO
+            var dto = new RatingAnalyticsDTO
             {
                 Movie = movie.ToDTO(),
                 DemographicType = demographicType,
@@ -133,11 +133,7 @@ namespace IMBox.Services.Rating.API.Controllers
             var ratingDTOs = ratings.Select(rating =>
             {
                 var movie = movies.Find(movieItem => movieItem.Id == rating.MovieId);
-                return new RatingDTO
-                {
-                    Movie = movie.ToDTO(),
-                    Rating = rating.Rating
-                };
+                return rating.ToDTO(movie);
             });
 
 

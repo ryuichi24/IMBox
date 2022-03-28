@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace IMBox.Services.Rating.API.DTOs
 {
-    public record RatingAnalysisDTO
+    public record RatingAnalyticsDTO
     {
         public MovieDTO Movie { get; init; }
         public IEnumerable<RatingItem> Ratings { get; init; }
