@@ -39,6 +39,7 @@ namespace IMBox.Services.User.API.Controllers
             return Ok(users.Select(User => User.ToDTO()));
         }
 
+        [AllowAnonymous]
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(UserDTO))]
         public async Task<IActionResult> GetByIdAsync(Guid id)

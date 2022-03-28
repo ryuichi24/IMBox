@@ -13,6 +13,7 @@ import { MoviesPage } from '@/pages/MoviesPage';
 import { MemberDetailPage } from '@/pages/MemberDetailPage';
 // contexts
 import { useAuthContext } from '@/contexts/auth-context';
+import { SignupPage } from '@/pages/SignupPage';
 
 export const App = () => {
   const { isAuthenticated, isLoading } = useAuthContext();
@@ -37,6 +38,7 @@ export const App = () => {
             element={<ProtectedRoute isAllowed={!isAuthenticated} isAuthenticating={isLoading} redirectPath="/" />}
           >
             <Route path="/signin" element={<SigninPage />} />
+            <Route path="/signup" element={<SignupPage />} />
           </Route>
         </Route>
 
