@@ -35,8 +35,12 @@ export const RatingAnalyticsItem = ({ demographicType }: Props) => {
   return (
     <div className="card bg-dark p-2" style={{ width: '300px', height: '400px' }}>
       <h4>{demographicType.name}</h4>
-      <div>Average rate: {analyticsItem?.averageRating}</div>
-      <div>{analyticsItem?.totalRatingVoteCount} votes</div>
+      <div style={{ color: '#929292', marginRight: '0.5rem' }}>
+        Average rate: <span className="fw-bold text-white">{analyticsItem?.averageRating?.toFixed(1)}</span>
+      </div>
+      <div style={{ color: '#929292', marginRight: '0.5rem' }}>
+        Total vote : <span className="fw-bold text-white">{analyticsItem?.totalRatingVoteCount}</span> votes
+      </div>
       <div>
         {analyticsItem && (
           <Bar

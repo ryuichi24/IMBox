@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { Demographic } from '@IMBoxWeb/core/dist/models';
+import { Demographic, RatingAnalyticsDTO } from '@IMBoxWeb/core/dist/models';
 import { ratingService } from '@IMBoxWeb/core/dist/services';
 import { StarRating } from '@/components/StarRating';
 import { useAuthContext } from '@/contexts/auth-context';
@@ -10,7 +10,7 @@ import { RatingForm } from './RatingForm';
 
 export const RatingSection = () => {
   const { movieId } = useParams();
-  const [ratingAnalytics, setRatingAnalytics] = useState<any>();
+  const [ratingAnalytics, setRatingAnalytics] = useState<RatingAnalyticsDTO>();
   const [showRatingForm, setShowRatingForm] = useState(false);
 
   const { isAuthenticated } = useAuthContext();
@@ -36,10 +36,10 @@ export const RatingSection = () => {
         <RatingContainer>
           <Link className="text-decoration-none text-white" to={`/movies/${movieId}/ratings`}>
             <div>
-              <RatingNumWrapper>{ratingAnalytics?.averageRating}</RatingNumWrapper> /{' '}
+              <RatingNumWrapper>{ratingAnalytics?.averageRating.toFixed(1)}</RatingNumWrapper> /{' '}
               <MaxRatingNumWrapper>5</MaxRatingNumWrapper>
             </div>
-            <StarRating rating={Math.trunc(ratingAnalytics?.averageRating)} displayOnly={true} />
+            <StarRating rating={Math.trunc(ratingAnalytics?.averageRating || 0)} displayOnly={true} />
             <small>{ratingAnalytics?.totalRatingVoteCount} votes</small>
           </Link>
         </RatingContainer>
