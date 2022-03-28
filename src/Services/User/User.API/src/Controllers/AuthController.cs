@@ -4,15 +4,18 @@ using IMBox.Core.StringHelpers;
 using IMBox.Services.IntegrationEvents;
 using IMBox.Services.Member.API.DTOs;
 using IMBox.Services.User.API.DTOs;
+using IMBox.Services.User.API.Settings;
 using IMBox.Services.User.Domain.Entities;
 using IMBox.Services.User.Domain.Repositories;
 using IMBox.Services.User.Infrastructure.Managers.Auth;
+using IMBox.Shared.Infrastructure.EmailClient;
 using IMBox.Shared.Infrastructure.Helpers.Auth;
 using IMBox.Shared.Infrastructure.Helpers.Hash;
 using MassTransit;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 
 namespace IMBox.Services.User.API.Controllers
 {
@@ -24,13 +27,25 @@ namespace IMBox.Services.User.API.Controllers
         private readonly ITokenManager _tokenManager;
         private readonly IHashHelper _hashHelper;
         private readonly IPublishEndpoint _publishEndpoint;
+        private readonly IEmailClient _emailClient;
+        private readonly EmailConfirmSettings _emailConfirmSettings;
 
-        public AuthController(IUserRepository UserRepository, ITokenManager tokenManager, IHashHelper hashHelper, IPublishEndpoint publishEndpoint)
+        public AuthController
+        (
+            IUserRepository UserRepository,
+            ITokenManager tokenManager,
+            IHashHelper hashHelper,
+            IPublishEndpoint publishEndpoint,
+            IEmailClient emailClient,
+            IConfiguration configuration
+        )
         {
             _UserRepository = UserRepository;
             _tokenManager = tokenManager;
             _hashHelper = hashHelper;
             _publishEndpoint = publishEndpoint;
+            _emailClient = emailClient;
+            _emailConfirmSettings = configuration.GetSection(nameof(EmailConfirmSettings)).Get<EmailConfirmSettings>();
         }
 
         [HttpPost("signup")]
@@ -49,12 +64,13 @@ namespace IMBox.Services.User.API.Controllers
                 Username = signupDTO.Username,
                 Email = signupDTO.Email,
                 PasswordHash = passwordHash,
-                PasswordHashSalt = passwordHashSalt,
+                PasswordHashSalt = passwordHashSalt
             };
 
-            // TODO: send confirmation email
-
             await _UserRepository.CreateAsync(newUser);
+
+            var emailConfirmToken = _tokenManager.CreateEmailConfirmToken(newUser.Id);
+            _emailClient.Send(signupDTO.Email, "Confirm email", $"Click to confirm your email address: {_emailConfirmSettings.EmailConfirmUrl}/{emailConfirmToken}?callback={_emailConfirmSettings.EmailConfirmCallbackUrl}");
 
             return Ok();
         }
@@ -82,15 +98,16 @@ namespace IMBox.Services.User.API.Controllers
 
         [HttpGet("confirm-email/{token}")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(void))]
-        public async Task<IActionResult> ConfirmEmailAsync(string token)
+        public async Task<IActionResult> ConfirmEmailAsync(string token, [FromQuery] string callback)
         {
-            var existingUser = await _UserRepository.GetByEmailConfirmTokenAsync(token);
+            var userId = _tokenManager.VerifyEmailConfirmToken(token);
+            var existingUser = await _UserRepository.GetByIdAsync(userId);
 
             if (existingUser == null) return BadRequest("The email confirm token is invalid.");
 
             if (existingUser.IsActive) return Ok();
 
-            existingUser.RevokeEmailConfirmToken();
+            _tokenManager.RevokeEmailConfirmToken(token);
             existingUser.Activate();
 
             await _UserRepository.UpdateAsync(existingUser);
@@ -104,7 +121,7 @@ namespace IMBox.Services.User.API.Controllers
                 UserCountry = existingUser.Country
             });
 
-            return Ok();
+            return Redirect(callback);
         }
 
         [Authorize]

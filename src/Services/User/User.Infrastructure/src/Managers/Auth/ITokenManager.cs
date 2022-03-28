@@ -9,5 +9,8 @@ namespace IMBox.Services.User.Infrastructure.Managers.Auth
         RefreshToken createRefreshToken(Guid userId);
         Guid VerifyRefreshToken(string token);
         void RevokeRefreshToken(string token);
+        string CreateEmailConfirmToken(Guid userId);
+        Guid VerifyEmailConfirmToken(string token);
+        void RevokeEmailConfirmToken(string token);
     }
 }

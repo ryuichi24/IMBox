@@ -7,6 +7,7 @@ using IMBox.Services.User.Infrastructure.Repositories;
 using IMBox.Shared.Infrastructure.Helpers.Hash;
 using IMBox.Shared.Infrastructure.Helpers.Auth;
 using IMBox.Services.User.Infrastructure.Managers.Auth;
+using IMBox.Shared.Infrastructure.EmailClient.EmailSmtpClient;
 
 namespace IMBox.Services.User.Infrastructure
 {
@@ -21,7 +22,8 @@ namespace IMBox.Services.User.Infrastructure
                 .AddMassTransitWithRabbitMQ()
                 .AddHashHelper()
                 .AddJwtAuth()
-                .AddManagers();
+                .AddManagers()
+                .AddEmailSmtpClient();
 
             return services;
         }

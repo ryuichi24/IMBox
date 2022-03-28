@@ -83,15 +83,44 @@ namespace IMBox.Services.User.Infrastructure.Managers.Auth
 
         public Guid VerifyRefreshToken(string token)
         {
-            if(!_memoryCache.TryGetValue(token, out Guid userId))
+            if (!_memoryCache.TryGetValue(token, out Guid userId))
             {
                 return default(Guid);
             }
-            
+
             return userId;
         }
 
         public void RevokeRefreshToken(string token)
+        {
+            _memoryCache.Remove(token);
+        }
+
+        public string CreateEmailConfirmToken(Guid userId)
+        {
+            var randomNumber = new byte[64];
+            using var randomNumberGenerator = RandomNumberGenerator.Create();
+            randomNumberGenerator.GetBytes(randomNumber);
+
+            var token = Convert.ToHexString(randomNumber);
+            var expiresIn = DateTime.UtcNow.AddMinutes(20);
+
+            _memoryCache.Set(token, userId, expiresIn);
+
+            return token;
+        }
+
+        public Guid VerifyEmailConfirmToken(string token)
+        {
+            if (!_memoryCache.TryGetValue(token, out Guid userId))
+            {
+                return default(Guid);
+            }
+
+            return userId;
+        }
+
+        public void RevokeEmailConfirmToken(string token)
         {
             _memoryCache.Remove(token);
         }
