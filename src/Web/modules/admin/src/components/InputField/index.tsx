@@ -11,6 +11,7 @@ interface Props {
   maxRows?: number;
   value?: string | number | readonly string[];
   onChange: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>;
+  required?: boolean;
 }
 
 export const InputField = ({
@@ -24,6 +25,7 @@ export const InputField = ({
   maxRows,
   onChange,
   value,
+  required = false,
 }: Props) => {
   if (multiLine)
     return (
@@ -59,6 +61,7 @@ export const InputField = ({
         type={type}
         value={value}
         onChange={onChange}
+        required={required}
       />
       {formText && <div className="form-text">{formText}</div>}
     </>

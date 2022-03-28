@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { UserModel } from '@IMBoxWeb/core/dist/models';
 import { userService } from '@IMBoxWeb/core/dist/services';
 import { countries } from '@IMBoxWeb/core/dist/util/countries';
-import { PrimaryBtn } from '@/components/UI';
+import { PrimaryBtn, SecondaryBtn } from '@/components/UI';
 import { InputField } from '@/components/InputField';
 
 export const UserDetail = () => {
   const { userId } = useParams();
+  const navigate = useNavigate();
 
   const [userUsername, setUserUsername] = useState('');
   const [userEmail, setUserEmail] = useState('');
@@ -64,10 +65,29 @@ export const UserDetail = () => {
       alert((error as any)?.response?.data || (error as any).message);
     }
   };
+
+  const handleDelete = async () => {
+    if (!userId) return;
+    const confirmed = confirm('Are you sure you want to delete it?');
+    if (!confirmed) return;
+    try {
+      await userService.remove({ userId });
+      alert('Successfully removed');
+      navigate('/users');
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div className="p-4 h-100" style={{ overflow: 'scroll' }}>
       <div className="card h-100 p-4">
-        {' '}
+        <div className="d-flex justify-content-end">
+          <button className="btn btn-danger" style={{ width: '80px' }} onClick={handleDelete}>
+            Delete
+          </button>
+        </div>
+
         <form onSubmit={handleFormSubmit}>
           <div className="mb-3">
             <InputField
@@ -169,6 +189,7 @@ export const UserDetail = () => {
           </div>
 
           <div className="d-flex justify-content-end" style={{ gap: '1rem' }}>
+            <SecondaryBtn btnText="Close" onClick={() => navigate('/users')} />
             <PrimaryBtn btnText="Save" type="submit" />
           </div>
         </form>

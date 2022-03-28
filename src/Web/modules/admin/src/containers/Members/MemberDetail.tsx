@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { MemberModel } from '@IMBoxWeb/core/dist/models';
 import { memberService } from '@IMBoxWeb/core/dist/services';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { InputField } from '@/components/InputField';
-import { PrimaryBtn } from '@/components/UI';
+import { PrimaryBtn, SecondaryBtn } from '@/components/UI';
 
 export const MemberDetail = () => {
   const { memberId } = useParams();
+  const navigate = useNavigate();
 
   const [memberName, setMemberName] = useState('');
   const [memberDescription, setMemberDescription] = useState('');
@@ -58,10 +59,28 @@ export const MemberDetail = () => {
     }
   };
 
+  const handleDelete = async () => {
+    if (!memberId) return;
+    const confirmed = confirm('Are you sure you want to delete it?');
+    if (!confirmed) return;
+    try {
+      await memberService.remove({ memberId });
+      alert('Successfully removed');
+      navigate('/members');
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <>
       <div className="p-4 h-100" style={{ overflow: 'scroll' }}>
         <div className="card h-100 p-4">
+          <div className="d-flex justify-content-end">
+            <button className="btn btn-danger" style={{ width: '80px' }} onClick={handleDelete}>
+              Delete
+            </button>
+          </div>
           <form onSubmit={handleMemberFormSubmit}>
             <div className="mb-3">
               <InputField
@@ -124,6 +143,7 @@ export const MemberDetail = () => {
             </div>
 
             <div className="d-flex justify-content-end" style={{ gap: '1rem' }}>
+              <SecondaryBtn btnText="Close" onClick={() => navigate('/members')} />
               <PrimaryBtn btnText="Save" />
             </div>
           </form>

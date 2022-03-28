@@ -65,10 +65,10 @@ export const MoviesPage = () => {
         memberIds: movieMembers,
       };
 
-      await movieService.create({ movie: newMovie });
+      const createdMovie = await movieService.create({ movie: newMovie });
 
+      setMovieList((prev) => [...prev, { ...createdMovie }]);
       alert('successfully created');
-      setMovieList((prev) => [...prev, newMovie]);
       clearInputs();
     } catch (error) {
       console.error(error);

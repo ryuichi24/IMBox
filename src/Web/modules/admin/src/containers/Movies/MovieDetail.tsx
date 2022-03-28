@@ -1,12 +1,13 @@
+import React, { useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import { MovieModel, MemberModel } from '@IMBoxWeb/core/dist/models';
 import { memberService, movieService } from '@IMBoxWeb/core/dist/services';
 import { InputField } from '@/components/InputField';
-import { PrimaryBtn } from '@/components/UI';
-import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { PrimaryBtn, SecondaryBtn } from '@/components/UI';
 
 export const MovieDetail = () => {
   const { movieId } = useParams();
+  const navigate = useNavigate();
   const [memberList, setMemberList] = useState<MemberModel[]>([]);
 
   const [movieTitle, setMovieTitle] = useState<string>('');
@@ -70,9 +71,28 @@ export const MovieDetail = () => {
       alert((error as any)?.response?.data || (error as any).message);
     }
   };
+
+  const handleDelete = async () => {
+    if (!movieId) return;
+    const confirmed = confirm('Are you sure you want to delete it?');
+    if (!confirmed) return;
+    try {
+      await movieService.remove({ movieId });
+      alert('Successfully removed');
+      navigate('/movies');
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div className="p-4 h-100" style={{ overflow: 'scroll' }}>
       <div className="card h-100 p-4">
+        <div className="d-flex justify-content-end">
+          <button className="btn btn-danger" style={{ width: '80px' }} onClick={handleDelete}>
+            Delete
+          </button>
+        </div>
         <form onSubmit={handleFormSubmit}>
           <div className="mb-3">
             <InputField
@@ -101,6 +121,7 @@ export const MovieDetail = () => {
               formText="Please paste URL of the image"
               onChange={(e) => setMovieMainPosterUrl(e.target.value)}
               value={movieMainPosterUrl}
+              required={true}
             />
           </div>
           <div className="mb-3">
@@ -137,6 +158,7 @@ export const MovieDetail = () => {
           </div>
 
           <div className="d-flex justify-content-end" style={{ gap: '1rem' }}>
+            <SecondaryBtn btnText="Close" onClick={() => navigate('/movies')} />
             <PrimaryBtn btnText="Save" type="submit" />
           </div>
         </form>

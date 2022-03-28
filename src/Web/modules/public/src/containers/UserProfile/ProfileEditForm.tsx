@@ -28,7 +28,7 @@ export const ProfileEditForm = ({ userItem, handleUserProfileUpdate }: Props) =>
       birthDate: userBirthDate,
     };
 
-    await userService.update({ user: userToUpdate, userId: userItem.id });
+    await userService.update({ user: userToUpdate, userId: userItem.id! });
     handleUserProfileUpdate({ ...userItem, ...userToUpdate });
     setIsLoading(false);
 

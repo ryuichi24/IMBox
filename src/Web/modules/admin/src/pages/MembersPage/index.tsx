@@ -42,12 +42,11 @@ export const MembersPage = () => {
         role: memberRole,
       };
 
-      setMemberList((prev) => [...prev, newMember]);
-
-      await memberService.create({ member: newMember });
+      const createdUser = await memberService.create({ member: newMember });
 
       alert('successfully created');
 
+      setMemberList((prev) => [...prev, { ...createdUser }]);
       clearInputs();
     } catch (error) {
       console.error(error);

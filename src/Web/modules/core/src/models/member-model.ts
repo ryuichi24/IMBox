@@ -11,5 +11,5 @@ export interface MemberModel {
   headshotUrl: string;
   birthDate: Date | string;
   role: string;
-  movies: MovieDTO[];
+  movies?: MovieDTO[];
 }

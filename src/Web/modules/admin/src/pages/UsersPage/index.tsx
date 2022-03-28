@@ -59,9 +59,9 @@ export const UsersPage = () => {
         roles: userRoles,
       };
 
-      await userService.create({ user: newUser });
+      const createdUser = await userService.create({ user: newUser });
 
-      setUserList((prev) => [...prev, newUser]);
+      setUserList((prev) => [...prev, { ...createdUser }]);
 
       alert('successfully created');
       clearInputs();

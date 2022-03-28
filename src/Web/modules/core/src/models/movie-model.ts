@@ -15,7 +15,7 @@ export interface MovieModel {
   otherTrailerUrls?: string[];
   memberIds?: string[];
   members?: MemberDTO[];
-  directors: MemberDTO[];
-  writers: MemberDTO[];
-  casts: MemberDTO[];
+  directors?: MemberDTO[];
+  writers?: MemberDTO[];
+  casts?: MemberDTO[];
 }
