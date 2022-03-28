@@ -76,31 +76,31 @@ namespace IMBox.Services.Rating.API.Controllers
                     {
                         Rating = 1,
                         RatingVoteCount = totalRatingOneItemCount,
-                        Percent = $"{ratingOnePercent.ToString("0")}%"
+                        Percent = (int)ratingOnePercent
                     },
                     new RatingItem
                     {
                         Rating = 2,
                         RatingVoteCount = totalRatingTwoItemCount,
-                        Percent = $"{ratingTwoPercent.ToString("0")}%"
+                        Percent = (int)ratingTwoPercent
                     },
                     new RatingItem
                     {
                         Rating = 3,
                         RatingVoteCount = totalRatingThreeItemCount,
-                        Percent = $"{ratingThreePercent.ToString("0")}%"
+                        Percent = (int)ratingThreePercent
                     },
                     new RatingItem
                     {
                         Rating = 4,
                         RatingVoteCount = totalRatingFourItemCount,
-                        Percent = $"{ratingFourPercent.ToString("0")}%"
+                        Percent = (int)ratingFourPercent
                     },
                     new RatingItem
                     {
                         Rating = 5,
                         RatingVoteCount = totalRatingFiveItemCount,
-                        Percent = $"{ratingFivePercent.ToString("0")}%"
+                        Percent = (int)ratingFivePercent
                     },
                 };
 
@@ -193,7 +193,7 @@ namespace IMBox.Services.Rating.API.Controllers
 
         private Func<RatingEntity, bool> BuildRatingsFilter(string demographicType)
         {
-            var ratingsFilter = default(Func<RatingEntity, bool>);
+            Func<RatingEntity, bool> ratingsFilter = ratings => true;
 
             if (demographicType == "all")
             {

@@ -14,7 +14,7 @@ namespace IMBox.Services.Rating.API.DTOs
     public record RatingItem
     {
         public int Rating { get; init; }
-        public string Percent { get; init; }
+        public int Percent { get; init; }
         public int RatingVoteCount { get; init; }
     }
 }
