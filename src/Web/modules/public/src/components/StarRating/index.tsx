@@ -14,7 +14,7 @@ interface Props {
 export const StarRating = ({
   count = 5,
   rating = 0,
-  color = { filled: '#f5eb3b', unfilled: '#DCDCDC' },
+  color = { filled: '#fff424', unfilled: '#DCDCDC' },
   onRating,
   displayOnly = false,
 }: Props) => {
