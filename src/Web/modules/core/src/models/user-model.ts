@@ -1,5 +1,5 @@
 export interface UserModel {
-  id: string;
+  id?: string;
   username?: string;
   email: string;
   password?: string;
@@ -7,5 +7,5 @@ export interface UserModel {
   gender?: 'm' | 'f' | 'n';
   country?: string;
   roles?: string[];
-  createdAt: string;
+  createdAt?: string;
 }
