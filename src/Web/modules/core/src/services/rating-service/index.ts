@@ -1,5 +1,5 @@
 import { apiClient } from '../../api-client';
-import { Demographic, RatingModel } from '../../models';
+import { Demographic, RatingAnalyticsDTO, RatingModel } from '../../models';
 
 const BASE_URL = '/rating-service/api';
 
@@ -11,7 +11,7 @@ interface GetRatingAnalyticsRequest {
 const getRatingAnalytics = async (request: GetRatingAnalyticsRequest) => {
   const res = await apiClient.get(`${BASE_URL}/movies/${request.movieId}/ratings?demographic=${request.demographic}`);
   const result = res.data;
-  return result;
+  return result as RatingAnalyticsDTO;
 };
 
 interface GetUserRatingsRequest {

@@ -1,12 +1,27 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-import { MovieModel } from '@IMBoxWeb/core/src/models';
+import { Demographic, MovieModel } from '@IMBoxWeb/core/dist/models';
+import { StarRating } from '../StarRating';
+import { ratingService } from '@IMBoxWeb/core/dist/services';
 
 interface Props {
   movieItem: MovieModel;
 }
 
 export const MovieItem = ({ movieItem }: Props) => {
+  const [averageRating, setAverageRating] = useState<number>(0);
+  useEffect(() => {
+    (async () => {
+      if (!movieItem.id) return;
+      const ratingAnalytics = await ratingService.getRatingAnalytics({
+        movieId: movieItem.id,
+        demographic: Demographic.all,
+      });
+      setAverageRating(ratingAnalytics.averageRating);
+    })();
+  }, []);
+
   return (
     <div
       className="card p-2 shadow-sm w-25"
@@ -19,8 +34,23 @@ export const MovieItem = ({ movieItem }: Props) => {
       </Link>
       <div className="card-body">
         <p className="text-truncate">{movieItem.description}</p>
-        <p className="text-truncate">{movieItem.commentCount} comments</p>
+        <p style={{ color: '#929292' }} className="text-truncate">
+          <span className="fw-bold text-white">{movieItem.commentCount}</span> comments
+        </p>
+        <div>
+          <RatingNumWrapper>{averageRating.toFixed(1)}</RatingNumWrapper> / <MaxRatingNumWrapper>5</MaxRatingNumWrapper>
+        </div>
+        <StarRating rating={Math.trunc(averageRating)} displayOnly={true} />
       </div>
     </div>
   );
 };
+
+const MaxRatingNumWrapper = styled.span`
+  font-size: 20px;
+`;
+
+const RatingNumWrapper = styled.span`
+  font-size: 25px;
+  font-weight: 600;
+`;
