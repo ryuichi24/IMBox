@@ -1,5 +1,7 @@
 <h1 align="center">IMBox</h1>
 
+![IMBox-architecture.jpeg](readme-assets/IMBox-architecture.jpeg)
+
 ## How to run IMBox
 
 ### With docker compose for development
