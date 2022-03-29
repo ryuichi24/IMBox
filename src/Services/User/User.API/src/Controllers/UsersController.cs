@@ -48,8 +48,6 @@ namespace IMBox.Services.User.API.Controllers
             return Ok(user.ToDTO());
         }
 
-        // AllowAnonymous is for development purpose
-        [AllowAnonymous]
         [HttpPost()]
         [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(UserDTO))]
         public async Task<IActionResult> CreateAsync(CreateUserDTO createUserDTO)
