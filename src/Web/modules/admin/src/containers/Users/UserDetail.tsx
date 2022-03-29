@@ -73,7 +73,7 @@ export const UserDetail = () => {
     try {
       await userService.remove({ userId });
       alert('Successfully removed');
-      navigate('/users');
+      navigate('/admin/users');
     } catch (error) {
       console.log(error);
     }
@@ -189,7 +189,7 @@ export const UserDetail = () => {
           </div>
 
           <div className="d-flex justify-content-end" style={{ gap: '1rem' }}>
-            <SecondaryBtn btnText="Close" onClick={() => navigate('/users')} />
+            <SecondaryBtn btnText="Close" onClick={() => navigate('/admin/users')} />
             <PrimaryBtn btnText="Save" type="submit" />
           </div>
         </form>

@@ -14,7 +14,7 @@ module.exports = {
     new ReactRefreshWebpackPlugin(),
   ],
   devServer: {
-    static: path.resolve(__dirname, '..', './dist'),
+    static: path.resolve(__dirname, '..', './dist/admin'),
     hot: true,
     open: true,
     historyApiFallback: true,

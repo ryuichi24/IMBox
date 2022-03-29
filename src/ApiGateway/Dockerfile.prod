@@ -1,16 +1,21 @@
 FROM node:16.13.2-alpine3.15 as builder
 
 WORKDIR /builder
-COPY ./src/Web/modules/public ./
+COPY ./src/Web/ ./
 
 RUN yarn install --frozen-lockfile
 
-RUN yarn build
+RUN yarn build-public
+RUN yarn build-admin
 
 FROM nginx:1.21.6-alpine
 
-COPY --from=builder /builder/dist/index.html /usr/share/nginx/html/
-COPY --from=builder /builder/dist/bundle.js /usr/share/nginx/html/
+COPY --from=builder /builder/modules/public/dist/index.html /usr/share/nginx/html/public/
+COPY --from=builder /builder/modules/public/dist/bundle.js /usr/share/nginx/html/public/
 
-ENTRYPOINT ["nginx"]
+COPY --from=builder /builder/modules/admin/dist/admin/index.html /usr/share/nginx/html/admin/
+COPY --from=builder /builder/modules/admin/dist/admin/bundle.js /usr/share/nginx/html/admin/
+
+# https://developpaper.com/debugging-nginx-with-docker/
+ENTRYPOINT ["nginx-debug"]
 CMD ["-g", "daemon off;"]

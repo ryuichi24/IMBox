@@ -79,7 +79,7 @@ export const MovieDetail = () => {
     try {
       await movieService.remove({ movieId });
       alert('Successfully removed');
-      navigate('/movies');
+      navigate('/admin/movies');
     } catch (error) {
       console.log(error);
     }
@@ -158,7 +158,7 @@ export const MovieDetail = () => {
           </div>
 
           <div className="d-flex justify-content-end" style={{ gap: '1rem' }}>
-            <SecondaryBtn btnText="Close" onClick={() => navigate('/movies')} />
+            <SecondaryBtn btnText="Close" onClick={() => navigate('/admin/movies')} />
             <PrimaryBtn btnText="Save" type="submit" />
           </div>
         </form>

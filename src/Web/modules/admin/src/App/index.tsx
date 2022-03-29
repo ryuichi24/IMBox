@@ -22,23 +22,26 @@ export const App = () => {
   return (
     <div className="container-fluid vh-100 p-0">
       <Routes>
-        <Route element={<ProtectedRoute isAllowed={isAuthenticated} redirectPath="/signin" />}>
-          <Route path="/" element={<Layout />}>
-            <Route path="/" element={<Navigate to="/users" />} />
-            <Route path="/users" element={<UsersPage />} />
-            <Route path="/users/:userId" element={<UserDetail />} />
-            <Route path="/movies" element={<MoviesPage />} />
-            <Route path="/movies/:movieId" element={<MovieDetail />} />
-            <Route path="/members" element={<MembersPage />} />
-            <Route path="/members/:memberId" element={<MemberDetail />} />
+        <Route path="/admin/*">
+          <Route element={<ProtectedRoute isAllowed={isAuthenticated} redirectPath="/admin/signin" />}>
+            <Route element={<Layout />}>
+              <Route path="users" element={<UsersPage />} />
+              <Route path="users/:userId" element={<UserDetail />} />
+              <Route path="movies" element={<MoviesPage />} />
+              <Route path="movies/:movieId" element={<MovieDetail />} />
+              <Route path="members" element={<MembersPage />} />
+              <Route path="members/:memberId" element={<MemberDetail />} />
+            </Route>
           </Route>
+
+          <Route element={<ProtectedRoute isAllowed={!isAuthenticated} redirectPath="/admin/users" />}>
+            <Route path="signin" element={<SignInPage />} />
+          </Route>
+
+          <Route path="*" element={<Navigate to="/admin/users" />} />
         </Route>
 
-        <Route element={<ProtectedRoute isAllowed={!isAuthenticated} redirectPath="/" />}>
-          <Route path="/signin" element={<SignInPage />} />
-        </Route>
-
-        <Route path="*" element={<Navigate to="/users" />} />
+        <Route path="*" element={<Navigate to="/admin/users" />} />
       </Routes>
     </div>
   );

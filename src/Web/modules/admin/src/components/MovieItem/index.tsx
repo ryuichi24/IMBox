@@ -20,7 +20,7 @@ export const MovieItem = ({ movieItem }: Props) => {
             <small>{movieItem.commentCount} comments</small>
           </div>
           <div>
-            <Link to={`/movies/${movieItem.id}`}>
+            <Link to={`/admin/movies/${movieItem.id}`}>
               <SecondaryBtn btnText="Edit" />
             </Link>
           </div>

@@ -21,7 +21,7 @@ export const UserItem = ({ userItem }: Props) => {
         ))}
       </td>
       <td>
-        <Link to={`/users/${userItem.id}`}>
+        <Link to={`/admin/users/${userItem.id}`}>
           <SecondaryBtn btnText="Edit" />
         </Link>
       </td>

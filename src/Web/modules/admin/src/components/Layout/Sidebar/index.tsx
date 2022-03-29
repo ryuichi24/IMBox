@@ -7,17 +7,17 @@ export const Sidebar = () => {
   const navItems = [
     {
       itemName: 'Users',
-      path: '/users',
+      path: '/admin/users',
       icon: 'fa-solid fa-users',
     },
     {
       itemName: 'Movies',
-      path: '/movies',
+      path: '/admin/movies',
       icon: 'fa-solid fa-clapperboard',
     },
     {
       itemName: 'Members',
-      path: '/members',
+      path: '/admin/members',
       icon: 'fa-solid fa-people-group',
     },
   ];

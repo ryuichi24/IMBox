@@ -17,20 +17,7 @@ export const Header = () => {
 
           <ul className="dropdown-menu text-small">
             <li>
-              <a className="dropdown-item" href="/">
-                Settings
-              </a>
-            </li>
-            <li>
-              <a className="dropdown-item" href="/">
-                Profile
-              </a>
-            </li>
-            <li>
-              <hr className="dropdown-divider" />
-            </li>
-            <li>
-              <a className="dropdown-item" href="/">
+              <a className="dropdown-item" style={{ color: 'red' }} href="/">
                 Sign out
               </a>
             </li>

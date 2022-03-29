@@ -19,7 +19,7 @@ export const SignInPage = () => {
     try {
       await authService.signIn({ email, password });
       clearInputs();
-      navigate('/');
+      navigate('/admin/users');
     } catch (error) {
       const errorMsg = (error as any).response.data;
       alert(errorMsg);

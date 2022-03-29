@@ -28,7 +28,7 @@ export const MemberItem = ({ memberItem }: Props) => {
           </div>
 
           <div>
-            <Link to={`/members/${memberItem.id}`}>
+            <Link to={`/admin/members/${memberItem.id}`}>
               <SecondaryBtn btnText="Edit" />
             </Link>
           </div>
