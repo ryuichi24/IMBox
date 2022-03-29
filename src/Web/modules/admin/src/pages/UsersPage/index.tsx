@@ -112,6 +112,7 @@ export const UsersPage = () => {
                 type="text"
                 onChange={(e) => setUserUsername(e.target.value)}
                 value={userUsername}
+                required
               />
             </div>
 
@@ -122,6 +123,7 @@ export const UsersPage = () => {
                 type="email"
                 onChange={(e) => setUserEmail(e.target.value)}
                 value={userEmail}
+                required
               />
             </div>
 
@@ -132,6 +134,7 @@ export const UsersPage = () => {
                 type="password"
                 onChange={(e) => setUserPassword(e.target.value)}
                 value={userPassword}
+                required
               />
             </div>
 
@@ -142,6 +145,7 @@ export const UsersPage = () => {
                 type="date"
                 onChange={(e) => setUserBirthDate(e.target.value)}
                 value={userBirthDate}
+                required
               />
             </div>
 
@@ -154,6 +158,7 @@ export const UsersPage = () => {
                 className="form-select"
                 value={userGender}
                 onChange={(e) => setUserGender(e.target.value)}
+                required
               >
                 <option value="label">--- User gender ---</option>
                 <option value="m">Male</option>
@@ -171,6 +176,7 @@ export const UsersPage = () => {
                 className="form-select"
                 value={userCountry}
                 onChange={(e) => setUserCountry(e.target.value)}
+                required
               >
                 <option value="label">--- User country ---</option>
                 {countries.map((countryItem) => (
@@ -192,6 +198,7 @@ export const UsersPage = () => {
                 multiple
                 onChange={(e) => setUserRoles(Array.from(e.target.selectedOptions, (option) => option.value))}
                 value={userRoles}
+                required
               >
                 <option value="admin">Admin</option>
                 <option value="user">User</option>

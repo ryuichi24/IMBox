@@ -103,6 +103,7 @@ export const MoviesPage = () => {
                 type="text"
                 onChange={(e) => setMovieTitle(e.target.value)}
                 value={movieTitle}
+                required
               />
             </div>
             <div className="mb-3">
@@ -114,6 +115,7 @@ export const MoviesPage = () => {
                 type="text"
                 onChange={(e) => setMovieDescription(e.target.value)}
                 value={movieDescription}
+                required
               />
             </div>
             <div className="mb-3">
@@ -125,6 +127,7 @@ export const MoviesPage = () => {
                 formText="Please paste URL of the image"
                 onChange={(e) => setMovieMainPosterUrl(e.target.value)}
                 value={movieMainPosterUrl}
+                required
               />
             </div>
             <div className="mb-3">
@@ -136,6 +139,7 @@ export const MoviesPage = () => {
                 formText="Please paste URL of the video"
                 onChange={(e) => setMovieMainTrailerUrl(e.target.value)}
                 value={movieMainTrailerUrl}
+                required
               />
             </div>
             <div className="mb-3">

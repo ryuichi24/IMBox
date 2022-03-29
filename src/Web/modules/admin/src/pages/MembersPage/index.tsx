@@ -86,6 +86,7 @@ export const MembersPage = () => {
                 type="text"
                 onChange={(e) => setMemberName(e.target.value)}
                 value={memberName}
+                required
               />
             </div>
 
@@ -97,6 +98,7 @@ export const MembersPage = () => {
                 id="memberDescription"
                 onChange={(e) => setMemberDescription(e.target.value)}
                 value={memberDescription}
+                required
               />
             </div>
 
@@ -109,6 +111,7 @@ export const MembersPage = () => {
                 type="url"
                 onChange={(e) => setMemberImage(e.target.value)}
                 value={memberImage}
+                required
               />
             </div>
 
@@ -119,6 +122,7 @@ export const MembersPage = () => {
                 type="date"
                 onChange={(e) => setMemberBirthDate(e.target.value)}
                 value={memberBirthDate}
+                required
               />
             </div>
 
@@ -131,6 +135,7 @@ export const MembersPage = () => {
                 className="form-select"
                 value={memberRole}
                 onChange={(e) => setMemberRole(e.target.value)}
+                required
               >
                 <option value="label">--- Member role ---</option>
                 <option value="cast">Cast</option>
