@@ -37,6 +37,16 @@ Run the projects with command below:
 dotnet run --project ./src/Services/<service name>/<service name>.API/IMBox.<service name>.API.csproj --no-build
 ```
 
+#### Swagger documents
+In development environment, you can access swagger documentations of each api service.
+
+- User Service: https://localhost:5001/swagger/index.html
+- Comment Service: https://localhost:5021/swagger/index.html
+- Member Service: https://localhost:5016/swagger/index.html
+- Movie Service: https://localhost:5011/swagger/index.html
+- Rating Service: https://localhost:5006/swagger/index.html
+
+
 #### Frontends
 
 ```bash
@@ -61,4 +71,20 @@ For deployment, you can run `docker-compose.prod.yml` and docker-compose will do
 ```bash
 docker-compose -f docker-compose.prod.yml up -d
 ```
-After the deployment finishes, you can access IMBox Public at `http://localhost:5555` and IMBox Admin at `http://localhost:5555/admin`.
+After the deployment finishes, you can access:
+- IMBox Public at `http://localhost:5555`
+- IMBox Admin at `http://localhost:5555/admin`
+
+
+## Default admin user
+On the very fist run of the User Service `User.API`, admin user is created.
+The default admin user credentials are:
+
+- username: admin
+- email: admin@example.com
+- password: admin123
+
+You can change those credentials by modifying `AdminSettings` section in `src/Services/User/User.API/appsettings.json`.
+Note that the modification can be effective only before you run `User.API` for the first time.
+
+
