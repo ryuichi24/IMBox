@@ -1,4 +1,5 @@
 using IMBox.Core.SwaggerConfig;
+using IMBox.Services.User.API;
 using IMBox.Services.User.Infrastructure;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Routing;
@@ -34,3 +35,5 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+await app.AddAdminUser();
